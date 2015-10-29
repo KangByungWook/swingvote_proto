@@ -1,0 +1,172 @@
+@media screen and (max-device-width:767px)
+{
+    html, body {
+        width: 100%;
+        margin: 0px;     
+    }
+    
+    //user info header
+    .user_info_simple {
+        width: 100%;
+        p {
+            margin: 0px;
+            font-size: 13px;
+            font-family: Comic Sans MS;
+        }
+        #user_id {
+            font-size: 14px;
+            text-align: center;
+        }
+        .user_lv_div {
+            text-align: center;
+            margin: auto;
+            margin-bottom: 10px;
+        }
+    }
+    
+    
+    //main slider
+    .main_slider {
+        width: 100%;
+        height: 200px;
+        
+        //for vertical center of contents
+        .swiper-slide-content {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            
+            //background: #d91818;
+        }
+        .swiper-slide-tag {
+            button {
+                background: #d91818;
+                color: white;
+                margin-right: 5px;
+            }
+        }
+    }
+    
+    //rank slider
+    .rank-slider {
+        width: 90%;
+        height: 30px;
+        
+        .swiper-slide {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+            
+            background: green;
+        }
+    }
+    
+    //tag slider
+    .tag-slider {
+        width: 100%;
+        height: 170px;
+        
+        .slide-center {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        
+        .slide-topic {
+            .post_img {
+                width: 100%;
+                height: 50%;
+                background: #d91818;
+            }
+            .post_title {
+                width: 100%;
+                height: 25%;
+                border-radius: 25px;
+            }
+            .post_tag {
+                width: 100%;
+                height: 25%;
+                background: yellow;
+            }
+        }
+    }
+    
+    //for post list
+    .post-slider {
+        width: 90%;
+        height: 200px;
+        
+        #post_card {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .slide-accept {
+            background: blue;
+        }
+        
+        .slide-reject {
+            background: red;
+        }
+        
+        .slide-center {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+        
+        .slide-topic {
+            .post_img {
+                width: 100%;
+                height: 60%;
+                background: #d91818;
+            }
+            .post_title {
+                width: 100%;
+                height: 25%;
+            }
+            .post_tag {
+                width: 100%;
+                height: 15%;
+                background: yellow;
+            }
+        }
+    }
+}
+    
