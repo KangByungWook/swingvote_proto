@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'nokogiri'
 gem 'swiper-rails'
 gem 'carrierwave'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
