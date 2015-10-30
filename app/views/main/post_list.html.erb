@@ -1,15 +1,3 @@
-<div class="post-slider swiper-container">
-  <div id="post_card" class="post_card swiper-wrapper">
-    <div id="slide-reject"class="slide-reject slide-center swiper-slide">REJECT?</div>
-    <div id="slide-topic" class="slide-topic swiper-slide">
-      <div class="post_img"></div>
-      <div class="post_title slide-center">topic</div>
-      <div class="post_tag"></div>
-    </div>
-    <div id="slide-accept" class="slide-accept slide-center swiper-slide">ACCEPT?</div>
-  </div>
-</div>
-
 <script>
   $(function() {
     var swiper = new Swiper('.post-slider', {
@@ -27,36 +15,51 @@
   }
 </script>
 
-<script>
-  $(function() {
-    var width = (window.innerWidth > 0) ? window.innerWidth * 0.9 : screen.width * 0.9;
-    console.log(width);
-    $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-    $('#post_card').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
-      function() {
-        var a = $('#post_card').css("transform");
-        console.log(a);
-        var arrA = matrixToArray(a);
-        console.log(arrA);
-        var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
-        console.log(x);
-        var reject, accept;
-        var cont;
-        if (width > x) {
-          cont = $("#slide-reject").html();
-          reject = confirm(cont);
-        } else if(width < x) {
-          cont = $("#slide-accept").html();
-          accept = confirm(cont);
-        }
-        
-        if ((reject != true)&&(accept != true)) {
-          $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-        } else if (reject == true) {
-          location.href = '/main/post_content/reject'
-        } else if (accept == true) {
-          location.href = '/main/post_content/accept'
-        }
+
+<% for x in (1..3) %>
+  <div class="post-slider swiper-container">
+    <div id="post_card<%= x %>" class="post_card swiper-wrapper">
+      <div id="slide-reject<%= x %>"class="slide-reject slide-center swiper-slide">REJECT?</div>
+      <div id="slide-topic<%= x %>" class="slide-topic swiper-slide">
+        <div class="post_img"></div>
+        <div class="post_title slide-center">topic</div>
+        <div class="post_tag"></div>
+      </div>
+      <div id="slide-accept<%= x %>" class="slide-accept slide-center swiper-slide">ACCEPT?</div>
+    </div>
+  </div>
+
+  <script>
+    $(function() {
+      var width = (window.innerWidth > 0) ? window.innerWidth * 0.9 : screen.width * 0.9;
+      console.log(width);
+      $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+      $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
+        function() {
+          var a = $('#post_card<%= x %>').css("transform");
+          console.log(a);
+          var arrA = matrixToArray(a);
+          console.log(arrA);
+          var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
+          console.log(x);
+          var reject, accept;
+          var cont;
+          if (width > x) {
+            cont = $("#slide-reject<%= x %>").html();
+            reject = confirm(cont);
+          } else if(width < x) {
+            cont = $("#slide-accept<%= x %>").html();
+            accept = confirm(cont);
+          }
+          
+          if ((reject != true)&&(accept != true)) {
+            $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          } else if (reject == true) {
+            location.href = '/main/post_content/reject<%= x %>'
+          } else if (accept == true) {
+            location.href = '/main/post_content/accept<%= x %>'
+          }
+      });
     });
-  });
-</script>
+  </script>
+<% end %>
