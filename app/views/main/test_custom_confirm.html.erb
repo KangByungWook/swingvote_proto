@@ -1,0 +1,20 @@
+<button id="confirm_call">confirm call</button>
+<div id="confirm" style="width:100px;height:100px;background:black;opactiy:0.7;display:none;">
+  <p style="color:white;">confirm</p>
+  <button id="accept" style="background:blue;"><span style="color:white">accept</span></button>
+  <button id="reject" style="background:red;"><span style="color:white">reject</span></button>
+</div>
+<script>
+  $(function() {
+    $('#confirm_call').click(function() {
+      $('#confirm').show("slow");
+    });
+    $('#accept').click(function() {
+      $('#confirm').hide();
+      alert("confirm");
+    });
+    $('#reject').click(function() {
+      $('#confirm').hide();
+    });
+  });
+</script>

@@ -15,13 +15,14 @@
   }
 </script>
 
-
 <% for x in (1..3) %>
   <div class="post-slider swiper-container">
     <div id="post_card<%= x %>" class="post_card swiper-wrapper">
       <div id="slide-reject<%= x %>"class="slide-reject slide-center swiper-slide">REJECT?</div>
       <div id="slide-topic<%= x %>" class="slide-topic swiper-slide">
-        <div class="post_img"></div>
+        <a href="/main/post_content">
+          <div class="post_img"></div>
+        </a>
         <div class="post_title slide-center">topic</div>
         <div class="post_tag"></div>
       </div>
@@ -37,11 +38,8 @@
       $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
         function() {
           var a = $('#post_card<%= x %>').css("transform");
-          console.log(a);
           var arrA = matrixToArray(a);
-          console.log(arrA);
           var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
-          console.log(x);
           var reject, accept;
           var cont;
           if (width > x) {
