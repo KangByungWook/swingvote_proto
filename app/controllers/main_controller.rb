@@ -36,6 +36,13 @@ class MainController < ApplicationController
     elsif a == 'reject'
       @index = 1
     end
+
+  end
+  
+  def readability
+    @news = ReadabilityParser.parse("http://news.khan.co.kr/kh_news/khan_art_view.html?artid=201511021516391")
+    @title = @news.title
+    @content = @news.content.to_s.match(/<p>(.|\n){100,}p>/)
   end
   
 end

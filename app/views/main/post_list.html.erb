@@ -2,7 +2,7 @@
   $(function() {
     var swiper = new Swiper('.post-slider', {
       direction: 'horizontal',
-      speed: 700,
+      speed: 300,
       resistance: true,
       resistanceRatio: 1      
     });
@@ -32,7 +32,7 @@
 
   <script>
     $(function() {
-      var width = (window.innerWidth > 0) ? window.innerWidth * 0.9 : screen.width * 0.9;
+      var width = (window.innerWidth > 0) ? window.innerWidth : screen.width
       console.log(width);
       $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
       $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
@@ -40,22 +40,44 @@
           var a = $('#post_card<%= x %>').css("transform");
           var arrA = matrixToArray(a);
           var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
-          var reject, accept;
-          var cont;
-          if (width > x) {
-            cont = $("#slide-reject<%= x %>").html();
-            reject = confirm(cont);
-          } else if(width < x) {
-            cont = $("#slide-accept<%= x %>").html();
-            accept = confirm(cont);
-          }
+          console.log(x);
+          var content;
+          var confirm_option;
           
-          if ((reject != true)&&(accept != true)) {
-            $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-          } else if (reject == true) {
-            location.href = '/main/post_content/reject<%= x %>'
-          } else if (accept == true) {
-            location.href = '/main/post_content/accept<%= x %>'
+          if (width > x) {
+            confirm_option = {
+              title: 'Swing Vote',
+              buttons: { '확인': true, '취소': false },
+              focus: 0,
+              submit:function(e,v,m,f){ 
+          		  if (v === true) {
+          		    console.log("reject - true");
+                  location.href = '/main/post_content/reject<%= x %>'
+          		  } else if (v === false) {
+          		    console.log("reject - false");
+                  $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          		  }
+        		  }
+            };
+            content = $("#slide-reject<%= x %>").html();
+            $.prompt(content, confirm_option);
+          } else if(width < x) {
+            confirm_option = {
+              title: 'Swing Vote',
+              buttons: { '확인': true, '취소': false },
+              focus: 0,
+              submit:function(e,v,m,f){ 
+          		  if (v === true) {
+          		    console.log("accept -  true");
+                  location.href = '/main/post_content/accept<%= x %>'
+          		  } else if (v === false) {
+          		    console.log("accept -  false");
+                  $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          		  }
+        		  }
+            };
+            content = $("#slide-accept<%= x %>").html();
+            $.prompt(content, confirm_option);
           }
       });
     });

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'readability_parser'
 gem 'nokogiri'
 gem 'swiper-rails'
 gem 'carrierwave'
