@@ -1,3 +1,27 @@
+<!-- user info header -->
+<div class="user_info_simple">
+  <p id="user_id">draconian</p>
+  <div style="width:100%; height:8px;"></div>
+  <div class="user_lv_div">
+    <table style="width:100%;">
+      <tr>
+        <td style="width:5%;">
+        <td style="width:15%;"><p>Lv.12</p></td>
+        <td style="width:70%;">
+          <div class="progress" style="height:100%; width:100%; margin:0px;">
+            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+              60%
+            </div>
+          </div>
+        </td>
+        <td style="width:10%;">
+      </tr>
+    </table>
+  </div>
+ 
+</div>
+<!-- user info header end -->
+
 <!-- main slider -->
 <div class="main_slider swiper-container">
   <div class="swiper-wrapper">
@@ -9,13 +33,14 @@
         <button class="tag-btn">#국정교과서</button>
         <button class="tag-btn">#한국사</button>
       </div>
-      <div class="slide-center swiper-slide" style="width: 100%; height: 90%;">
-        <div style="width:100%;height:100%;background-image:url('http://www.hapdongnews.co.kr/news/photo/201509/3748_879_4544.jpg');background-size:cover;background-repeat:no-repeat;background-position: center center;">
-          <p style="font-size:20px;color:white;position:bottom;">국정교과서 과연 옳은 선택인가</p>
+      <div class="slide-center swiper-slide" style="width: 100%; height: 80%;">
+        <div class="main-background picture" style="background-image:url('http://imgnews.naver.net/image/001/2015/11/02/PYH2015110210430001300_P2_99_20151102215904.jpg?type=w540')">
+          <div class="blurry-box" style="background:url('data:image/jpeg;base64,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')"></div>
+          <div class="text" style="text-align:center;width:100%"><span style="font-size:20px;color:white">국정교과서 과연 옳은 선택인가</span></div>
         </div>
       </div>
-      <div style="width: 100%; height: 5%;">
-      </div>
+      <!--<div style="width: 100%; height: 5%;">
+      </div>-->
     </div>
   <% end %>
   
@@ -27,23 +52,30 @@
   $(function() {
     var swiper = new Swiper('.main_slider', {
       speed: 700,
-      direction: 'horizontal',
+      /*direction: 'horizontal',*/
       loop: true,
       pagination: '#swiper-pagination-1',
       paginationClickable: true,
       grabCursor: true,
       autoplay: 3000,
-      autoplayDisableOnInteraction: false
+      autoplayDisableOnInteraction: false,
+      /*effect: 'cube',
+      cube: {
+        shadow: false,
+        slideShadows: true,
+        shadowOffset: 20,
+        shadowScale: 0.94
+      }*/
     });
   });
 </script>
 <!-- main slider end -->
 
 <!-- fank slider -->
-  <div class="rank-slider swiper-container" style="border:1px solid black">
+  <div class="rank-slider swiper-container" style="border:1px solid #d91818;">
     <div class="swiper-wrapper">
       <% for x in (1..10) %>
-        <div class="slide-center swiper-slide"><%=x%>위:<%= @rank_arr[x] %></div>
+        <div class="slide-center swiper-slide"><span style="font-size:15px"><%=x%>위:<%= @rank_arr[x] %></span></div>
       <% end %>
     </div>
   </div>  
@@ -52,7 +84,7 @@
 <script>
   $(function() {
     var swiper = new Swiper('.rank-slider', {
-      direction: 'vertical',
+      direction: 'horizontal',
       loop: true,
       autoplay: 2500,
       autoplayDisableOnInteraction: false
@@ -75,7 +107,7 @@
         <div class="slide-topic swiper-slide">
           <div class="post_img" style="background-image:url('<%=@sisa_pic[x]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
           </div>
-          <div class="slide-center post_title"><%=@sisa_sub[x] %></div>
+          <div class="slide-center post_title"><span style="font-size:15px"><%=@sisa_sub[x] %></span></div>
           <div class="slide-center post_tag">
             <% for i in (1..3) %>
               <button class="tag-btn">#tag<%= i %></button>
@@ -97,7 +129,7 @@
         <div class="slide-topic swiper-slide">
           <div class="post_img" style="background-image:url('<%=@girl_pic[x]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
           </div>
-          <div class="slide-center post_title"><%=@girl_sub[x] %></div>
+          <div class="slide-center post_title"><span style="font-size:15px"><%=@girl_sub[x] %></span></div>
           <div class="slide-center post_tag">
             <% for i in (1..3) %>
               <button class="tag-btn">#tag<%= i %></button>
@@ -112,12 +144,21 @@
 <script>
   $(function() {
     var swiper = new Swiper('.tag-slider', {
-      speed: 700,
-      slidesPerView: 2,
-      spaceBetween: 10,
+      speed: 500,
+      slidesPerView: 1.3,
+      centeredSlides: true,
       resistance: true,
-      resistanceRatio: 1
+      resistanceRatio: 1,
+      effect: 'coverflow',
+      coverflow: {
+        rotate: 40,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows : true
+      }
     });
   });
 </script>
 <!-- tag slider end -->
+

@@ -1,2 +1,4 @@
-<h1><%=@new.title%></h1>
-<%=@new.content..match(/<p>(.|\n){100,}p>/).to_s)%>
+<h1><%=@news.title%></h1>
+<span style="font-size:20px">
+    <%=simple_format(@news.content.match(/<p>(.|\n){100,}p>/).to_s)%>    
+</span>

@@ -5,6 +5,13 @@
         margin: 0px;     
     }
     
+    .for_drawer {
+        width: 15px;
+        height: 100%;
+        position: fixed;
+        z-index: 10000;
+    }
+    
     //for vertical center of contents
     .slide-center {
         display: -webkit-box;
@@ -51,7 +58,62 @@
     //main slider
     .main_slider {
         width: 100%;
-        height: 200px;
+        height: 100%;
+        .picture{
+            width: 100%;
+            height: 200px;
+            background-size:cover;
+            background-repeat:no-repeat;
+            background-position: center center;
+            //   background: url($image) bottom right;
+            //   width: 100%;
+            //   height: 100%;
+              position: relative;
+            //   background-size: 100% auto;
+              overflow:hidden;
+            .blurry-box{
+              width: 102%;
+              height: 60px;
+            //   background: url($image) right 90em;
+            
+              content: "";
+              position: absolute;
+              bottom: 0px;
+              background-position: right 12em;
+              -webkit-filter: blur(1em);
+              // there is a hope for -moz-filter
+              -moz-filter: blur(1em);
+              -o-filter: blur(1em);
+            //   filter: url(#blur);
+              background-size: 100% auto;
+              box-sizing: border-box;
+              -moz-box-sizng: border-box;
+              -moz-box-sizing: border-box;
+              
+              
+             
+              
+            }
+            .text{
+              position: absolute;
+              bottom: 3em;
+              font: 50px ;
+              font-weight: 600;
+              text-align:center;
+            //   color: $text-color;
+              z-index: 10;
+              left: 1em; 
+                
+            }
+            
+        }
+        .main-background {
+            // width: 100%;
+            // height: 200px;
+            // background-size:cover;
+            // background-repeat:no-repeat;
+            // background-position: center center;
+        }
     }
     
     //rank slider
@@ -63,18 +125,17 @@
     //tag slider
     .tag-slider {
         width: 100%;
-        height: 170px;
+        height: 250px;
         
         .slide-topic {
             .post_img {
                 width: 100%;
-                height: 50%;
+                height: 65%;
                 // background: #d91818;
             }
             .post_title {
                 width: 100%;
-                height: 20%;
-                border-radius: 25px;
+                height: 15%;
             }
             .post_tag {
                 width: 100%;
@@ -100,21 +161,6 @@
         
         .slide-reject {
             background: red;
-        }
-        
-        .slide-center {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            -webkit-align-items: center;
-            align-items: center;
         }
         
         .slide-topic {

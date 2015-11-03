@@ -27,6 +27,11 @@ class MainController < ApplicationController
   end
   
   def post_list
+    @list_pic=["http://www.hapdongnews.co.kr/news/photo/201509/3748_879_4544.jpg",
+              "http://edudonga.com/data/article/1510/9857d1cb99afc00a6fb1e39c82fdb85b_1445818831_5626.JPG",
+              "http://edudonga.com/data/article/1510/83d0219c3ac7c2d4518efc57ff9ded3a_1445558741_5332.jpg"]
+    @list_subject=["국정화 교과서 논란", "형사처벌 대상연령을 낮추어야 할 것인가?","길거리 쓰레기통을 설치해야하는가"]
+    @list_choice=[["찬성","반대"], ["현행 유지","낮추어야 한다"], ["설치해야한다","필요없다"]]
   end
   
   def post_content
@@ -40,7 +45,7 @@ class MainController < ApplicationController
   end
   
   def readability
-    @news = ReadabilityParser.parse("http://news.khan.co.kr/kh_news/khan_art_view.html?artid=201511021516391")
+    @news = ReadabilityParser.parse("http://news.naver.com/main/read.nhn?oid=001&sid1=102&aid=0007963027&mid=shm&mode=LSD&nh=20151103181334")
     @title = @news.title
     @content = @news.content.to_s.match(/<p>(.|\n){100,}p>/)
   end
