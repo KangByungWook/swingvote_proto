@@ -5,6 +5,7 @@
         margin: 0px;     
     }
     
+    //for application drawer
     .for_drawer {
         width: 15px;
         height: 100%;
@@ -29,19 +30,16 @@
     }
     
     //for tag button
-    .tag-btn {
-        background: #d91818;
-        color: white;
-        margin-right: 5px;
-    }
-    
+	
     //user info header
     .user_info_simple {
+        text-decoration: none;
+        color: black;
         width: 100%;
         p {
             margin: 0px;
             font-size: 13px;
-            font-family: Comic Sans MS;
+            font-family: Avenir Book;
         }
         #user_id {
             font-size: 14px;
@@ -58,7 +56,27 @@
     //main slider
     .main_slider {
         width: 100%;
-        height: 100%;
+        height: 200px;
+        font-family: Avenir Book;
+        
+        .tag_box {
+            margin-top: 0.5em;
+            float: right;
+            .tag {
+                div {
+                    background: #ffffff;
+                    margin-right: 0.5em;
+                    font-size: 1.5em;
+                    opacity: 0.7;
+                    height: 1.5em;
+                    width: 4em;
+                    overflow:hidden;
+                    text-overflow:clip; 
+                    white-space:nowrap;
+                    
+                }
+            }
+        }
         .picture{
             width: 100%;
             height: 200px;
@@ -75,26 +93,23 @@
               width: 102%;
               height: 60px;
             //   background: url($image) right 90em;
-            
+              opacity: 0.8;
               content: "";
               position: absolute;
               bottom: 0px;
               background-position: right 12em;
-              -webkit-filter: blur(1em);
+              //-webkit-filter: blur(1em);
               // there is a hope for -moz-filter
-              -moz-filter: blur(1em);
-              -o-filter: blur(1em);
-            //   filter: url(#blur);
+              //-moz-filter: blur(1em);
+              //-o-filter: blur(1em);
+              //filter: url(#blur);
               background-size: 100% auto;
               box-sizing: border-box;
               -moz-box-sizng: border-box;
               -moz-box-sizing: border-box;
-              
-              
-             
-              
             }
             .text{
+              width: 100%;
               position: absolute;
               bottom: 3em;
               font: 50px ;
@@ -102,7 +117,7 @@
               text-align:center;
             //   color: $text-color;
               z-index: 10;
-              left: 1em; 
+              margin-right: 1em;
                 
             }
             
@@ -118,7 +133,7 @@
     
     //rank slider
     .rank-slider {
-        width: 100%;
+        width: 90%;
         height: 30px;
     }
     
@@ -136,11 +151,21 @@
             .post_title {
                 width: 100%;
                 height: 15%;
+                font-size: 2em;
+                font-weight: bold;
+                font-family: Avenir Book;
             }
             .post_tag {
                 width: 100%;
-                height: 15%;
+                height: 10%;
                 //background: yellow;
+                .tag {
+                    font-family: Avenir Book;
+                    font-size: 1.5em;
+                    height: 1.5em;
+                    margin-right: 0.7em;
+                    text-decoration: none;
+                }
             }
         }
     }
@@ -167,7 +192,7 @@
             .post_img {
                 width: 100%;
                 height: 60%;
-                background: #d91818;
+                //background: #d91818;
             }
             .post_title {
                 width: 100%;
@@ -176,7 +201,7 @@
             .post_tag {
                 width: 100%;
                 height: 15%;
-                background: yellow;
+                //background: yellow;
             }
         }
     }

@@ -1,46 +1,19 @@
-<div class="test-slider swiper-container">
-  <div id="card" class="swiper-wrapper" style="transform: translate3d(-360px, 0px, 0px);">
-    <div id="slide-reject" class="swiper-slide">reject</div>
-    <div id="slide-topic" class="swiper-slide">topic</div>
-    <div id="slide-accept" class="swiper-slide">accept</div>
-  </div>
-</div>
-
-<script>
-  $(function() {
-    var swiper = new Swiper('.test-slider', {
-      direction: 'horizontal',
-      speed: 700
-    });
-  });
-</script>
-
-<script>
-  function matrixToArray(str) {
-    return str.match(/(-?[0-9\.]+)/g);
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <style>
+  #toggle {
+    width: 100px;
+    height: 100px;
+    background: #ccc;
   }
-</script>
-
+  </style>
+ 
+<p>Click anywhere to toggle the box.</p>
+<div id="toggle"></div>
+ 
 <script>
-  $(function() {
-    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    console.log(width);
-    $('#card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-    $("#card").on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
-      function() {
-        var a = $('#card').css("transform");
-        var arrA = matrixToArray(a);
-        var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
-        var r;
-        if (width > x) {
-          r = confirm("Reject?");
-        } else if(width < x) {
-          r = confirm("Accept?");
-        }
-        
-        if (r == false) {
-          $('#card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-        }
-    });
-  });
+$( document ).click(function() {
+  $( "#toggle" ).toggle( "blind",500 );
+});
 </script>
+ 

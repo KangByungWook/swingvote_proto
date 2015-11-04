@@ -11,5 +11,8 @@
  * file per style scope.
  *
  *= require_self
+ *= require jquery-ui
+ *= require jqcloud
+ 
  *= require_tree .
  */

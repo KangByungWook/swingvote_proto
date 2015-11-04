@@ -1,8 +1,11 @@
 source 'https://rubygems.org'
 
+gem 'jquery_mobile_rails'
+gem 'jquery-ui-rails'
 gem 'readability_parser'
 gem 'nokogiri'
 gem 'swiper-rails'
+gem "jqcloud-rails"
 gem 'carrierwave'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'

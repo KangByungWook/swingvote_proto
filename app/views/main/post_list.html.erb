@@ -1,3 +1,12 @@
+<center>
+  <h3 style="font-family:Avenir Book;"># 시사이슈</h3>
+</center>
+
+<script>
+  $(document).on("pagecontainerload",function(event,data){
+  location.reload();
+});
+</script>
 <script>
   $(function() {
     var swiper = new Swiper('.post-slider', {
@@ -14,8 +23,6 @@
     return str.match(/(-?[0-9\.]+)/g);
   }
 </script>
-
-
 
 <% for x in (0..2) %>
   <div class="post-slider swiper-container">
@@ -37,54 +44,54 @@
 
   <script>
     $(function() {
-      var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-      console.log(width);
-      $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-      $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
-        function() {
-          var a = $('#post_card<%= x %>').css("transform");
-          var arrA = matrixToArray(a);
-          var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
-          console.log(x);
-          var content;
-          var confirm_option;
-          
-          if (width > x) {
-            confirm_option = {
-              title: 'Swing Vote',
-              buttons: { '확인': true, '취소': false },
-              focus: 0,
-              submit:function(e,v,m,f){ 
-          		  if (v === true) {
-          		    console.log("reject - true");
-                  location.href = '/main/post_content/reject<%= x %>'
-          		  } else if (v === false) {
-          		    console.log("reject - false");
-                  $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        console.log(width);
+        $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+        $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
+          function() {
+            var a = $('#post_card<%= x %>').css("transform");
+            var arrA = matrixToArray(a);
+            var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
+            console.log(x);
+            var content;
+            var confirm_option;
+            
+            if (width > x) {
+              confirm_option = {
+                title: 'Swing Vote',
+                buttons: { '확인': true, '취소': false },
+                focus: 0,
+                submit:function(e,v,m,f){ 
+            		  if (v === true) {
+            		    console.log("reject - true");
+                    location.href = '/main/post_content/reject<%= x %>'
+            		  } else if (v === false) {
+            		    console.log("reject - false");
+                    $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+            		  }
           		  }
-        		  }
-            };
-            content = $("#slide-reject<%= x %>").html();
-            $.prompt(content, confirm_option);
-          } else if(width < x) {
-            confirm_option = {
-              title: 'Swing Vote',
-              buttons: { '확인': true, '취소': false },
-              focus: 0,
-              submit:function(e,v,m,f){ 
-          		  if (v === true) {
-          		    console.log("accept -  true");
-                  location.href = '/main/post_content/accept<%= x %>'
-          		  } else if (v === false) {
-          		    console.log("accept -  false");
-                  $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+              };
+              content = $("#slide-reject<%= x %>").html();
+              $.prompt(content, confirm_option);
+            } else if(width < x) {
+              confirm_option = {
+                title: 'Swing Vote',
+                buttons: { '확인': true, '취소': false },
+                focus: 0,
+                submit:function(e,v,m,f){ 
+            		  if (v === true) {
+            		    console.log("accept -  true");
+                    location.href = '/main/post_content/accept<%= x %>'
+            		  } else if (v === false) {
+            		    console.log("accept -  false");
+                    $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+            		  }
           		  }
-        		  }
-            };
-            content = $("#slide-accept<%= x %>").html();
-            $.prompt(content, confirm_option);
-          }
-      });
+              };
+              content = $("#slide-accept<%= x %>").html();
+              $.prompt(content, confirm_option);
+            }
+        });
     });
   </script>
 <% end %>
