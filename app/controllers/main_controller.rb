@@ -13,8 +13,8 @@ class MainController < ApplicationController
       
       # 시사태그
       @sisa_tag_name = "시사이슈"
-      @sisa_sub = ["[북한 서부전선 포격]5년만의 남북 포격전","한일 관계, 어떻게 생각하시나요",
-                  "[한명숙 대법원 판결] 기소 5년 만에 징역 2년 확정","[중국 톈진 폭발사고]",
+      @sisa_sub = ["[북한 서부전선 포격]","[한일 관계, 어떻게 생각하시나요]",
+                  "[한명숙 대법원 판결]","[중국 톈진 폭발사고]",
                   "[광복절 특별사면]"]
       @sisa_pic = ["http://imgnews.naver.net/image/022/2015/08/21/20150821000937_0_99_20150824215604.jpg?type=w540",
                     "http://imgnews.naver.net/image/003/2015/08/14/NISI20150814_0005780556_web_99_20150814205704.jpg?type=w540",
@@ -29,6 +29,7 @@ class MainController < ApplicationController
                   ]
                     
       #연예
+      @girl_tag_name = "걸그룹"
       @girl_sub = ["최고의 걸그룹은??", "최고의 솔로가수는??", "수지 vs 효성", "AOA vs EXID", "솔지 vs 하니"]
       @girl_pic = ["http://pds.joins.com/news/component/osen_new/201305/12/201305121759770343_518f5a9c96dbe.jpg",
                     "https://i.ytimg.com/vi/1SiLiFrZJ74/maxresdefault.jpg", "http://i.ytimg.com/vi/4jsJlyXT95w/maxresdefault.jpg",
@@ -53,7 +54,7 @@ class MainController < ApplicationController
     @list_choice=[["찬성","반대"], 
                   ["현행 유지","낮추어야 한다"], 
                   ["설치해야한다","필요없다"]
-                  ]
+                ]
     
   end
   

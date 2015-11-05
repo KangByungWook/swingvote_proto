@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'spinjs-rails'
 gem 'jquery-animate-enhanced-rails'
 gem 'jquery_mobile_rails'
 gem 'jquery-ui-rails'

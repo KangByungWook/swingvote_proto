@@ -11,7 +11,7 @@
 // about supported directives.
 //
 //= require jquery
-
+//= require spin
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery-ui/effect.all
@@ -41,10 +41,28 @@ document.addEventListener('page:change', function() {
     
 });   
 
+
+spinner = new Spinner({
+	lines: 12, // The number of lines to draw
+	length: 7, // The length of each line
+	width: 5, // The line thickness
+	radius: 10, // The radius of the inner circle
+	color: '#000', // #rbg or #rrggbb
+	speed: 1, // Rounds per second
+	trail: 100, // Afterglow percentage
+	shadow: true // Whether to render a shadow
+})
 // 여기 안에 스피너 넣으면 됨
-// document.addEventListener('page:before-change', function() {
-//     document.getElementById('primary-content').innerHTML = "Hello World!";
-    
-// });   
+document.addEventListener('page:before-change', function() {
+    // document.getElementById('primary-content').innerHTML = "로딩중....";
+    // $('#spinnerContainer').after(new Spinner(opts).spin().el);
+    // document.getElementById('primary-content').innerHTML = "Hello World!";
+	spinner.spin(document.getElementById("primary-content")); 
+});
 
-
+document.addEventListener('page:before-unload', function() {
+    // document.getElementById('primary-content').innerHTML = "로딩중....";
+    // $('#spinnerContainer').after(new Spinner(opts).spin().el);
+    // document.getElementById('primary-content').innerHTML = "Hello World!";
+ spinner.stop(); 
+});
