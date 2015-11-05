@@ -1,7 +1,7 @@
 <h1><%=@news.title%></h1>
 <div style="line-height:2.2em">
     <span style="font-size:1.5em">
-    <%=simple_format(@news.content.match(/<p>(.|\n){100,}p>/).to_s.gsub(/<a(.|\n)*?a>/,""))%>    
+    <%=simple_format(@news.content.match(/<p>(.|\n){100,}p>/).to_s.gsub(/<a(.|\n)*?a>/,"").to_s.gsub(/width=.*?".*?"/,"width='100%'"))%>    
     </span>
 </div>
 

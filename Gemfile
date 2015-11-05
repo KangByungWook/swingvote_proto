@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'jquery-animate-enhanced-rails'
 gem 'jquery_mobile_rails'
 gem 'jquery-ui-rails'
 gem 'readability_parser'

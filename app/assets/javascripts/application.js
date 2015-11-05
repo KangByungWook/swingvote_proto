@@ -11,9 +11,9 @@
 // about supported directives.
 //
 //= require jquery
+
 //= require jquery_ujs
 //= require jquery-ui
-
 //= require jquery-ui/effect.all
 //= require jquery-ui/effect
 //= require jquery-ui/effect-blind
@@ -35,3 +35,16 @@
 //= require jqcloud
 
 //= require_tree .
+
+document.addEventListener('page:change', function() {
+    document.getElementById('primary-content').className += 'animated fadeIn';
+    
+});   
+
+// 여기 안에 스피너 넣으면 됨
+// document.addEventListener('page:before-change', function() {
+//     document.getElementById('primary-content').innerHTML = "Hello World!";
+    
+// });   
+
+
