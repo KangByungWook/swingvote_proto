@@ -11,23 +11,24 @@
         //   background-size: 100% auto;
           overflow:hidden;
         .blurry-box{
-          width: 102%;
-          height: 60px;
+           width: 120%;
+           height: 50%;
         //   background: url($image) right 90em;
         
+          opacity: 0.5;
           content: "";
           position: absolute;
           bottom: 0px;
           background-position: right 12em;
           -webkit-filter: blur(1em);
-          // there is a hope for -moz-filter
+          
           -moz-filter: blur(1em);
           -o-filter: blur(1em);
-        //   filter: url(#blur);
+          filter: url(#blur);
           background-size: 100% auto;
           box-sizing: border-box;
           -moz-box-sizng: border-box;
-          -moz-box-sizing: border-box;          
+          -moz-box-sizing: border-box;        
         }
         
         .text{

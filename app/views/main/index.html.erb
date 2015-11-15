@@ -1,17 +1,42 @@
+<script>
+  $(function() {
+    var username, point, email, age, gender;
+    var user = Parse.Object.extend("User");
+    var query = new Parse.Query(user);
+    query.get("t6IfULq0dJ", {
+      success: function(user) {
+        username = user.get("username");
+        point = user.get("point");
+        email = user.get("email");
+        age = user.get("age");
+        gender = user.get("gender");
+        $('#username').html(username);
+        $('#point').html(point);
+        $('#email').html(email);
+        $('#age').html(age);
+        $('#gender').html(gender);
+      },
+      error: function(error) {
+        alert(error);
+      }
+    });
+  });
+</script>
+
 <!-- user info header -->
 <a href="/main/user_page">
   <div class="user_info_simple">
-    <p id="user_id">draconian</p>
+    <p id="username"></p>
     <div style="width:100%; height:8px;"></div>
     <div class="user_lv_div">
       <table style="width:100%;">
         <tr>
           <td style="width:5%;">
-          <td style="width:15%;"><p>Lv.12</p></td>
+          <td style="width:15%;"><p id="level">Lv.99</p></td>
           <td style="width:70%;">
             <div class="progress" style="height:100%; width:100%; margin:0px;">
-              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                60%
+              <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                100%
               </div>
             </div>
           </td>
@@ -41,7 +66,7 @@
             <% end %>
             <tr>
           </table>
-          <div class="blurry-box" style="background:url('data:image/jpeg;base64,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')"></div>
+          <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
           <div class="text"><span style="font-size:20px;color:white"><%= @main_sub[x] %></span></div>
         </div>
       </div>
@@ -98,8 +123,30 @@
 
 
 <!-- tag slider -->
-
   <div style="width:100%; height:15px;"></div>
+  <div class="tag-slider swiper-container">
+    <p style="margin:0px; font-size:1.1em;">
+      <span style="margin-left:10px; font-size:1.3em;"><strong>#<%= @girl_tag_name %></strong></span>
+      <a style="float:right; margin-right:10px;" href="/main/post_list">더보기&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
+    </p>
+    <div style="width:100%; height:1em;"></div>
+    <div class="swiper-wrapper">
+      <% for x in (0...@girl_sub.length) %>
+        <div class="slide-topic swiper-slide">
+          <div class="post_img" style="background-image:url('<%=@girl_pic[x]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
+          </div>
+          <div class="slide-center post_title"><span style="font-size:15px"><%=@girl_sub[x] %></span></div>
+          <div class="slide-center post_tag">
+            <% for i in (0...@girl_tag[x].length) %>
+              <div class="tag slide-center">#<%= @girl_tag[x][i] %></div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <div style="width:100%; height:50px;"></div>
   <div class="tag-slider swiper-container">
     <p style="margin:0px; font-size:1.1em;">
       <span style="margin-left:10px; font-size:1.3em;"><strong>#<%= @sisa_tag_name %></strong></span>
@@ -123,28 +170,7 @@
     </div>
   </div>
   
-  <div style="width:100%; height:50px;"></div>
-  <div class="tag-slider swiper-container">
-    <p style="margin:0px; font-size:1.1em;">
-      <span style="margin-left:10px; font-size:1.3em;"><strong>#<%= @girl_tag_name %></strong></span>
-      <span style="float:right; margin-right:10px;">더보기&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></span>
-    </p>
-    <div style="width:100%; height:1em;"></div>
-    <div class="swiper-wrapper">
-      <% for x in (0...@girl_sub.length) %>
-        <div class="slide-topic swiper-slide">
-          <div class="post_img" style="background-image:url('<%=@girl_pic[x]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
-          </div>
-          <div class="slide-center post_title"><span style="font-size:15px"><%=@girl_sub[x] %></span></div>
-          <div class="slide-center post_tag">
-            <% for i in (0...@girl_tag[x].length) %>
-              <div class="tag slide-center">#<%= @girl_tag[x][i] %></div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  
 <div style="width:100%; height:30px;"></div>
 <!-- tag slider script -->
 <script>

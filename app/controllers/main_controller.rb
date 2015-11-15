@@ -2,10 +2,10 @@ class MainController < ApplicationController
   
   def index
       #핫이슈 메인 슬라이더
-      @main_sub = ["국정교과서 과연 옳은 선택인가","하핫"]
-      @main_pic = ["http://imgnews.naver.net/image/001/2015/11/02/PYH2015110210430001300_P2_99_20151102215904.jpg?type=w540",
+      @main_sub = ["아이유 '제제' 논란","..."]
+      @main_pic = ["http://thumb.mt.co.kr/06/2015/11/2015110809195059394_1.jpg?time=054222",
                    "..."]
-      @main_tag = [["정치","국정교과서","한국사"],["빈태그","qwertyuiopasdfghjklzxcvbm"]]
+      @main_tag = [["아이유","제제","연예"],["빈태그","..."]]
       
       uri = URI("http://www.naver.com/")
       html_doc = Nokogiri::HTML(Net::HTTP.get(uri))
@@ -29,7 +29,7 @@ class MainController < ApplicationController
                   ]
                     
       #연예
-      @girl_tag_name = "걸그룹"
+      @girl_tag_name = "연예"
       @girl_sub = ["최고의 걸그룹은??", "최고의 솔로가수는??", "수지 vs 효성", "AOA vs EXID", "솔지 vs 하니"]
       @girl_pic = ["http://pds.joins.com/news/component/osen_new/201305/12/201305121759770343_518f5a9c96dbe.jpg",
                     "https://i.ytimg.com/vi/1SiLiFrZJ74/maxresdefault.jpg", "http://i.ytimg.com/vi/4jsJlyXT95w/maxresdefault.jpg",
@@ -47,10 +47,10 @@ class MainController < ApplicationController
   end
   
   def post_list
-    @list_pic=["http://www.hapdongnews.co.kr/news/photo/201509/3748_879_4544.jpg",
-              "http://edudonga.com/data/article/1510/9857d1cb99afc00a6fb1e39c82fdb85b_1445818831_5626.JPG",
-              "http://edudonga.com/data/article/1510/83d0219c3ac7c2d4518efc57ff9ded3a_1445558741_5332.jpg"]
-    @list_subject=["국정화 교과서 논란", "형사처벌 대상연령을 낮추어야 할 것인가?","길거리 쓰레기통을 설치해야하는가"]
+    @list_pic=["http://thumb.mt.co.kr/06/2015/11/2015110809195059394_1.jpg?time=054222",
+              "http://i.ytimg.com/vi/4jsJlyXT95w/maxresdefault.jpg",
+              "http://www.billboard.co.kr/wp-content/uploads/2015/07/37.png"]
+    @list_subject=["아이유 '제제' 논란", "수지 vs 효성","AOA vs EXID"]
     @list_choice=[["찬성","반대"], 
                   ["현행 유지","낮추어야 한다"], 
                   ["설치해야한다","필요없다"]
@@ -65,13 +65,40 @@ class MainController < ApplicationController
     elsif a == 'reject'
       @index = 1
     end
-
+  
+    @link_arr = ["http://stoo.asiae.co.kr/news/view.htm?idxno=2015111314533739620",
+                 "http://economy.hankooki.com/lpage/entv/201511/e20151110200531143500.htm",
+                 "http://news.chosun.com/site/data/html_dir/2015/11/10/2015111002112.html",
+                 "http://news20.busan.com/controller/newsController.jsp?newsId=20151108000078"]
+    @news_arr = []
+    @title_arr = []
+    
+    for x in (0...@link_arr.length)
+      @news_arr[x] = ReadabilityParser.parse(@link_arr[x])
+      @title_arr[x] = @news_arr[x].title
+    end
+    
+    @color_arr = ["#c2bfd9","#d0ecf2","#bad9bc","#edf2c9","#f2e2ce"]
   end
   
   def readability
-    @news = ReadabilityParser.parse("http://news.naver.com/main/read.nhn?oid=001&sid1=102&aid=0007963027&mid=shm&mode=LSD&nh=20151103181334")
+    @id = params[:id].to_i
+    @link_arr = ["http://stoo.asiae.co.kr/news/view.htm?idxno=2015111314533739620",
+                 "http://economy.hankooki.com/lpage/entv/201511/e20151110200531143500.htm",
+                 "http://news.chosun.com/site/data/html_dir/2015/11/10/2015111002112.html",
+                 "http://news20.busan.com/controller/newsController.jsp?newsId=20151108000078"]
+                 
+    @news = ReadabilityParser.parse(@link_arr[@id])
     @title = @news.title
     @content = @news.content.to_s.match(/<p>(.|\n){100,}p>/)
+
+  end
+  
+  def do_write
+      
+  end
+  
+  def user_page
   end
   
 end

@@ -1,140 +1,212 @@
+<% for x in (0..0) %>
+  <div class="post-slider swiper-container">
+    <div id="post_card<%= x %>" class="post_card swiper-wrapper">
+      <div id="slide-reject<%= x %>"class="slide-reject slide-center swiper-slide">표현의 자유이다!!</div>
+      <div id="slide-topic<%= x %>" class="slide-topic swiper-slide">
+          <div class="post_img picture" style="width:100%;height:100%;background-image:url('http://thumb.mt.co.kr/06/2015/11/2015110809195059394_1.jpg?time=054222');background-size:cover;background-repeat:no-repeat;background-position: center center;">
+            <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
+            <div class="text" style="text-align:center;width:100%"><span style="font-size:15px;color:white">아이유 '제제' 논란</span></div>
+          </div>
+        <div class="post_title slide-center">topic</div>
+        <div class="post_tag"></div>
+      </div>
+      <div id="slide-accept<%= x %>" class="slide-accept slide-center swiper-slide">그건 좀 아니지 않나??</div>
+    </div>
+  </div>
 
-<div class="picture" style = "width:100%;height:100%px;background-image:url('http://www.hapdongnews.co.kr/news/photo/201509/3748_879_4544.jpg');background-size:cover;background-repeat:no-repeat;background-position: center center;">
+  <script>
+    $(function() {
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        console.log(width);
+        $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+        $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
+          function() {
+            var a = $('#post_card<%= x %>').css("transform");
+            var arrA = matrixToArray(a);
+            var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
+            console.log(x);
+            var content;
+            var confirm_option;
+            
+            if (width > x) {
+              confirm_option = {
+                title: 'Swing Vote',
+                buttons: { '확인': true, '취소': false },
+                focus: 0,
+                submit:function(e,v,m,f){ 
+            		  if (v === true) {
+            		    console.log("reject - true");
+                    location.href = '/main/post_content/reject<%= x %>'
+            		  } else if (v === false) {
+            		    console.log("reject - false");
+                    $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+            		  }
+          		  }
+              };
+              content = $("#slide-reject<%= x %>").html();
+              $.prompt(content, confirm_option);
+            } else if(width < x) {
+              confirm_option = {
+                title: 'Swing Vote',
+                buttons: { '확인': true, '취소': false },
+                focus: 0,
+                submit:function(e,v,m,f){ 
+            		  if (v === true) {
+            		    console.log("accept -  true");
+                    location.href = '/main/post_content/accept<%= x %>'
+            		  } else if (v === false) {
+            		    console.log("accept -  false");
+                    $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+            		  }
+          		  }
+              };
+              content = $("#slide-accept<%= x %>").html();
+              $.prompt(content, confirm_option);
+            }
+        });
+    });
+  </script>
+<% end %>
+
+
+<script>
+  function matrixToArray(str) {
+    return str.match(/(-?[0-9\.]+)/g);
+  }
+</script>
+<script>
+  $(function() {
+    var swiper = new Swiper('.post-slider', {
+      direction: 'horizontal',
+      speed: 300,
+      resistance: true,
+      resistanceRatio: 1
+    });
+  });
+</script>
+<!--<div class="picture" style = "width:100%;height:100%px;background-image:url('http://www.hapdongnews.co.kr/news/photo/201509/3748_879_4544.jpg');background-size:cover;background-repeat:no-repeat;background-position: center center;">
     <div class="blurry-box" style="background:url('data:image/jpeg;base64,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')"></div>
             <div class="text" style="color:black;text-align:center;width:100%"><span style="font-size:15px;color:black">국정화 교과서 논란</span></div>
     
+</div>-->
+
+<h4 style="margin-left:1em;">관련 기사</h4>
+<div class="link-slider swiper-container">
+	<div class="swiper-wrapper">
+	<% for i in (0...@link_arr.length) %>
+	  <% @rand = rand(0..4) %>
+		<div class="swiper-slide" style="background:<%= @color_arr[@rand] %>; opacity:0.8;">
+			<a href="/main/readability/<%= i %>" style="text-decoration:none;">
+			  <span style="font-size:1em; position:absolute; bottom:0; left:0;"><%= @title_arr[i] %></span>
+			 </a>
+		</div>
+	<% end %>
+	</div>
 </div>
-
-<div style="line-height:2.2em">
-    <span style="font-size:20px">정부가 2017년부터 중·고교 역사 교과서를 국정 체제로 바꾸기로 확정한 가운데, 현직 언론인들이 국정화 강행을 반대하는 ‘시국선언 광고’를 집행해 눈길을 끈다.
-
-4일 경향신문, 한겨레, 한국일보, 경남도민일보 등 총 9개 신문에는 ‘언론인의 양심으로 한국사교과서 국정화 강행을 반대합니다’는 타이틀의 의견광고가 전면으로 실렸다.
-이는 하루 앞선 3일 언론인 4713명이 정부의 한국사 교과서 국정화를 반대하는 시국선언 성명서를 발표한 것의 연장선상으로, 1인당 1만원씩 모금을 통해 비용이 마련됐다. 
-
-그런 만큼 광고는 시국선언 참가조직 49개 언론사와 함께 참여한 4713명의 이름을 명시하며 “역사 역행, 민주주의 퇴행에 맞서 불복종을 선언하고 언론주권자 국민과 함께 할 것입니다”는 문구로 역사교과서 국정화에 반대하는 목소리를 분명하게 내고 있다. 
-
-<미디어오늘> 보도에 따르면, 서울신문과 국민일보 등은 해당 광고가 ‘불편하다’는 이유로 싣지 않은 것으로 알려졌다.
-
-이와 관련, 언론노조 관계자는 <더피알>과의 통화에서 “전통적으로 언론노조 소속 매체를 대상으로 의견광고를 집행해 오고 있는데, 이번에 서울신문과 국민일보는 내부 판단에 의해 전략적으로 광고를 싣지 않은 것 같다”면서도 “(그런 결정이) 편집국 분위기에 영향을 받은 것은 아닌 것으로 안다”고 전했다.
-
-이른바 ‘보수신문’으로 분류되는 조선·중앙·동아일보 등에 광고를 집행하지 않은 이유에 대해선 “일단 언론노조에 가입하지 않아 (광고 집행) 대상이 아니며, 모금액이 많지도 않은 상황에서 단가도 맞지 않을 것”이라고 언급했다.
-
-언론노조 측은 앞으로도 국정화 반대 행보에 나설 뜻을 내비쳤다.    
-
-이 관계자는 “상당수 언론이 정부의 일방적 의견만 내고 있는 상황에서 이번 시국선언 광고는 언론보도의 공정성을 기하기 위한 활동”이라고 강조하면서 “언론 현장에서도 문제의식에 대한 분위기가 달아오르고 있다. 1차 시국선언문이라고 표현한 만큼 향후 2차, 3차로 이어질 수 있다”고 말했다. 
- 
-</span>
-</div>
-
-<div style="border:1px solid black">
-	<h3>관련 기사</h3>
-	<a href="/main/readability"><span style="font-size:2em">역사교과서 국정화 고시 이틀째…</span></a>
-	
-</div>
-
-<div style="width:100%">
-	<ul id="messages">
-        <!-- 1 -->
-		<li>
-			<div class="infos">
-				<img src="http://farm5.staticflickr.com/4136/4817542998_55a7eb8d8b_q.jpg" alt="" title="by tresMunkeys" />
-			</div>
-			<div class="content">
-				<h3>
-					Arbaoui Mehdi
-					<b>ceo &amp; founder "depot webdesigner"</b>
-				</h3>
-				<p>
-					Etiam iaculis, ipsum sit amet scelerisque dictum, diam justo suscipit mauris, a lacinia odio nulla et tellus. Praesent placerat ipsum sed purus rutrum vel dapibus magna scelerisque. Nulla sit amet orci at metus euismod tincidunt. Etiam <a href="#">http://www.depotwebdesigner.com</a> et nunc eu massa fermentum feugiat.
-				</p>
-			</div>
-		</li>
-		<!-- 2 -->
-		<li>
-			<div class="infos">
-				<img src="http://farm3.staticflickr.com/2721/4531285963_cd28f61b16_q.jpg" alt=""  title="by tresMunkeys" />
-							</div>
-			<div class="content">
-				<h3>
-					Edmundo I. Jacobi
-					<b>webdeveloper</b>
-				</h3>
-				<p>
-					Lorem ipsum non minim Excepteur Duis sunt labore ut laborum sit ullamco sed ex.Lorem ipsum dolor adipisicing ullamco cillumLorem ipsum non minim Excepteur Duis sunt labore ut laborum sit ullamco sed ex.Lorem ipsum dolor adipisicing ullamco cillumLorem ipsum non minim Excepteur Duis sunt labore ut laborum sit ullamco sed ex.Lorem ipsum dolor adipisicing ullamco cillumLorem ipsum non minim Excepteur Duis sunt labore ut laborum sit ullamco sed ex.Lorem ipsum dolor adipisicing.
-				</p>
-			</div>
-		</li>
-
-		<!-- 3 -->
-		<li>
-			<div class="infos">
-				<img src="http://farm3.staticflickr.com/2617/3873098259_61c446da22_q.jpg" alt="" title="by tresMunkeys" />
-						</div>
-			<div class="content">
-				<h3>
-					Lisa J. Escoto
-					<b>webdesigner </b>
-				</h3>
-				<p>
-					Lorem ipsum non minim Excepteur Duis sunt labore ut laborum sit ullamco sed ex.Lorem ipsum dolor adipisicing ullamco cillum in occaecat adipisicing ullamco cillum in occaecat proident commodo in <a href="http://www.google.com">http://www.google.com</a>. 
-				</p>
-			</div>
-		</li>
-
-		<!-- 4 -->
-		<li>
-			<div class="infos">
-				<img src="http://farm4.staticflickr.com/3412/3446830982_c8b55cc7e8_q.jpg" alt="" title="by tresMunkeys" />
-				
-			</div>
-			<div class="content">
-				<h3>
-					June Schreiber
-					<b>CEO &amp; Founder</b>
-				</h3>
-				<p>
-					Phasellus pharetra, libero sed egestas condimentum, ligula nibh cursus turpis, sed convallis odio lorem sit amet ligula. Suspendisse dapibus nibh nec augue placerat eleifend sit amet nec purus. Donec consectetur cursus quam eu bibendum. Nam est nisi, tincidunt mattis luctus sit amet, faucibus luctus odio. Nam placerat mauris libero. Integer fringilla nisl vitae velit lacinia eget sagittis diam feugiat. Ut et scelerisque dolor. Phasellus luctus tellus nec augue laoreet non suscipit orci condimentum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eros felis, eleifend ut fringilla sit amet, vestibulum eu ligula. In venenatis aliquet tristique. Fusce tempor tincidunt adipiscing. In fermentum tincidunt purus eu tristique. Integer semper, eros et accumsan porta, purus arcu vehicula massa, quis facilisis nibh nisi non mi.
-				</p>
-			</div>
-		</li>
-
-		<!-- 5 -->
-		<li>
-			<div class="infos">
-				<img src="http://farm4.staticflickr.com/3588/3663734351_f9cb5a6a56_q.jpg" alt="" title="by tresMunkeys" />
-				<a href="http://twitter.com/webodream" class="sprite twitter">@webodream</a>
-				<a href="http://www.facebook.com/groups/115089745169149" class="sprite facebook">depot.webdesigner</a>
-				<a href="http://github.com/arbaoui-mehdi" class="sprite github">@arbaoui-mehdi</a>
-			</div>
-			<div class="content">
-				<h3>
-					Benita M. Futral
-					<b>CEO &amp; Founder</b>
-				</h3>
-				<p>
-					Lorem ipsum non minim Excepteur Duis sunt labore ut laborum sit ullamco sed ex.Lorem ipsum dolor adipisicing ullamco cillum
-				</p>
-			</div>
-		</li>
-
-	</ul>
-</div>
+<br>
 <script>
-//댓글창
-$(function() {
-	var $list = $('ul li');
-	$list.filter(':first').addClass('animated flipInX');
-	setInterval(function() {
-		if( $list.filter('.flipInX').index() !== $list.length) {
-			$list.filter('.flipInX').removeClass('animated flipInX').next().addClass('animated flipInX');
-		}
-	}, 400);
-});
-
-//차트부분
-
-//차트부분 끝
+  $(function() {
+    var swiper = new Swiper('.link-slider', {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      resistance: true,
+      resistanceRatio: 1,
+    });
+  });
 </script>
 
+<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+
+<div class="panel-header">
+  <span id="panel-title"> Comments </span>
+  <span class="counter"> 3 </span>
+</div>
+<form action="/home/do_reply" method="POST">
+    <p class="formtitle"> 댓글 달기 </p>
+    <input id="author" type="text" placeholder="Name">
+    <textarea placeholder="Comment"></textarea>
+    <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
+</form>
+<div class="panel-collapse">
+  <div class="comment_left">
+    <div class="comment-header">
+      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+      <span> Maggie </span>
+      <small> 20/11/2014 2:35 PM </small>
+   </div>
+   <div class="comment-text">
+     허지웅같은 사람때문에 우리나라에 애플스토어가 안들어오는거다. 지 눈에는 양파망으로 보이니까 무상리퍼 해달라고 우기고 떼쓰는거 봐.
+   </div>
+  </div>
+
+  <div class="comment_right">
+    <div class="comment-header" style="text-align:right">
+      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+      <span> Manuel </span>
+      <small> 23/11/2014 4:59 PM </small>
+    </div>
+    <div class="comment-text">
+      사과해야 할 사람은 아이유인데 왜 출판사측에서 사과를 하게 만드는지 모르겠다 피해자코스프레 쩌네...
+    </div>
+  </div>
+  
+  <div class="comment_left">
+    <div class="comment-header">
+      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+      <span> Maggie </span>
+      <small> 20/11/2014 2:35 PM </small>
+   </div>
+   <div class="comment-text">
+     나는 그냥 이번 사건으로 아이유의 노래를 듣지 않게 되었다..ㅜㅜㅜㅜ 그리고 남자들이 소아성애에 대해서 되게 포용력있게 생각한다는 것도 알게 됨ㄷㄷ..
+   </div>
+  </div>
+
+  <div class="comment_right">
+    <div class="comment-header" style="text-align:right">
+      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+      <span> Manuel </span>
+      <small> 23/11/2014 4:59 PM </small>
+    </div>
+    <div class="comment-text">
+      출판사 압력 넣어서 피해자 코스프레 완성시켜놓고 일단락이라고 단정 짓는건 좀
+    </div>
+  </div>
+</div>
+
+<!--<div class="floating-button">
 <style>
+  .floating-button {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    right: 0.5em;
+    bottom: 0.5em;
+    background: black;
+    opacity: 0.8;
+    pointer: cursor;
+  }
 </style>
+</div>
+
+<div class="hidden-drawer">
+<style>
+  .hidden-drawer {
+    width: 78%;
+    height: 40px;
+    position: fixed;
+    left: 0.5em;
+    bottom: 0.5em;
+    background: yellow;
+    opacity: 0.7;
+    display: none;
+  }
+</style>
+</div>
+
+<script>
+  $(function() {
+    $('.floating-button').click(function() {
+      $('.hidden-drawer').toggle('slide', 300);
+    });
+  });
+</script>-->

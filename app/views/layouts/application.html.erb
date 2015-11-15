@@ -38,14 +38,23 @@
   <link rel="stylesheet" href="path/to/swiper.min.css">
   <script src="path/to/jquery.js"></script>
   <script src="path/to/swiper.jquery.min.js"></script>
-  
+  <!-- Masonry -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.js"></script>
   <script src="/path/to/masonry.pkgd.min.js"></script>
-  
+  <!-- Chartist -->
+  <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
+  <script src="bower_components/chartist/dist/chartist.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
+  <!-- Parse -->
+  <script src="//www.parsecdn.com/js/parse-1.6.7.min.js"></script>
+  <script>Parse.initialize("qzALTn3dHkheC2hBXZ4GE6LCMK0NImfql5LoOsma", "IvMg33iyT2qXd5cH4s28QTHadMNz4mOXlEqNmhd4");</script>
+  
 </head>
 
 <body id="primary-content">
+<div id="loading"></div>
 <div class="for_drawer"></div>
 
 <%= yield %>

@@ -1,8 +1,8 @@
 #tagcloud {
-    margin-top: -18px;
-    margin-bottom: -10px;
+    margin-top: -5px;
+    margin-bottom: -5px;
     span {
-        padding: 13px;
+        margin: -10px;
     }
     .w10, .w9 {
         color: #d91818;
@@ -25,7 +25,8 @@
     width: 90%;
     display: none;
     p {
-        font-size: 1.5em;
+        font-size: 1em;
+        font-family: Avenir Book;
     }
 }
 

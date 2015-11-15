@@ -57,12 +57,16 @@ document.addEventListener('page:before-change', function() {
     // document.getElementById('primary-content').innerHTML = "로딩중....";
     // $('#spinnerContainer').after(new Spinner(opts).spin().el);
     // document.getElementById('primary-content').innerHTML = "Hello World!";
-	spinner.spin(document.getElementById("primary-content")); 
+    
+// 	spinner.spin(document.getElementById("primary-content")); 
+	
+	document.getElementById("loading").className += "loading";
 });
 
 document.addEventListener('page:before-unload', function() {
     // document.getElementById('primary-content').innerHTML = "로딩중....";
     // $('#spinnerContainer').after(new Spinner(opts).spin().el);
     // document.getElementById('primary-content').innerHTML = "Hello World!";
- spinner.stop(); 
+    // spinner.stop(); 
+    document.getElementById("loading").className = ' ';
 });
