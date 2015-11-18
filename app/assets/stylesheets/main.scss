@@ -131,8 +131,8 @@
         }
     }
     
-    //rank slider
-    .rank-slider {
+    //recent slider
+    .recent-slider {
         width: 90%;
         height: 30px;
     }
@@ -163,7 +163,8 @@
                     font-family: Avenir Book;
                     font-size: 1em;
                     height: 1em;
-                    margin-right: 0.7em;
+                    margin-left: 0.4em;
+                    margin-right: 0.4em;
                     text-decoration: none;
                 }
             }
@@ -179,15 +180,6 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
-        
-        .slide-accept {
-            // background: blue;
-        }
-        
-        .slide-reject {
-            // background: red;
-        }
-        
         .slide-topic {
             .post_img {
                 width: 100%;

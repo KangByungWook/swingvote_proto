@@ -1,72 +1,94 @@
-<% for x in (0..0) %>
-  <div class="post-slider swiper-container">
-    <div id="post_card<%= x %>" class="post_card swiper-wrapper">
-      <div id="slide-reject<%= x %>"class="slide-reject slide-center swiper-slide">표현의 자유이다!!</div>
-      <div id="slide-topic<%= x %>" class="slide-topic swiper-slide">
-          <div class="post_img picture" style="width:100%;height:100%;background-image:url('http://thumb.mt.co.kr/06/2015/11/2015110809195059394_1.jpg?time=054222');background-size:cover;background-repeat:no-repeat;background-position: center center;">
-            <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
-            <div class="text" style="text-align:center;width:100%"><span style="font-size:15px;color:white">아이유 '제제' 논란</span></div>
-          </div>
-        <div class="post_title slide-center">topic</div>
-        <div class="post_tag"></div>
-      </div>
-      <div id="slide-accept<%= x %>" class="slide-accept slide-center swiper-slide">그건 좀 아니지 않나??</div>
-    </div>
-  </div>
+<script>
+//params[:id] 로 들어온 objectId를 이용해 posts 테이블에서 쿼리 진행
+$(function() {
+  var posts = Parse.Object.extend("posts");
+  var one = new Parse.Query(posts);
+  one.get("<%=@id%>", {
+    success: function(result) {
+      var img = result.get("image_url");
+      $('#post_img').css("background-image", "url('"+img+"')");
+      $('#slide-left').html(result.get("left")["content"]);
+      $('#post_title').html(result.get("subject"));
+      $('#slide-right').html(result.get("right")["content"]);
+      $('#link_url_length').val(result.get("links").length);
+      for (i = 0; i < result.get("links").length; i++) {
+        $('#link_url_'+i).val(result.get("links")[i]);
+      }
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+});
+</script>
 
-  <script>
-    $(function() {
-        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-        console.log(width);
-        $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-        $('#post_card<%= x %>').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
-          function() {
-            var a = $('#post_card<%= x %>').css("transform");
-            var arrA = matrixToArray(a);
-            var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
-            console.log(x);
-            var content;
-            var confirm_option;
-            
-            if (width > x) {
-              confirm_option = {
-                title: 'Swing Vote',
-                buttons: { '확인': true, '취소': false },
-                focus: 0,
-                submit:function(e,v,m,f){ 
-            		  if (v === true) {
-            		    console.log("reject - true");
-                    location.href = '/main/post_content/reject<%= x %>'
-            		  } else if (v === false) {
-            		    console.log("reject - false");
-                    $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-            		  }
+<div class="post-slider swiper-container">
+  <div id="post_card" class="post_card swiper-wrapper">
+    <div id="slide-left"class="slide-left slide-center swiper-slide"></div>
+    <div id="slide-topic" class="slide-topic swiper-slide">
+      <div id="post_img" class="post_img picture" style="width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
+        <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
+        <div class="text" style="text-align:center;width:100%">
+          <span id="post_title" style="font-size:15px;color:white"></span>
+        </div>
+      </div>
+    </div>
+    <div id="slide-right" class="slide-right slide-center swiper-slide"></div>
+  </div>
+</div>
+
+<script>
+  $(function() {
+      var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+      console.log(width);
+      $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+      $('#post_card').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
+        function() {
+          var a = $('#post_card').css("transform");
+          var arrA = matrixToArray(a);
+          var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
+          console.log(x);
+          var content;
+          var confirm_option;
+          
+          if (width > x) {
+            confirm_option = {
+              title: 'Swing Vote',
+              buttons: { '확인': true, '취소': false },
+              focus: 0,
+              submit:function(e,v,m,f){ 
+          		  if (v === true) {
+          		    console.log("reject - true");
+                  /*location.href = '/main/post_content/reject'*/
+          		  } else if (v === false) {
+          		    console.log("reject - false");
+                  $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
           		  }
-              };
-              content = $("#slide-reject<%= x %>").html();
-              $.prompt(content, confirm_option);
-            } else if(width < x) {
-              confirm_option = {
-                title: 'Swing Vote',
-                buttons: { '확인': true, '취소': false },
-                focus: 0,
-                submit:function(e,v,m,f){ 
-            		  if (v === true) {
-            		    console.log("accept -  true");
-                    location.href = '/main/post_content/accept<%= x %>'
-            		  } else if (v === false) {
-            		    console.log("accept -  false");
-                    $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-            		  }
+        		  }
+            };
+            content = $("#slide-left").html();
+            $.prompt(content, confirm_option);
+          } else if(width < x) {
+            confirm_option = {
+              title: 'Swing Vote',
+              buttons: { '확인': true, '취소': false },
+              focus: 0,
+              submit:function(e,v,m,f){ 
+          		  if (v === true) {
+          		    console.log("accept -  true");
+                  /*location.href = '/main/post_content/accept'*/
+          		  } else if (v === false) {
+          		    console.log("accept -  false");
+                  $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
           		  }
-              };
-              content = $("#slide-accept<%= x %>").html();
-              $.prompt(content, confirm_option);
-            }
-        });
-    });
-  </script>
-<% end %>
+        		  }
+            };
+            content = $("#slide-right").html();
+            $.prompt(content, confirm_option);
+          }
+      });
+  });
+</script>
 
 
 <script>
@@ -84,22 +106,101 @@
     });
   });
 </script>
-<!--<div class="picture" style = "width:100%;height:100%px;background-image:url('http://www.hapdongnews.co.kr/news/photo/201509/3748_879_4544.jpg');background-size:cover;background-repeat:no-repeat;background-position: center center;">
-    <div class="blurry-box" style="background:url('data:image/jpeg;base64,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')"></div>
-            <div class="text" style="color:black;text-align:center;width:100%"><span style="font-size:15px;color:black">국정화 교과서 논란</span></div>
-    
-</div>-->
 
+<h4 style="margin-left:1em;"><p>통계</p></h4>
+<div class="ct-chart ct-perfect-fourth" style="width:100%;height:100px;margin: auto;"></div>
+
+<script>
+var chart = new Chartist.Pie('.ct-chart', {
+  labels: ['표현의 자유이다!!', '그건 좀 아니지 않나??'],
+  series: [60, 40]
+}, {
+  width: 200,
+  height: 200,
+  donut: true,
+  donutWidth: 20,
+  startAngle: 270,
+  total: 200,
+  showLabel: true,
+  chartPadding: 30
+},options_responsive);
+
+var options_responsive = [
+  ["screen and (max-width: 640px)", {
+    showLine: false,
+    showArea: true
+  }]
+]
+chart.on('draw', function(data) {
+  if(data.type === 'slice') {
+    // Get the total path length in order to use for dash array animation
+    var pathLength = data.element._node.getTotalLength();
+
+    // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+    data.element.attr({
+      'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+    });
+
+    // Create animation definition while also assigning an ID to the animation for later sync usage
+    var animationDefinition = {
+      'stroke-dashoffset': {
+        id: 'anim' + data.index,
+        dur: 1000,
+        from: -pathLength + 'px',
+        to:  '0px',
+        easing: Chartist.Svg.Easing.easeOutQuint,
+        // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+        fill: 'freeze'
+      }
+    };
+
+    // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+    if(data.index !== 0) {
+      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+    }
+
+    // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+    data.element.attr({
+      'stroke-dashoffset': -pathLength + 'px'
+    });
+
+    // We can't use guided mode as the animations need to rely on setting begin manually
+    // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+    data.element.animate(animationDefinition, false);
+  }
+});
+
+// For the sake of the example we update the chart every time it's created with a delay of 8 seconds
+// chart.on('created', function() {
+//   if(window.__anim21278907124) {
+//     clearTimeout(window.__anim21278907124);
+//     window.__anim21278907124 = null;
+//   }
+//   window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
+// });
+
+</script>
+
+<!-- 링크쪽 parse db script 연결은 보류!! -->
+<!-- ReadabilityParser.parse를 통해서 제목을 분류 해야하는데 script로 들어오면 분류가 될까? -->
 <h4 style="margin-left:1em;">관련 기사</h4>
 <div class="link-slider swiper-container">
 	<div class="swiper-wrapper">
-	<% for i in (0...@link_arr.length) %>
-	  <% @rand = rand(0..4) %>
-		<div class="swiper-slide" style="background:<%= @color_arr[@rand] %>; opacity:0.8;">
+	<input id="link_url_length" type="hidden">
+	<% for i in (0..3) %>
+		<div class="swiper-slide" style="">
+		  <input id="link_url_<%=i%>" type="hidden">
 			<a href="/main/readability/<%= i %>" style="text-decoration:none;">
-			  <span style="font-size:1em; position:absolute; bottom:0; left:0;"><%= @title_arr[i] %></span>
+			  <span id="post_link_<%=i%>" style="font-size:1em; position:absolute; bottom:0; left:0;">
+			  </span>
 			 </a>
 		</div>
+		<script>
+		  $(function() {
+		    var title = "<%= simple_format(ReadabilityParser.parse(@link_arr[i]).title) %>";
+		    $('#post_link_'+<%=i%>).html(title);
+		  });
+		</script>
 	<% end %>
 	</div>
 </div>
@@ -115,6 +216,34 @@
   });
 </script>
 
+
+<!-- 댓글 쪽 데이터도 아직은 보류 -->
+<!--diqus 시작-->
+<div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+
+var disqus_config = function () {
+this.page.url = "https://prj1028-swingvote-proto-draconian00-1.c9.io/main/post_content/<%=@id%>"; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = ""; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//swingvoteco.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+<!--diqus 끝-->
+<!--기존 댓글 체계-->
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 
 <div class="panel-header">

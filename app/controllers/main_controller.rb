@@ -47,6 +47,8 @@ class MainController < ApplicationController
   end
   
   def post_list
+    @id = params[:id]
+
     @list_pic=["http://thumb.mt.co.kr/06/2015/11/2015110809195059394_1.jpg?time=054222",
               "http://i.ytimg.com/vi/4jsJlyXT95w/maxresdefault.jpg",
               "http://www.billboard.co.kr/wp-content/uploads/2015/07/37.png"]
@@ -59,23 +61,25 @@ class MainController < ApplicationController
   end
   
   def post_content
-    a = params[:id]
-    if a == 'accept'
-      @index = 0
-    elsif a == 'reject'
-      @index = 1
-    end
-  
+    @id = params[:id]
+    
     @link_arr = ["http://stoo.asiae.co.kr/news/view.htm?idxno=2015111314533739620",
                  "http://economy.hankooki.com/lpage/entv/201511/e20151110200531143500.htm",
                  "http://news.chosun.com/site/data/html_dir/2015/11/10/2015111002112.html",
                  "http://news20.busan.com/controller/newsController.jsp?newsId=20151108000078"]
+                 
+    #링크 배열에 있는 각각의 이미지를 같은 크기의 배열로 만듬
+    
+    
+    
     @news_arr = []
     @title_arr = []
+    @link_img = []
     
     for x in (0...@link_arr.length)
       @news_arr[x] = ReadabilityParser.parse(@link_arr[x])
       @title_arr[x] = @news_arr[x].title
+      @link_img[x] = ReadabilityParser.parse(@link_arr[x]).content.to_s.match(/<img.*>/)
     end
     
     @color_arr = ["#c2bfd9","#d0ecf2","#bad9bc","#edf2c9","#f2e2ce"]
@@ -95,7 +99,7 @@ class MainController < ApplicationController
   end
   
   def do_write
-      
+    
   end
   
   def user_page

@@ -1,5 +1,15 @@
+<script>
+$(function() {
+  console.log("<%=@id%>");
+  var posts = Parse.Object.extend("posts");
+  var tag_list = new Parse.Query(posts);
+  tag_list.equalTo("main_tag","<%=@id%>");
+  
+});
+</script>
+
 <center>
-  <h3 style="font-family:Avenir Book;"># 연예</h3>
+  <h3 style="font-family:Avenir Book;"># <%=@id%></h3>
 </center>
 
 
@@ -79,6 +89,8 @@
           		  if (v === true) {
           		    console.log("accept -  true");
                   location.href = '/main/post_content/accept<%= x %>'
+                  //document.location = 'js://code'
+                  //어떤 태그 post_list에서 어떤 글을 선택하고 투표를 했는지
           		  } else if (v === false) {
           		    console.log("accept -  false");
                   $('#post_card<%= x %>').css("transform", "translate3d(-"+width+"px, 0px, 0px)");

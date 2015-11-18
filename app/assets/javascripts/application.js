@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+
 //= require jquery
 //= require spin
 //= require jquery_ujs
@@ -31,6 +32,7 @@
 //= require jquery-ui/effect-size
 //= require jquery-ui/effect-slide
 //= require jquery-ui/effect-transfer
+
 //= require turbolinks
 //= require jqcloud
 

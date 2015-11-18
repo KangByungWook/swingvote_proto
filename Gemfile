@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'chartist-rails'
 gem 'parse-ruby-client'
 gem 'spinjs-rails'
 gem 'jquery-animate-enhanced-rails'
