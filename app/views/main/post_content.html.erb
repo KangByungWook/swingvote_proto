@@ -1,9 +1,9 @@
-<script>
+<!--<script>
 //params[:id] 로 들어온 objectId를 이용해 posts 테이블에서 쿼리 진행
 $(function() {
   var posts = Parse.Object.extend("posts");
   var one = new Parse.Query(posts);
-  one.get("<%=@id%>", {
+  one.get("", {
     success: function(result) {
       var img = result.get("image_url");
       $('#post_img').css("background-image", "url('"+img+"')");
@@ -20,20 +20,20 @@ $(function() {
     }
   });
 });
-</script>
-
+</script>-->
+<% @post.get.each do |i| %>
 <div class="post-slider swiper-container">
-  <div id="post_card" class="post_card swiper-wrapper">
-    <div id="slide-left"class="slide-left slide-center swiper-slide"></div>
-    <div id="slide-topic" class="slide-topic swiper-slide">
-      <div id="post_img" class="post_img picture" style="width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
+  <div id="<%=@id%>_card" class="post_card swiper-wrapper">
+    <div id="<%=@id%>_left"class="slide-left slide-center swiper-slide"><%=i["left"]["content"]%></div>
+    <div id="<%=@id%>" class="slide-topic swiper-slide">
+      <div id="post_img" class="post_img picture" style="width:100%;height:100%;background-image:url('<%=i["image_url"]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
         <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
         <div class="text" style="text-align:center;width:100%">
-          <span id="post_title" style="font-size:15px;color:white"></span>
+          <span id="post_title" style="font-size:15px;color:white"><%=i["subject"]%></span>
         </div>
       </div>
     </div>
-    <div id="slide-right" class="slide-right slide-center swiper-slide"></div>
+    <div id="<%=@id%>_right" class="slide-right slide-center swiper-slide"><%=i["right"]["content"]%></div>
   </div>
 </div>
 
@@ -41,10 +41,10 @@ $(function() {
   $(function() {
       var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
       console.log(width);
-      $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
-      $('#post_card').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
+      $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+      $('#<%=@id%>_card').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
         function() {
-          var a = $('#post_card').css("transform");
+          var a = $('#<%=@id%>_card').css("transform");
           var arrA = matrixToArray(a);
           var x = (arrA[4] == 0) ? Number(arrA[4]) : -arrA[4];
           console.log(x);
@@ -58,15 +58,15 @@ $(function() {
               focus: 0,
               submit:function(e,v,m,f){ 
           		  if (v === true) {
-          		    console.log("reject - true");
+          		    console.log("left - true");
                   /*location.href = '/main/post_content/reject'*/
           		  } else if (v === false) {
-          		    console.log("reject - false");
-                  $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          		    console.log("left - false");
+                  $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
           		  }
         		  }
             };
-            content = $("#slide-left").html();
+            content = $("#<%=@id%>_left").html();
             $.prompt(content, confirm_option);
           } else if(width < x) {
             confirm_option = {
@@ -75,21 +75,21 @@ $(function() {
               focus: 0,
               submit:function(e,v,m,f){ 
           		  if (v === true) {
-          		    console.log("accept -  true");
+          		    console.log("right - true");
                   /*location.href = '/main/post_content/accept'*/
           		  } else if (v === false) {
-          		    console.log("accept -  false");
-                  $('#post_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          		    console.log("right - false");
+                  $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
           		  }
         		  }
             };
-            content = $("#slide-right").html();
+            content = $("#<%=@id%>_right").html();
             $.prompt(content, confirm_option);
           }
       });
   });
 </script>
-
+<% end %>
 
 <script>
   function matrixToArray(str) {
@@ -181,29 +181,24 @@ chart.on('draw', function(data) {
 
 </script>
 
-<!-- 링크쪽 parse db script 연결은 보류!! -->
-<!-- ReadabilityParser.parse를 통해서 제목을 분류 해야하는데 script로 들어오면 분류가 될까? -->
+<% @post.get.each do |i| %>
 <h4 style="margin-left:1em;">관련 기사</h4>
 <div class="link-slider swiper-container">
-	<div class="swiper-wrapper">
-	<input id="link_url_length" type="hidden">
-	<% for i in (0..3) %>
-		<div class="swiper-slide" style="">
-		  <input id="link_url_<%=i%>" type="hidden">
-			<a href="/main/readability/<%= i %>" style="text-decoration:none;">
-			  <span id="post_link_<%=i%>" style="font-size:1em; position:absolute; bottom:0; left:0;">
-			  </span>
-			 </a>
-		</div>
-		<script>
-		  $(function() {
-		    var title = "<%= simple_format(ReadabilityParser.parse(@link_arr[i]).title) %>";
-		    $('#post_link_'+<%=i%>).html(title);
-		  });
-		</script>
-	<% end %>
-	</div>
+  <div class="swiper-wrapper">
+    <input id="link_url_length" type="hidden">
+    <% for j in (0...i["links"].length) %>
+      <div class="swiper-slide" style="background-image:url('');">
+        <a href="/main/readability/<%=i["objectId"]%>_<%=j%>" style="text-decoration:none;">
+        <span id="<%=i["objectId"]%>_<%=j%>" style="font-size:1em; position:absolute; bottom:0; left:0;">
+          <%=ReadabilityParser.parse(i["links"][j]).title%>
+        </span>
+        </a>
+      </div>
+    <% end %>
+  </div>
 </div>
+<% end %>
+
 <br>
 <script>
   $(function() {
@@ -218,31 +213,7 @@ chart.on('draw', function(data) {
 
 
 <!-- 댓글 쪽 데이터도 아직은 보류 -->
-<!--diqus 시작-->
-<div id="disqus_thread"></div>
-<script>
-/**
-* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-*/
 
-var disqus_config = function () {
-this.page.url = "https://prj1028-swingvote-proto-draconian00-1.c9.io/main/post_content/<%=@id%>"; // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = ""; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-
-s.src = '//swingvoteco.disqus.com/embed.js';
-
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-<!--diqus 끝-->
 <!--기존 댓글 체계-->
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 
@@ -250,92 +221,80 @@ s.setAttribute('data-timestamp', +new Date());
   <span id="panel-title"> Comments </span>
   <span class="counter"> 3 </span>
 </div>
-<form action="/home/do_reply" method="POST">
+<form action="/main/do_reply" method="POST">
     <p class="formtitle"> 댓글 달기 </p>
-    <input id="author" type="text" placeholder="Name">
-    <textarea placeholder="Comment"></textarea>
+    <input type="hidden" value="<%=@id%>" name="post_id">
+    <input type="hidden" value="true" name="pros_and_cons">
+    <input id="author" type="text" placeholder="현재 사용자" value = "사용자 고유id" name="user_id">
+    <textarea placeholder="Comment" name="content"></textarea>
     <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
 </form>
 <div class="panel-collapse">
+<%for i in (0...@repliesDisplay.length)%>
+  <!--왼쪽부분-->
+  <%if !@repliesLeft[i].nil?%>
   <div class="comment_left">
-    <div class="comment-header">
-      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-      <span> Maggie </span>
-      <small> 20/11/2014 2:35 PM </small>
-   </div>
-   <div class="comment-text">
-     허지웅같은 사람때문에 우리나라에 애플스토어가 안들어오는거다. 지 눈에는 양파망으로 보이니까 무상리퍼 해달라고 우기고 떼쓰는거 봐.
-   </div>
-  </div>
-
-  <div class="comment_right">
-    <div class="comment-header" style="text-align:right">
-      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-      <span> Manuel </span>
-      <small> 23/11/2014 4:59 PM </small>
+    <div class="orientation">
+        <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+        <span> <%=@repliesLeft[i]["user_id"]%> </span>
+        <small> <%=@repliesLeft[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
     </div>
     <div class="comment-text">
-      사과해야 할 사람은 아이유인데 왜 출판사측에서 사과를 하게 만드는지 모르겠다 피해자코스프레 쩌네...
+     <%=@repliesLeft[i]["content"]%>
     </div>
   </div>
-  
-  <div class="comment_left">
-    <div class="comment-header">
-      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-      <span> Maggie </span>
-      <small> 20/11/2014 2:35 PM </small>
-   </div>
-   <div class="comment-text">
-     나는 그냥 이번 사건으로 아이유의 노래를 듣지 않게 되었다..ㅜㅜㅜㅜ 그리고 남자들이 소아성애에 대해서 되게 포용력있게 생각한다는 것도 알게 됨ㄷㄷ..
-   </div>
-  </div>
-
+  <%end%>
+  <!--오른쪽부분-->
+  <%if !@repliesRight[i].nil? %>
   <div class="comment_right">
-    <div class="comment-header" style="text-align:right">
-      <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-      <span> Manuel </span>
-      <small> 23/11/2014 4:59 PM </small>
+    <div class="orientation">
+        <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+        <span> <%=@repliesRight[i]["user_id"]%> </span>
+        <small> <%=@repliesRight[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
     </div>
     <div class="comment-text">
-      출판사 압력 넣어서 피해자 코스프레 완성시켜놓고 일단락이라고 단정 짓는건 좀
+     <%=@repliesRight[i]["content"]%>
     </div>
   </div>
+  <%end%>
+<%end%>
 </div>
 
-<!--<div class="floating-button">
-<style>
-  .floating-button {
-    width: 40px;
-    height: 40px;
-    position: fixed;
-    right: 0.5em;
-    bottom: 0.5em;
-    background: black;
-    opacity: 0.8;
-    pointer: cursor;
-  }
-</style>
-</div>
 
-<div class="hidden-drawer">
-<style>
-  .hidden-drawer {
-    width: 78%;
-    height: 40px;
-    position: fixed;
-    left: 0.5em;
-    bottom: 0.5em;
-    background: yellow;
-    opacity: 0.7;
-    display: none;
-  }
-</style>
-</div>
+<!--<div class="floating-button">-->
+<!--<style>-->
+<!--  .floating-button {-->
+<!--    width: 40px;-->
+<!--    height: 40px;-->
+<!--    position: fixed;-->
+<!--    right: 0.5em;-->
+<!--    bottom: 0.5em;-->
+<!--    background: black;-->
+<!--    opacity: 0.8;-->
+<!--    pointer: cursor;-->
+<!--  }-->
+<!--</style>-->
+<!--</div>-->
 
-<script>
-  $(function() {
-    $('.floating-button').click(function() {
-      $('.hidden-drawer').toggle('slide', 300);
-    });
-  });
-</script>-->
+<!--<div class="hidden-drawer">-->
+<!--<style>-->
+<!--  .hidden-drawer {-->
+<!--    width: 78%;-->
+<!--    height: 40px;-->
+<!--    position: fixed;-->
+<!--    left: 0.5em;-->
+<!--    bottom: 0.5em;-->
+<!--    background: yellow;-->
+<!--    opacity: 0.7;-->
+<!--    display: none;-->
+<!--  }-->
+<!--</style>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  $(function() {-->
+<!--    $('.floating-button').click(function() {-->
+<!--      $('.hidden-drawer').toggle('slide', 300);-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->-->

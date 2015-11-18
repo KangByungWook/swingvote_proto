@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'link_thumbnailer'
 gem 'chartist-rails'
 gem 'parse-ruby-client'
 gem 'spinjs-rails'

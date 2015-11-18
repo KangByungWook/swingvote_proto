@@ -1,9 +1,10 @@
-<p style="font-size:1.8em; margin-top:0.8em; margin-left:0.5em; margin-right: 0.5em; font-weight:bold;">
-  <%=@title%>
-</p>
-<div style="line-height:2.2em; margin-left:1em; margin-right:1em;">
-  <span style="font-size:1.3em">
-  <%=simple_format(@news.content.match(/<p>(.|\n){100,}p>/).to_s.gsub(/<a(.|\n)*?a>/,"").to_s.gsub(/width=.*?".*?"/,"width='100%'"))%>    
-  </span>
-</div>
-
+<% @read.get.each do |x| %>
+  <p style="font-size:1.8em; margin-top:0.8em; margin-left:0.5em; margin-right: 0.5em; font-weight:bold;">
+    <%=x["links"][0]%>
+  </p>
+  <div style="line-height:2.2em; margin-left:1em; margin-right:1em;">
+    <span style="font-size:1.3em">
+      <%=simple_format(@news.content.match(/<p>(.|\n){100,}p>/).to_s.gsub(/<a(.|\n)*?a>/,"").to_s.gsub(/width=.*?".*?"/,"width='100%'"))%>    
+    </span>
+  </div>
+<% end %>

@@ -1,5 +1,5 @@
 <!-- main slider -->
-<script>
+<!--<script>
 //핫이슈, 메인슬라이더 쿼리
   $(function() {
     var posts = Parse.Object.extend("posts");
@@ -25,42 +25,42 @@
       }
     });
   });
-</script>
+</script>-->
 
 <div class="main_slider swiper-container">
   <div class="swiper-wrapper">
   
-  <% for i in (0...5) %>
-    <div id="hot_<%=i%>" class="swiper-slide">
+  <% @main.get.take(5).each do |i| %>
+    <input type="hidden" value="<%=i["objectId"]%>" id="<%=i["objectId"]%>">
+    <div id="post_<%=i["objectId"]%>" class="swiper-slide">
       <div class="slide-center swiper-slide" style="width: 100%; height: 100%;">
-        <div id="hot_pic<%=i%>" class="main-background picture" style="">
+        <div class="main-background picture" style="background-image:url('<%=i["image_url"]%>');">
           <table class="tag_box">
             <tr>
               <td class="tag">
-                <div id="hot_maintag_<%=i%>" class="slide-center">#hot_maintag</div>
+                <div class="slide-center">#<%=i["main_tag"]%></div>
               </td>
               <% for j in (0...2) %>
               <td class="tag">
-                <div id="hot_subtag_<%=i%>_<%=j%>" class="slide-center">#hot_subtag</div>
+                <div class="slide-center">#<%=i["tags"][j]%></div>
               </td>
               <% end %>
             <tr>
           </table>
           <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
           <div class="text">
-            <span id="hot_subject<%=i%>" style="font-size:20px;color:white"></span>
-            <input id="hot_id_<%=i%>" type="hidden">
-            <script>
-              $(function() {
-                $('#hot_<%=i%>').click(function() {
-                  location.href = '/main/post_content/'+$('#hot_id_<%=i%>').val();
-                });
-              });
-            </script>
+            <span style="font-size:20px;color:white"><%=i["subject"]%></span>
           </div>
         </div>
       </div>
     </div>
+    <script>
+      $(function() {
+        $('#post_<%=i["objectId"]%>').click(function() {
+          location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
+        });
+      });
+    </script>
   <% end %>
   
   </div>
@@ -88,9 +88,10 @@
   </script>
   <!-- main slider end -->
   
+
   <!-- recent slider -->
   <br>
-  <script>
+  <!--<script>
   //시간순 슬라이더 쿼리
     $(function() {
       var posts = Parse.Object.extend("posts");
@@ -111,24 +112,24 @@
         }
       });
     });
-  </script>
+  </script>-->
 
   <div class="recent-slider swiper-container" style="border:3px solid #d91818;">
     <div id="recent" class="swiper-wrapper">
-    <% for i in (0...10) %>
-      <div id="recent_<%=i%>" class="slide-center swiper-slide">
-        <span id="recent_maintag<%=i%>" style="font-size:15px; font-weight:bold;">#</span>
+    <% @recent.get.reverse.take(10).each do |i| %>
+      <input type="hidden" value="<%=i["objectId"]%>" id="<%=i["objectId"]%>">
+      <div id="post_<%=i["objectId"]%>" class="slide-center swiper-slide">
+        <div style="font-size:15px; font-weight:bold;float:left">#<%=i["main_tag"]%>  </div>
         &nbsp;&nbsp;&nbsp;
-        <span id="recent_subject<%=i%>" style="font-size:15px;">subject</span>
-        <input id="recent_id_<%=i%>" type="hidden">
-        <script>
-          $(function() {
-            $('#recent_<%=i%>').click(function() {
-              location.href = '/main/post_content/'+$('#recent_id_<%=i%>').val();
-            });
-          });
-        </script>
+        <div style="width:70%;text-align:center; font-size:15px; white-space: nowrap; overflow:hidden !important; text-overflow: ellipsis;float:right"><%=i["subject"]%></div>
       </div>
+      <script>
+        $(function() {
+          $('#post_<%=i["objectId"]%>').click(function() {
+            location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
+          });
+        });
+      </script>
     <% end %>
     </div>
   </div>  
@@ -147,7 +148,7 @@
 <!-- recent slider end -->
 
 
-<script>
+<!--<script>
 //선호 태그 쿼리
   $(function() {
     //이 쿼리에 앞서서 유저 테이블에서 쿼리를 통해 선호 태그들을 받아와서
@@ -178,70 +179,65 @@
       }
     });
   });
-</script>
+</script>-->
 
 <!-- tag slider -->
+<% for x in (0...@tag_arr.length) %>
   <div style="width:100%; height:15px;"></div>
   <div class="tag-slider swiper-container">
+    <a href="/main/post_list/<%=@tag_arr[x]%>">
     <p style="margin:0px; font-size:1.1em;">
       <span style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor; margin-right:-0.5em;">#</span>
-      <span id="tag_maintag" style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor;"></span>
-      <a style="float:right; margin-right:10px;">
+      <span id="tag_maintag" style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor;"><%=@tag_arr[x]%></span>
+      <span style="float:right; margin-right:10px;">
         <span id="tag_more">더보기</span>
         <span class="glyphicon glyphicon-chevron-right"></span>
-      </a>
+      </span>
     </p>
-    <script>
-      $(function() {
-        $('#tag_maintag').click(function() {
-          location.href = '/main/post_list/'+$(this).html();
-        });
-        $('#tag_more').click(function() {
-          location.href = '/main/post_list/'+$('#tag_maintag').html();
-        });
-      });
-    </script>
+    </a>
     
     <div style="width:100%; height:1em;"></div>
     <div class="swiper-wrapper">
-      <% for i in (0..10) %>
+      <% @tag[x].get.take(10).each do |i| %>
         <div class="slide-topic swiper-slide">
-          <div id="tag_cardimg_<%=i%>" class="post_img" style="background-image:url();background-size:cover;background-repeat:no-repeat;background-position: center center;">
-          <input id="tag_card_id_<%=i%>" type="hidden">
+          <input type="hidden" value="<%=i["objectId"]%>" id="<%=i["objectId"]%>">
+          <a href="/main/post_content/<%=i["objectId"]%>">
+          <div id="post_<%=i["objectId"]%>" class="post_img" style="background-image:url('<%=i["image_url"]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
           </div>
+          </a>
           <div class="slide-center post_title">
-            <span id="tag_cardsub_<%=i%>" style="font-size:15px"></span>
+            <span id="post_sub_<%=i["objectId"]%>" style="font-size:15px"><%=i["subject"]%></span>
           </div>
           <script>
             $(function() {
-              $('#tag_cardimg_<%=i%>').click(function() {
-                location.href = '/main/post_content/'+$('#tag_card_id_<%=i%>').val();
+              $('#post_<%=i["objectId"]%>').click(function() {
+                location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
               });
-              $('#tag_cardsub_<%=i%>').click(function() {
-                location.href = '/main/post_content/'+$('#tag_card_id_<%=i%>').val();
+              $('#post_sub_<%=i["objectId"]%>').click(function() {
+                location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
               });
             });
           </script>
           <div class="slide-center post_tag">
             <div class="tag slide-center">
               <span>#</span>
-              <span id="tag_cardtag_<%=i%>_main"></span>
+              <span id="<%=i["objectId"]%>_<%=i["main_tag"]%>"><%=i["main_tag"]%></span>
             </div>
             <script>
               $(function() {
-                $('#tag_cardtag_<%=i%>_main').click(function() {
+                $('#<%=i["objectId"]%>_<%=i["main_tag"]%>').click(function() {
                   location.href = '/main/post_list/'+$(this).html();
                 });
               });
             </script>
-            <% for j in (0...2) %>
+            <% i["tags"].take(2).each do |j| %>
               <div class="tag slide-center">
                 <span>#</span>
-                <span id="tag_cardtag_<%=i%>_<%=j%>"></span>
+                <span id="<%=i["objectId"]%>_<%=j%>"><%=j%></span>
               </div>
               <script>
                 $(function() {
-                  $('#tag_cardtag_<%=i%>_<%=j%>').click(function() {
+                  $('#<%=i["objectId"]%>_<%=j%>').click(function() {
                     location.href = '/main/post_list/'+$(this).html();
                   });
                 });
@@ -252,28 +248,29 @@
       <% end %>
     </div>
   </div>
+<% end %>
   
   <!--<div style="width:100%; height:50px;"></div>
   <div class="tag-slider swiper-container">
     <p style="margin:0px; font-size:1.1em;">
-      <span style="margin-left:10px; font-size:1.3em;"><strong>#<%= @sisa_tag_name %></strong></span>
+      <span style="margin-left:10px; font-size:1.3em;"><strong>#</strong></span>
       <a style="float:right; margin-right:10px;" href="/main/post_list">더보기&nbsp;<span class="glyphicon glyphicon-chevron-right"></span></a>
     </p>
     <div style="width:100%; height:1em;"></div>
     <div class="swiper-wrapper">
-      <% for x in (0...@sisa_sub.length) %>
+      
         <div class="slide-topic swiper-slide">
-          <div class="post_img" style="background-image:url('<%=@sisa_pic[x]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
+          <div class="post_img" style="background-image:url('');background-size:cover;background-repeat:no-repeat;background-position: center center;">
           </div>
           <div style="width:100%; height:0.3em;"></div>
-          <div class="slide-center post_title"><span style="font-size:15px"><%=@sisa_sub[x] %></span></div>
+          <div class="slide-center post_title"><span style="font-size:15px"></span></div>
           <div class="slide-center post_tag">
-            <% for i in (0...@sisa_tag[x].length) %>
-              <div class="tag slide-center">#<%= @sisa_tag[x][i] %></div>
-            <% end %>
+            
+              <div class="tag slide-center">#></div>
+            
           </div>
         </div>
-      <% end %>
+      
     </div>
   </div>-->
   
