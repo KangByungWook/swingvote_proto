@@ -32,9 +32,9 @@ class MainController < ApplicationController
   end
   
   def readability
-    @id = params[:id].match(/.*(?=_)/)
-    @index = params[:id].last.to_i
-    @read = Parse::Query.new("posts").eq("objectId",@id)
+    @post_id = /(.*)_(.*)/.match(params[:id])[1].to_s
+    @link_index = /(.*)_(.*)/.match(params[:id])[2].to_i
+    @read = Parse::Query.new("posts").eq("objectId",@post_id)
     #@news = ReadabilityParser.parse(@a)
   end
   

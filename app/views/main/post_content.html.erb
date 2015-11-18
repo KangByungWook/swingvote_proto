@@ -187,10 +187,11 @@ chart.on('draw', function(data) {
   <div class="swiper-wrapper">
     <input id="link_url_length" type="hidden">
     <% for j in (0...i["links"].length) %>
-      <div class="swiper-slide" style="background-image:url('');">
+    <%link_url_img = LinkThumbnailer.generate(i["links"][j]).images.first.src.to_s%>
+      <div class="swiper-slide" style="background-image:url('<%=link_url_img%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
         <a href="/main/readability/<%=i["objectId"]%>_<%=j%>" style="text-decoration:none;">
-        <span id="<%=i["objectId"]%>_<%=j%>" style="font-size:1em; position:absolute; bottom:0; left:0;">
-          <%=ReadabilityParser.parse(i["links"][j]).title%>
+        <span style="font-size:1em; position:absolute; bottom:0; left:0;">
+          <%=LinkThumbnailer.generate(i["links"][j]).title%>
         </span>
         </a>
       </div>
