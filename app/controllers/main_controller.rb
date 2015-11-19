@@ -36,6 +36,9 @@ class MainController < ApplicationController
     @link_index = /(.*)_(.*)/.match(params[:id])[2].to_i
     @read = Parse::Query.new("posts").eq("objectId",@post_id)
     #@news = ReadabilityParser.parse(@a)
+    
+    #개선된 버전
+    
   end
   
   def do_write

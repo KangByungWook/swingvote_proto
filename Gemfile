@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem "ruby-readability"
 gem 'link_thumbnailer'
 gem 'chartist-rails'
 gem 'parse-ruby-client'

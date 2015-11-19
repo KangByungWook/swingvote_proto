@@ -185,6 +185,11 @@ chart.on('draw', function(data) {
 <h4 style="margin-left:1em;">관련 기사</h4>
 <div class="link-slider swiper-container">
   <div class="swiper-wrapper">
+  <% if (i["links"].nil?) %>
+    <div class="slide-center swiper-slide" style="">
+      관련 링크가 없습니다...
+    </div>
+  <% else %>
     <input id="link_url_length" type="hidden">
     <% for j in (0...i["links"].length) %>
     <%link_url_img = LinkThumbnailer.generate(i["links"][j]).images.first.src.to_s%>
@@ -196,6 +201,7 @@ chart.on('draw', function(data) {
         </a>
       </div>
     <% end %>
+  <% end %>
   </div>
 </div>
 <% end %>

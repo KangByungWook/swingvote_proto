@@ -1,4 +1,6 @@
 <% @read.get.each do |x| %>
+<%uri = URI(x["links"][@link_index])%>
+<%html_doc = Nokogiri::HTML(Net::HTTP.get(uri)).to_s%>
   <%thumbnail = LinkThumbnailer.generate(x["links"][@link_index])%>
   <p style="font-size:1.8em; margin-top:0.8em; margin-left:0.5em; margin-right: 0.5em; font-weight:bold;">
     <%=thumbnail.title%>
@@ -6,7 +8,7 @@
   <img src="<%=thumbnail.images.first.src.to_s%>" style="width:100%">
   <div style="line-height:2.2em; margin-left:1em; margin-right:1em;">
     <span style="font-size:1.3em">
-      <%=simple_format(ReadabilityParser.parse(x["links"][@link_index]).content.to_s.gsub(/<img([^>]*)>/,""))%>
+      <%=simple_format(Readability::Document.new(html_doc).content.to_s.gsub(/\n/,"").gsub(/<br>/,""))%>
     </span>
   </div>
 <% end %>
