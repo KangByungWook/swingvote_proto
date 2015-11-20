@@ -8,7 +8,12 @@
   <img src="<%=thumbnail.images.first.src.to_s%>" style="width:100%">
   <div style="line-height:2.2em; margin-left:1em; margin-right:1em;">
     <span style="font-size:1.3em">
+      <%sentence = Pismo::Document.new(x["links"][@link_index]).body.to_s%>
+      <%if Pismo::Document.new(x["links"][@link_index]).body.to_s.split("*").sort_by{|x| x.length}.last.nil?%>
       <%=simple_format(Readability::Document.new(html_doc).content.to_s.gsub(/\n/,"").gsub(/<br>/,""))%>
+      <%else%>
+      <%=simple_format(Pismo::Document.new(x["links"][@link_index]).body.to_s.split("*").sort_by{|x| x.length}.last.gsub(/\\n/,"<br>"))%>
+      <%end%>
     </span>
   </div>
 <% end %>
