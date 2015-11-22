@@ -1,0 +1,25 @@
+<br>
+<input type="text" id="username" name="username"><br>
+<input type="password" id="password" name="password"><br>
+<button id='login'>Log in</button>
+
+<script>
+$(function() {
+  $('#login').click(function() {
+    var username = $('#username').val();
+    var password = $('#password').val();
+    Parse.User.logIn(username, password, {
+      success: function(user) {
+        // Do stuff after successful login.
+        location.href = '/';
+      },
+      error: function(user, error) {
+        // The login failed. Check error to see why.
+        console.log(user);
+        console.log(username, password);
+        console.log(error);
+      }
+    });
+  });
+});
+</script>

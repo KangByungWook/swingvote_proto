@@ -61,7 +61,7 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-                  location.href = '/main/post_content/<%=i["objectId"]%>'
+                  location.href = '/main/do_vote/<%=i["objectId"]%>_0'
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -78,7 +78,7 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-                  location.href = '/main/post_content/<%=i["objectId"]%>'
+                  location.href = '/main/do_vote/<%=i["objectId"]%>_1'
                   //document.location = 'js://code'
                   //어떤 태그 post_list에서 어떤 글을 선택하고 투표를 했는지
           		  } else if (v === false) {

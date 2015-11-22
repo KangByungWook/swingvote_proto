@@ -59,7 +59,7 @@ $(function() {
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-                  /*location.href = '/main/post_content/reject'*/
+                  location.href = '/main/do_vote/<%=i["objectId"]%>_0'
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -76,7 +76,7 @@ $(function() {
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-                  /*location.href = '/main/post_content/accept'*/
+                  location.href = '/main/do_vote/<%=i["objectId"]%>_1'
           		  } else if (v === false) {
           		    console.log("right - false");
                   $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -112,15 +112,15 @@ $(function() {
 
 <script>
 var chart = new Chartist.Pie('.ct-chart', {
-  labels: ['표현의 자유이다!!', '그건 좀 아니지 않나??'],
-  series: [60, 40]
+  labels: ['<%=@left_content%>', '<%=@right_content%>'],
+  series: [<%=@left_num%>, <%=@right_num%>]
 }, {
   width: 200,
   height: 200,
   donut: true,
   donutWidth: 20,
   startAngle: 270,
-  total: 200,
+  total: <%=@total * 2%>,
   showLabel: true,
   chartPadding: 30
 },options_responsive);

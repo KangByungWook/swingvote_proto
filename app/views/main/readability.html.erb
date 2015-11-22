@@ -9,10 +9,10 @@
   <div style="line-height:2.2em; margin-left:1em; margin-right:1em;">
     <span style="font-size:1.3em">
       <%sentence = Pismo::Document.new(x["links"][@link_index]).body.to_s%>
-      <%if Pismo::Document.new(x["links"][@link_index]).body.to_s.split("*").sort_by{|x| x.length}.last.nil?%>
-      <%=simple_format(Readability::Document.new(html_doc).content.to_s.gsub(/\n/,"").gsub(/<br>/,""))%>
+      <%if sentence.to_s.split("*").sort_by{|x| x.length}.last.nil? or sentence.to_s.split("*").sort_by{|x| x.length}.last.length < 300%>
+      <%=simple_format(ReadabilityParser.parse(x["links"][@link_index]).content.match(/<p>(.|\n)*p>/).to_s.gsub(/<a(.|\n)*?a>/,"").to_s.gsub(/width=.*?".*?"/,"width='100%'"))%>
       <%else%>
-      <%=simple_format(Pismo::Document.new(x["links"][@link_index]).body.to_s.split("*").sort_by{|x| x.length}.last.gsub(/\\n/,"<br>"))%>
+      <%=simple_format(sentence.split("*").sort_by{|x| x.length}.last.gsub(/\\n/,"<br>"))%>
       <%end%>
     </span>
   </div>
