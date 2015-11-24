@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'devise'
 gem 'pismo'
 gem "ruby-readability"
 gem 'link_thumbnailer'

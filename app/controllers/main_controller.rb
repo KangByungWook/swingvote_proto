@@ -15,7 +15,6 @@ class MainController < ApplicationController
   end
   
   def post_list
-    
     @id = params[:id]
     @list = Parse::Query.new("posts").eq("main_tag", @id).or(Parse::Query.new("posts").value_in("tags", [@id]))
   end
