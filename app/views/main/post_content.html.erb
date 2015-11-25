@@ -37,7 +37,13 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-          		    post('/main/do_vote/<%=i["objectId"]%>_0',{current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=@current_userId_mobile%>'});
+          		    <%if !@current_userId_web.nil?%>
+          		      post('/main/do_vote/<%=i["objectId"]%>_0',{current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=@current_userId_mobile%>'});
+          		    <%elsif !@current_userId_mobile.nil?%>
+          		      post('/main/do_vote/<%=i["objectId"]%>_0',{current_userId_web: '', current_userId_mobile: '<%=@current_userId_mobile%>'});
+          		    <%else%>
+          		      alert("로그인 먼저 해주세요");
+          		    <%end%>
                   
           		  } else if (v === false) {
           		    console.log("left - false");
@@ -55,7 +61,14 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-                  post('/main/do_vote/<%=i["objectId"]%>_1',{current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=@current_userId_mobile%>'});
+          		    <%if !@current_userId_web.nil?%>
+          		      post('/main/do_vote/<%=i["objectId"]%>_1',{current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=@current_userId_mobile%>'});
+          		    <%elsif !@current_userId_mobile.nil?%>
+          		      post('/main/do_vote/<%=i["objectId"]%>_1',{current_userId_web: '', current_userId_mobile: '<%=@current_userId_mobile%>'});
+          		    <%else%>
+          		      alert("로그인 먼저 해주세요");
+          		    <%end%>
+                  
           		  } else if (v === false) {
           		    console.log("right - false");
                   $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");

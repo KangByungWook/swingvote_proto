@@ -63,6 +63,8 @@ console.log('<%=@tag_val%>');
         $('#post_main_<%=i["objectId"]%>').click(function() {
           <%if !@app_session.nil?%>
           document.location = "js:/"+$('#<%=i["objectId"]%>').val();
+          <%elsif !@web_session.nil?%>
+          post('/main/post_content/'+$('#<%=i["objectId"]%>').val(), {current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
           <%else%>
           location.href = "/main/post_content/"+$('#<%=i["objectId"]%>').val();
           <%end%>
@@ -136,8 +138,10 @@ console.log('<%=@tag_val%>');
           $('#post_recent_<%=i["objectId"]%>').click(function() {
             <%if !@app_session.nil?%>
             document.location = 'js:/'+$('#<%=i["objectId"]%>').val();
-            <%else%>
+            <%elsif !@web_session.nil?%>
             post('/main/post_content/'+$('#<%=i["objectId"]%>').val(), {current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+            <%else%>
+            location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
             <%end%>
           });
         });
@@ -212,8 +216,10 @@ console.log('<%=@tag_val%>');
       $('#tag_more_'+'<%=@tag_arr[x]%>').click(function() {
         <%if !@app_session.nil?%>
           document.location= "js:/<%=@tag_arr[x]%>";
-        <%else%>
+        <%elsif !@web_session.nil?%>
           post('/main/post_list/<%=@tag_arr[x]%>', {current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+        <%else%>
+          location.href = '/main/post_list/<%=@tag_arr[x]%>';
         <%end%>
       });
     });
@@ -235,16 +241,20 @@ console.log('<%=@tag_val%>');
               $('#post_tag_<%=i["objectId"]%>').click(function() {
                 <%if !@app_session.nil?%>
                   document.location = "js:/"+$('#<%=i["objectId"]%>').val();
-                <%else%>
+                <%elsif !@web_session.nil?%>
                   post('/main/post_content/'+$('#<%=i["objectId"]%>').val(),{current_userId_web:Parse.User.current().id.toString(), current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+                <%else%>
+                  location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
                 <%end%>
                 
               });
               $('#post_tagsub_<%=i["objectId"]%>').click(function() {
                 <%if !@app_session.nil?%>
                 document.location = "js:/"+$('#<%=i["objectId"]%>').val();
-                <%else%>
+                <%elsif !@web_session.nil?%>
                 post('/main/post_content/'+$('#<%=i["objectId"]%>').val(),{current_userId_web:Parse.User.current().id.toString(), current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+                <%else%>
+                location.href = '/main/post_content/'+$('#<%=i["objectId"]%>').val();
                 <%end%>
               });
             });

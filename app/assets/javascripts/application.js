@@ -43,6 +43,19 @@ document.addEventListener('page:change', function() {
     
 });   
 
+// $(document).on('page:before-change', function(event) {
+//   document.getElementById("loading").className += "loading";
+// });
+document.addEventListener('page:before-change', function() {
+  document.getElementById("loading").className += "loading";
+});
+// $(document).on('page:before-unload', function(event) {
+//     document.getElementById("loading").className = ' ';
+// });
+document.addEventListener('page:before-unload', function() {
+    document.getElementById("loading").className = ' ';
+});
+
 
 spinner = new Spinner({
 	lines: 12, // The number of lines to draw
@@ -55,23 +68,7 @@ spinner = new Spinner({
 	shadow: true // Whether to render a shadow
 })
 // 여기 안에 스피너 넣으면 됨
-document.addEventListener('page:before-change', function() {
-    // document.getElementById('primary-content').innerHTML = "로딩중....";
-    // $('#spinnerContainer').after(new Spinner(opts).spin().el);
-    // document.getElementById('primary-content').innerHTML = "Hello World!";
-    
-// 	spinner.spin(document.getElementById("primary-content")); 
-	
-	document.getElementById("loading").className += "loading";
-});
 
-document.addEventListener('page:before-unload', function() {
-    // document.getElementById('primary-content').innerHTML = "로딩중....";
-    // $('#spinnerContainer').after(new Spinner(opts).spin().el);
-    // document.getElementById('primary-content').innerHTML = "Hello World!";
-    // spinner.stop(); 
-    document.getElementById("loading").className = ' ';
-});
 
 function post(path, params, method) {
     method = method || "post"; // Set method to post by default if not specified.

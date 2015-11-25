@@ -239,7 +239,7 @@ class MainController < ApplicationController
           end
           
         else
-          if !@@current_userId_mobile.nil?
+          if !@current_userId_mobile.nil?
             target_user = Parse::Query.new("userdata").eq("userId", @current_userId_mobile).get.first
             if target_user["posts"].nil?
               a= Hash.new
