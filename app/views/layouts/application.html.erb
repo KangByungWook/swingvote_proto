@@ -96,9 +96,17 @@ $(function() {
 
 <body id="primary-content">
 
-  <input type="text" name="session" value="<%=@objID%>">
+  <input type="text" name="session" id="app_session" value="<%=@app_session%>">
   <input type="text" id="web_session">
   <a id="log_out_btn" href="/" role="button">Logout</a>
+  <a style="float:right;" id="user_page" href="/main/user_page" role="button">user_page</a>
+  <script>
+    $(function() {
+      $("#user_page").click(function(){
+        post('/main/user_page', {current_userId_web: user.id.toString()});
+      });
+    });
+  </script>
   <div id="loading"></div>
   <div class="for_drawer"></div>
   

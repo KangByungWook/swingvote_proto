@@ -1,0 +1,3 @@
+<script>
+ post('/main/post_content/<%=@post_id%>', {current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+</script>

@@ -1,26 +1,4 @@
-<!--<script>
-//params[:id] 로 들어온 objectId를 이용해 posts 테이블에서 쿼리 진행
-$(function() {
-  var posts = Parse.Object.extend("posts");
-  var one = new Parse.Query(posts);
-  one.get("", {
-    success: function(result) {
-      var img = result.get("image_url");
-      $('#post_img').css("background-image", "url('"+img+"')");
-      $('#slide-left').html(result.get("left")["content"]);
-      $('#post_title').html(result.get("subject"));
-      $('#slide-right').html(result.get("right")["content"]);
-      $('#link_url_length').val(result.get("links").length);
-      for (i = 0; i < result.get("links").length; i++) {
-        $('#link_url_'+i).val(result.get("links")[i]);
-      }
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  });
-});
-</script>-->
+
 <% @post.get.each do |i| %>
 <div class="post-slider swiper-container">
   <div id="<%=@id%>_card" class="post_card swiper-wrapper">
@@ -59,7 +37,8 @@ $(function() {
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-                  location.href = '/main/do_vote/<%=i["objectId"]%>_0'
+          		    post('/main/do_vote/<%=i["objectId"]%>_0',{current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=@current_userId_mobile%>'});
+                  
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -76,7 +55,7 @@ $(function() {
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-                  location.href = '/main/do_vote/<%=i["objectId"]%>_1'
+                  post('/main/do_vote/<%=i["objectId"]%>_1',{current_userId_web: Parse.User.current().id.toString(), current_userId_mobile: '<%=@current_userId_mobile%>'});
           		  } else if (v === false) {
           		    console.log("right - false");
                   $('#<%=@id%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -106,147 +85,6 @@ $(function() {
     });
   });
 </script>
-
-<!-- 통계 슬라이더 Stats Slider -->
-<h4 style="margin-left:1em;"><p>통계</p></h4>
-<div class="stats-slider swiper-container">
-  <div class="swiper-wrapper">
-    <div class="slide-center swiper-slide">
-      <div class="ct-chart ct-square" style="width:100%;height:120px;">
-        <p id="for_empty" style="display:none;">empty</p>
-      </div>
-    </div>
-    <div class="slide-center swiper-slide">
-      <div>
-        <p><%=@left_content%> : <%=@left_num %> 명</p>
-        <p><%=@right_content%> : <%=@right_num %> 명</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Stats slider Swiper Script -->
-<script>
-  $(function() {
-    var swiper = new Swiper('.stats-slider', {
-      slidesPerView: 2,
-      spaceBetween: 10,
-      resistance: true,
-      resistanceRatio: 1,
-    });
-  });
-</script>
-
-<!-- Stats Chartist Script -->
-<% if (@total == 0) %>
-<script>
-  $(function() {
-    $('#for_empty').show();
-  });
-</script>
-<% else %>
-<script>
-var data = {
-  labels: ['<%=@left_content%>', '<%=@right_content%>'],
-  series: [<%=@left_num%>, <%=@right_num%>]
-};
-
-var options = {
-  labelInterpolationFnc: function(value) {
-    return value;
-  }
-};
-
-var responsiveOptions = [
-  ['screen and (min-width: 640px)', {
-    chartPadding: 30,
-    labelOffset: 100,
-    labelDirection: 'explode',
-    labelInterpolationFnc: function(value) {
-      return value;
-    }
-  }],
-  ['screen and (min-width: 1024px)', {
-    labelOffset: 80,
-    chartPadding: 20
-  }]
-];
-
-new Chartist.Pie('.ct-chart', data, responsiveOptions);
-</script>
-<% end %>
-
-<!--<script>
-//Donut Chart with svg animation
-var chart = new Chartist.Pie('.ct-chart', {
-  labels: ['<%=@left_content%>', '<%=@right_content%>'],
-  series: [<%=@left_num%>, <%=@right_num%>]
-}, {
-  width: 200,
-  height: 200,
-  donut: true,
-  donutWidth: 20,
-  startAngle: 270,
-  total: <%=@total * 2%>,
-  showLabel: true,
-  chartPadding: 30
-},options_responsive);
-
-var options_responsive = [
-  ["screen and (max-width: 640px)", {
-    showLine: false,
-    showArea: true
-  }]
-]
-chart.on('draw', function(data) {
-  if(data.type === 'slice') {
-    // Get the total path length in order to use for dash array animation
-    var pathLength = data.element._node.getTotalLength();
-
-    // Set a dasharray that matches the path length as prerequisite to animate dashoffset
-    data.element.attr({
-      'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-    });
-
-    // Create animation definition while also assigning an ID to the animation for later sync usage
-    var animationDefinition = {
-      'stroke-dashoffset': {
-        id: 'anim' + data.index,
-        dur: 1000,
-        from: -pathLength + 'px',
-        to:  '0px',
-        easing: Chartist.Svg.Easing.easeOutQuint,
-        // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
-        fill: 'freeze'
-      }
-    };
-
-    // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
-    if(data.index !== 0) {
-      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-    }
-
-    // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
-    data.element.attr({
-      'stroke-dashoffset': -pathLength + 'px'
-    });
-
-    // We can't use guided mode as the animations need to rely on setting begin manually
-    // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
-    data.element.animate(animationDefinition, false);
-  }
-});
-
-// For the sake of the example we update the chart every time it's created with a delay of 8 seconds
-// chart.on('created', function() {
-//   if(window.__anim21278907124) {
-//     clearTimeout(window.__anim21278907124);
-//     window.__anim21278907124 = null;
-//   }
-//   window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
-// });
-
-</script>-->
 
 <% @post.get.each do |i| %>
 <h4 style="margin-left:1em;">관련 기사</h4>
@@ -284,52 +122,212 @@ chart.on('draw', function(data) {
     });
   });
 </script>
-
-
-<!-- 댓글 쪽 데이터도 아직은 보류 -->
-
-<!--기존 댓글 체계-->
-<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-
-<div class="panel-header">
-  <span id="panel-title"> Comments </span>
-  <span class="counter"> 3 </span>
 </div>
-<form action="/main/do_reply" method="POST">
-    <p class="formtitle"> 댓글 달기 </p>
-    <input type="hidden" value="<%=@id%>" name="post_id">
-    <input type="hidden" value="true" name="pros_and_cons">
-    <input id="author" type="text" placeholder="현재 사용자" value = "사용자 고유id" name="user_id">
-    <textarea placeholder="Comment" name="content"></textarea>
-    <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
-</form>
-<div class="panel-collapse">
-<%for i in (0...@repliesDisplay.length)%>
-  <!--왼쪽부분-->
-  <%if !@repliesLeft[i].nil?%>
-  <div class="comment_left">
-    <div class="orientation">
-        <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-        <span> <%=@repliesLeft[i]["user_id"]%> </span>
-        <small> <%=@repliesLeft[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
-    </div>
-    <div class="comment-text">
-     <%=@repliesLeft[i]["content"]%>
-    </div>
-  </div>
-  <%end%>
-  <!--오른쪽부분-->
-  <%if !@repliesRight[i].nil? %>
-  <div class="comment_right">
-    <div class="orientation">
-        <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-        <span> <%=@repliesRight[i]["user_id"]%> </span>
-        <small> <%=@repliesRight[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
-    </div>
-    <div class="comment-text">
-     <%=@repliesRight[i]["content"]%>
+
+<!--상태표시부분-->
+<!--condition_statement(aaa)-->
+<%if @is_login%>
+  <!--condition_statement(aaa)-->
+  <%if @is_participated%>
+    <p>로그인 상태, 참여 하셨습니다</p>
+    <!-- 통계 슬라이더 Stats Slider -->
+  <h4 style="margin-left:1em;"><p>통계</p></h4>
+  <div class="stats-slider swiper-container">
+    <div class="swiper-wrapper">
+      <div class="slide-center swiper-slide">
+        <div class="ct-chart ct-square" style="width:100%;height:120px;">
+          <p id="for_empty" style="display:none;">empty</p>
+        </div>
+      </div>
+      <div class="slide-center swiper-slide">
+        <div>
+          <p><%=@left_content%> : <%=@left_num %> 명</p>
+          <p><%=@right_content%> : <%=@right_num %> 명</p>
+        </div>
+      </div>
     </div>
   </div>
+  
+  <!-- Stats slider Swiper Script -->
+  <script>
+    $(function() {
+      var swiper = new Swiper('.stats-slider', {
+        slidesPerView: 2,
+        spaceBetween: 10,
+        resistance: true,
+        resistanceRatio: 1,
+      });
+    });
+  </script>
+  
+  <!-- Stats Chartist Script -->
+  <% if (@total == 0) %>
+  <script>
+    $(function() {
+      $('#for_empty').show();
+    });
+  </script>
+  <% else %>
+  <script>
+  var data = {
+    labels: ['<%=@left_content%>', '<%=@right_content%>'],
+    series: [<%=@left_num%>, <%=@right_num%>]
+  };
+  
+  var options = {
+    labelInterpolationFnc: function(value) {
+      return value;
+    }
+  };
+  
+  var responsiveOptions = [
+    ['screen and (min-width: 640px)', {
+      chartPadding: 30,
+      labelOffset: 100,
+      labelDirection: 'explode',
+      labelInterpolationFnc: function(value) {
+        return value;
+      }
+    }],
+    ['screen and (min-width: 1024px)', {
+      labelOffset: 80,
+      chartPadding: 20
+    }]
+  ];
+  
+  new Chartist.Pie('.ct-chart', data, responsiveOptions);
+  </script>
+  <% end %>
+  
+  <!--<script>
+  //Donut Chart with svg animation
+  var chart = new Chartist.Pie('.ct-chart', {
+    labels: ['<%=@left_content%>', '<%=@right_content%>'],
+    series: [<%=@left_num%>, <%=@right_num%>]
+  }, {
+    width: 200,
+    height: 200,
+    donut: true,
+    donutWidth: 20,
+    startAngle: 270,
+    total: <%=@total * 2%>,
+    showLabel: true,
+    chartPadding: 30
+  },options_responsive);
+  
+  var options_responsive = [
+    ["screen and (max-width: 640px)", {
+      showLine: false,
+      showArea: true
+    }]
+  ]
+  chart.on('draw', function(data) {
+    if(data.type === 'slice') {
+      // Get the total path length in order to use for dash array animation
+      var pathLength = data.element._node.getTotalLength();
+  
+      // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+      data.element.attr({
+        'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+      });
+  
+      // Create animation definition while also assigning an ID to the animation for later sync usage
+      var animationDefinition = {
+        'stroke-dashoffset': {
+          id: 'anim' + data.index,
+          dur: 1000,
+          from: -pathLength + 'px',
+          to:  '0px',
+          easing: Chartist.Svg.Easing.easeOutQuint,
+          // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+          fill: 'freeze'
+        }
+      };
+  
+      // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+      if(data.index !== 0) {
+        animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+      }
+  
+      // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+      data.element.attr({
+        'stroke-dashoffset': -pathLength + 'px'
+      });
+  
+      // We can't use guided mode as the animations need to rely on setting begin manually
+      // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+      data.element.animate(animationDefinition, false);
+    }
+  });
+  
+  // For the sake of the example we update the chart every time it's created with a delay of 8 seconds
+  // chart.on('created', function() {
+  //   if(window.__anim21278907124) {
+  //     clearTimeout(window.__anim21278907124);
+  //     window.__anim21278907124 = null;
+  //   }
+  //   window.__anim21278907124 = setTimeout(chart.update.bind(chart), 10000);
+  // });
+  
+  </script>-->
+  
+  
+  
+  <!--기존 댓글 체계-->
+  <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+  
+  <div class="panel-header">
+    <span id="panel-title"> Comments </span>
+    <span class="counter"> 3 </span>
+  </div>
+  <form action="/main/do_reply/<%=@id%>" method="POST">
+      <p class="formtitle"> 댓글 달기 </p>
+      <input type="hidden" value="<%=@id%>" name="post_id">
+      <input type="hidden" value="<%=@current_userId_mobile%>" name="current_userId_mobile">
+      <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
+      <input id="author" type="text" placeholder="현재 사용자" value = "<%=@current_username%>" name="user_id">
+      <textarea placeholder="Comment" name="content"></textarea>
+      <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
+  </form>
+  <div class="panel-collapse">
+  <%for i in (0...@repliesDisplay.length)%>
+    <!--왼쪽부분-->
+    <%if !@repliesLeft[i].nil?%>
+    <div class="comment_left">
+      <div class="orientation">
+          <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+          <span> <%=@repliesLeft[i]["user_id"]%> </span>
+          <small> <%=@repliesLeft[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
+      </div>
+      <div class="comment-text">
+       <%=@repliesLeft[i]["content"]%>
+      </div>
+    </div>
+    <%end%>
+    <!--오른쪽부분-->
+    <%if !@repliesRight[i].nil? %>
+    <div class="comment_right">
+      <div class="orientation">
+          <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+          <span> <%=@repliesRight[i]["user_id"]%> </span>
+          <small> <%=@repliesRight[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
+      </div>
+      <div class="comment-text">
+       <%=@repliesRight[i]["content"]%>
+      </div>
+    </div>
   <%end%>
 <%end%>
-</div>
+  <!--condition_statement(aaa)-->  
+  <%else%>
+    <p>로그인 상태, 참여 하지 않았습니다 해주세요</p>
+  <!--condition_statement(aaa)-->  
+  <%end%>
+<!--condition_statement(aaa)-->  
+<%else%>
+<p>로그인부터 하세요....</p>
+<!--condition_statement(aaa)-->
+<%end%>
+<!--상태표시부분 끝-->
+
+

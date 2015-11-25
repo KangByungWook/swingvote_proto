@@ -20,7 +20,8 @@
 </script>
 
 <% @list.get.reverse.take(10).each do |i| %>
-  <div class="post-slider swiper-container" >
+  <div class="post-slider swiper-container">
+    <input id="<%=i["objectId"]%>_hidden" value="<%=i["objectId"]%>">
     <div id="<%=i["objectId"]%>_card" class="post_card swiper-wrapper">
       <div id="<%=i["objectId"]%>_left"class="slide-left slide-center swiper-slide"><%=i["left"]["content"]%></div>
       <div id="<%=i["objectId"]%>" class="slide-topic swiper-slide">
@@ -41,8 +42,10 @@
 
   <script>
     $(function() {
+      $('#<%=i["objectId"]%>').click(function() {
+        document.location ="js:/"+$('#<%=i["objectId"]%>_hidden').val();
+      });
       var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-      console.log(width);
       $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
       $('#<%=i["objectId"]%>_card').on('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', 
         function() {
@@ -62,6 +65,7 @@
           		  if (v === true) {
           		    console.log("left - true");
                   location.href = '/main/do_vote/<%=i["objectId"]%>_0'
+                  document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -79,8 +83,8 @@
           		  if (v === true) {
           		    console.log("right - true");
                   location.href = '/main/do_vote/<%=i["objectId"]%>_1'
-                  //document.location = 'js://code'
-                  //어떤 태그 post_list에서 어떤 글을 선택하고 투표를 했는지
+                  document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/right";
+                  
           		  } else if (v === false) {
           		    console.log("right - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
