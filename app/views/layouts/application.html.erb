@@ -94,11 +94,16 @@ $(function() {
         Parse.User.logOut();
         alert("Log Out Complete!!");
         location.href = "/";
-        
     });
     
     $("#user_page").click(function(){
-        post('/main/user_page', {current_userId_web: user.id.toString()});
+        <%if !params[:current_userId_web].nil?%>
+          post('/main/user_page/<%=params[:current_userId_web]%>', {current_userId_web: Parse.User.current().id.toString()});
+        <%elsif !params[:current_userId_mobile].nil?%>
+          post('/main/user_page/<%=params[:current_userId_mobile]%>', {current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+        <%else%>
+          alert("로그인 먼저 해주세요");
+        <%end%>
         
     });
   </script>

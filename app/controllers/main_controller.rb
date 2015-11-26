@@ -29,7 +29,7 @@ class MainController < ApplicationController
       end
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
+        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@id]))
       end
     else
       #default
@@ -263,7 +263,7 @@ class MainController < ApplicationController
   end
   
   def user_page
-    @app_session = params[:current_userId_web]
+    @app_session = params[:current_userId_mobile]
     @web_session = params[:current_userId_web]
     if !@app_session.nil?
       #app_session

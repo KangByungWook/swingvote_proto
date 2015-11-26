@@ -1,31 +1,3 @@
-<!-- main slider -->
-<!--<script>
-//핫이슈, 메인슬라이더 쿼리
-  $(function() {
-    var posts = Parse.Object.extend("posts");
-    var main = new Parse.Query(posts);
-    main.containedIn("tags", ["핫이슈"]);
-    main.limit(5);
-    main.find({
-      success: function(results) {
-        for (var i = 0; i < results.length; i++) {
-          $('#hot_id_'+i).val(results[i].id);
-          var hot_img = results[i].get("image_url");
-          $('#hot_pic'+i).css("background-image", "url('"+hot_img+"')");
-          $('#hot_maintag_'+i).html('#'+results[i].get("main_tag"));
-          $('#hot_subject'+i).html(results[i].get("subject"));
-          var hot_subtag = results[i].get("tags");
-          for (var j = 0; j < hot_subtag.length; j++) {
-            $('#hot_subtag_'+i+'_'+j).html('#'+hot_subtag[j]);
-          }
-        }
-      },
-      error: function(error) {
-        console.log(error);
-      }
-    });
-  });
-</script>-->
 <script>
 console.log('<%=@tag_arr%>');
 console.log('<%=@tag_val%>');
