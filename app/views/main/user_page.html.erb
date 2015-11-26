@@ -1,28 +1,3 @@
-<!--<script>
-  $(function() {
-    var username, point, email, age, gender;
-    var user = Parse.Object.extend("User");
-    var query = new Parse.Query(user);
-    query.get("t6IfULq0dJ", {
-      success: function(user) {
-        username = user.get("username");
-        point = user.get("point");
-        email = user.get("email");
-        age = user.get("age");
-        gender = user.get("gender");
-        $('#username').html(username);
-        $('#point').html(point);
-        $('#email').html(email);
-        $('#age').html(age);
-        $('#gender').html(gender);
-      },
-      error: function(error) {
-        alert(error);
-      }
-    });
-  });
-</script>-->
-
 <div style="width:100%; margin-top: 20px;">
   <center>
     <table>
@@ -73,42 +48,68 @@
   </script>-->
   <div>
     <p id="user_tag_btn" style="font-size:1.5em;"><strong># 관심 태그</strong></p>
-    <div id="tagcloud"></div>
-    <script>
-      var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-      var width_98 = width * 0.98;
-      var words = [
-        <% for i in(0...@tag_arr.length) %>
-        {text: "<%=@tag_arr[i]%>", weight: <%=i+1%>},
-        <% end %>
-      ];
-      $('#tagcloud').jQCloud(words,{
-        width: width_98,
-        height: width_98,
-        //shape: 'rectangular'
-      });
-    </script>
+    <div id="tagcloud">
+      <p id="tagnil" style="display:none;">투표한 태그가 없습니다...</p>
+    </div>
+    
+    <% if @tagindex == 1%>
+      <script>
+        var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+        var width_98 = width * 0.98;
+        var words = [
+          <% for i in(0...@tag_arr.length) %>
+          {text: "<%=@tag_arr[i]%>", weight: <%=i+1%>},
+          <% end %>
+        ];
+        $('#tagcloud').jQCloud(words,{
+          width: width_98,
+          height: width_98,
+          shape: 'rectangular'
+        });
+      </script>
+    <% else %>
+      <script>
+        $(function() {
+          $('#tagnil').show();
+        });
+      </script>
+    <% end %>
   </div>
   <br>
   
   <div>
     <p style="font-size:1.5em;"><strong># 투표한 포스트</strong></p>
     <div style="width:100%; height:10px;"></div>
-    <div class="grid" style="margin-left:0.3em;margin-right:-0.3em;">
-      <div class="grid-sizer"></div>
-      <div class="gutter-sizer"></div>
-      <% for i in (1..6) %>
-        <div class="grid-item" style="height:<%= rand(20..25) * 10 %>px;">
-          <div class="post_img">img with background</div>
-          <div class="post_title slide-center">title</div>
-          <div class="post_tag slide-center">
-            <button class="tag-btn">#1</button>
-            <button class="tag-btn">#2</button>
-            <button class="tag-btn">#3</button>
-          </div>
-        </div>
-      <% end %>
+    <div id="postnil" style="display:none;">
+      <p>투표한 포스트가 없습니다...</p>
     </div>
+    
+    <% if @postindex == 1 %>
+      <div class="grid" style="margin-left:0.3em;margin-right:-0.3em;">
+        <div class="grid-sizer"></div>
+        <div class="gutter-sizer"></div>
+        <% for i in (0...@post_arr.length) %>
+          <% @postTable = Parse::Query.new("posts").eq("objectId", @post_arr[i]).get.first %>
+          <div class="grid-item" style="height:<%= rand(20..25) * 10 %>px;">
+            <div class="post_img" style="background-image:url('<%=@postTable["image_url"]%>');"></div>
+            <div class="post_title slide-center"><%=@postTable["subject"].to_s%></div>
+            <div class="post_tag slide-center">
+              <span class="tag-btn">#<%=@postTable["main_tag"]%></span>&nbsp;
+              <% @postTable["tags"].take(2).each do |x| %>
+                <span class="tag-btn">#<%=x%></span>
+                &nbsp;
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <script>
+        $(function() {
+          $('#postnil').show();
+        });
+      </script>
+    <% end %>
   </div>
   <script>
     $('.grid').masonry({

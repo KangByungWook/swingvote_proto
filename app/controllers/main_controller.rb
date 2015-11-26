@@ -8,11 +8,19 @@ class MainController < ApplicationController
     if !@app_session.nil?
       #app_session
       @user = Parse::Query.new("userdata").eq("userId", @app_session).get.first
-      @tags = @user["tags"].sort_by do |x, y| y end
-      @tags.reverse!
-      @tag_arr = []
-      @tags.each do |x, y|
-        @tag_arr.push("#{x}")
+      if !@user["main_tag"].nil?
+        @tags = @user["main_tag"].sort_by do |x, y| y end
+        @tags.reverse!
+        @tag_arr = []
+        @tags.each do |x, y|
+          @tag_arr.push("#{x}")
+        end
+      else
+        @tag_arr = ["연예","스포츠","IT","시사"]
+        @tag = []
+        for i in (0...@tag_arr.length)
+          @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
+        end
       end
       @tag = []
       for i in (0...@tag_arr.length)
@@ -21,11 +29,19 @@ class MainController < ApplicationController
     elsif !@web_session.nil?
       #web_session
       @user = Parse::Query.new("userdata").eq("userId", @web_session).get.first
-      @tags = @user["tags"].sort_by do |x, y| y end
-      @tags.reverse!
-      @tag_arr = []
-      @tags.each do |x, y|
-        @tag_arr.push("#{x}")
+      if !@user["main_tag"].nil?
+        @tags = @user["main_tag"].sort_by do |x, y| y end
+        @tags.reverse!
+        @tag_arr = []
+        @tags.each do |x, y|
+          @tag_arr.push("#{x}")
+        end
+      else
+        @tag_arr = ["연예","스포츠","IT","시사"]
+        @tag = []
+        for i in (0...@tag_arr.length)
+          @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
+        end
       end
       @tag = []
       for i in (0...@tag_arr.length)
@@ -50,7 +66,7 @@ class MainController < ApplicationController
     @web_session = params[:current_userId_web]
     if !@app_session.nil?
       @user = Parse::Query.new("_User").eq("objectId", @app_session).get.first
-    elsif !@app_session.nil?
+    elsif !@web_session.nil?
       @user = Parse::Query.new("_User").eq("objectId", @web_session).get.first
     else
     end
@@ -192,10 +208,26 @@ class MainController < ApplicationController
           
           #사용자의 태그정보 반영
           target_post["tags"].each do |x|
-            if target_user["tags"][x].nil?
-              target_user["tags"][x] = 1
+            if target_user["tags"].nil?
+              target_user["tags"] = {"#{x}" => 1}
             else
-              target_user["tags"][x] +=1
+              if target_user["tags"][x].nil?
+                target_user["tags"][x] = 1
+              else
+                target_user["tags"][x] +=1
+              end
+            end
+          end
+          main_tag = target_post["main_tag"]
+          if target_user["main_tag"].nil?
+            target_user["main_tag"] = {main_tag => 1}
+          else
+            if target_user["main_tag"][main_tag].nil?
+              target_user["main_tag"][main_tag] = 1
+              target_user["tags"][main_tag] = 1
+            else
+              target_user["main_tag"][main_tag] += 1
+              target_user["tags"][main_tag] +=1
             end
           end
           
@@ -231,10 +263,27 @@ class MainController < ApplicationController
           
           #사용자의 태그정보 반영
           target_post["tags"].each do |x|
-            if target_user["tags"][x].nil?
-              target_user["tags"][x] = 1
+            if target_user["tags"].nil?
+              target_user["tags"] = {"#{x}" => 1}
             else
-              target_user["tags"][x] +=1
+              if target_user["tags"][x].nil?
+                target_user["tags"][x] = 1
+              else
+                target_user["tags"][x] +=1
+              end
+            end
+          end
+          
+          main_tag = target_post["main_tag"]
+          if target_user["main_tag"].nil?
+            target_user["main_tag"] = {main_tag => 1}
+          else
+            if target_user["main_tag"][main_tag].nil?
+              target_user["main_tag"][main_tag] = 1
+              target_user["tags"][main_tag] = 1
+            else
+              target_user["main_tag"][main_tag] += 1
+              target_user["tags"][main_tag] +=1
             end
           end
           
@@ -263,19 +312,38 @@ class MainController < ApplicationController
   end
   
   def user_page
-    @app_session = params[:current_userId_web]
+    @app_session = params[:current_userId_mobile]
     @web_session = params[:current_userId_web]
     if !@app_session.nil?
       #app_session
       @user = Parse::Query.new("_User").eq("objectId", @app_session).get.first
-    elsif !@app_session.nil?
+      @userdata = Parse::Query.new("userdata").eq("userId", @app_session).get.first
+    elsif !@web_session.nil?
       #web_session
       @user = Parse::Query.new("_User").eq("objectId", @web_session).get.first
+      @userdata = Parse::Query.new("userdata").eq("userId", @web_session).get.first
     end
-    @tags = @userdata["tags"].sort_by do |x, y| y end
-    @tag_arr = []
-    @tags.each do |x, y|
-      @tag_arr.push("#{x}")
+    
+    if @userdata["tags"].nil?
+      @tagindex = 0
+    else
+      @tagindex = 1
+      @tags = @userdata["tags"].sort_by do |x, y| y end
+      @tag_arr = []
+      @tags.each do |x, y|
+        @tag_arr.push("#{x}")
+      end
+    end
+    
+    if @userdata["posts"].nil?
+      @postindex = 0
+    else
+      @postindex = 1
+      @posts = @userdata["posts"]
+      @post_arr = []
+      @posts.each do |x, y|
+        @post_arr.push("#{x}")
+      end
     end
     
   end
@@ -295,8 +363,8 @@ class MainController < ApplicationController
     userdatacreate = Parse::Object.new("userdata")
     userdatacreate["username"] = userdata["username"]
     userdatacreate["userId"] = userdata.id
-    userdatacreate["tags"] = {"IT" => 1,"스포츠" => 2,"시사" => 3,"연예" => 4}
-    userdatacreate["posts"] = {"" => ""}
+    #userdatacreate["tags"] = {"IT" => 1,"스포츠" => 2,"시사" => 3,"연예" => 4}
+    #userdatacreate["posts"] = {"" => ""}
     userdatacreate.save
     redirect_to "/main/logintest"
   end
