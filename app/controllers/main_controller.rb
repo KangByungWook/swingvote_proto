@@ -268,10 +268,18 @@ class MainController < ApplicationController
     if !@app_session.nil?
       #app_session
       @user = Parse::Query.new("_User").eq("objectId", @app_session).get.first
-    elsif !@app_session.nil?
+      @userdata = Parse::Query.new("userdata").eq("userId", @app_session).get.first
+    elsif !@web_session.nil?
       #web_session
       @user = Parse::Query.new("_User").eq("objectId", @web_session).get.first
+      @userdata = Parse::Query.new("userdata").eq("userId", @web_session).get.first
     end
+    @tags = @userdata["tags"].sort_by do |x, y| y end
+    @tag_arr = []
+    @tags.each do |x, y|
+      @tag_arr.push("#{x}")
+    end
+    @posts = @userdata["posts"]
     
   end
   
