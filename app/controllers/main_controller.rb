@@ -16,7 +16,7 @@ class MainController < ApplicationController
       end
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@id]))
+        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@tag_arr[i]]))
       end
     elsif !@web_session.nil?
       #web_session
@@ -29,7 +29,7 @@ class MainController < ApplicationController
       end
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@id]))
+        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@tag_arr[i]]))
       end
     else
       #default
