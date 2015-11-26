@@ -16,7 +16,7 @@ class MainController < ApplicationController
       end
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@tag_arr[i]]))
+        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
       end
     elsif !@web_session.nil?
       #web_session
@@ -29,7 +29,7 @@ class MainController < ApplicationController
       end
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i]).or(Parse::Query.new("posts").value_in("tags", [@tag_arr[i]]))
+        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
       end
     else
       #default
@@ -239,7 +239,7 @@ class MainController < ApplicationController
           end
           
         else
-          if !@current_userId_mobile.nil?
+          if !@@current_userId_mobile.nil?
             target_user = Parse::Query.new("userdata").eq("userId", @current_userId_mobile).get.first
             if target_user["posts"].nil?
               a= Hash.new
@@ -263,23 +263,20 @@ class MainController < ApplicationController
   end
   
   def user_page
-    @app_session = params[:current_userId_mobile]
+    @app_session = params[:current_userId_web]
     @web_session = params[:current_userId_web]
     if !@app_session.nil?
       #app_session
       @user = Parse::Query.new("_User").eq("objectId", @app_session).get.first
-      @userdata = Parse::Query.new("userdata").eq("userId", @app_session).get.first
-    elsif !@web_session.nil?
+    elsif !@app_session.nil?
       #web_session
       @user = Parse::Query.new("_User").eq("objectId", @web_session).get.first
-      @userdata = Parse::Query.new("userdata").eq("userId", @web_session).get.first
     end
     @tags = @userdata["tags"].sort_by do |x, y| y end
     @tag_arr = []
     @tags.each do |x, y|
       @tag_arr.push("#{x}")
     end
-    @posts = @userdata["posts"]
     
   end
   
