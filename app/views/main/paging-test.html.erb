@@ -1,0 +1,54 @@
+<script>
+    function lastPostFunc()  
+    {  
+        $("div#lastPostsLoader").html("로딩중...");  
+        $.get("/data.html?action=getLastPosts&lastID=" + $(".wrdLatest:last").attr("id"),     
+       
+        function(data){  
+            if (data != "") {  
+            $(".wrdLatest:last").after(data);             
+            }  
+            $("div#lastPostsLoader").empty();  
+        });  
+    };  
+    
+    $(window).scroll(function(){  
+            if  ($(window).scrollTop() == $(document).height() - $(window).height()){  
+               lastPostFunc();  
+            }  
+    });  
+</script>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:300px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" style="height:30px; border:1px solid black">content</div>
+<div class="wrdLatest" id=9>content</div>  
+<div class="wrdLatest" id=8>content</div>
+<div id="lastPostsLoader"></div>

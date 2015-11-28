@@ -12,9 +12,9 @@
 //
 
 //= require jquery
-//= require spin
+
 //= require jquery_ujs
-//= require jquery-ui
+
 
 //= require turbolinks
 //= require jqcloud

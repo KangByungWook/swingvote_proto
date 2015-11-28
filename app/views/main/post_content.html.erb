@@ -13,6 +13,8 @@
     </div>
     <div id="<%=@id%>_right" class="slide-right slide-center swiper-slide"><%=i["right"]["content"]%></div>
   </div>
+  <div id="arrow_next_<%=@id%>" class="arrow-next"></div>
+  <div id="arrow_prev_<%=@id%>" class="arrow-prev"></div>
 </div>
 
 <script>
@@ -88,7 +90,9 @@
       direction: 'horizontal',
       speed: 300,
       resistance: true,
-      resistanceRatio: 1
+      resistanceRatio: 1,
+      nextButton: '#arrow_next_<%=@id%>',
+      prevButton: '#arrow_prev_<%=@id%>',
     });
   });
 </script>
@@ -107,7 +111,7 @@
     <%link_url_img = LinkThumbnailer.generate(i["links"][j]).images.first.src.to_s%>
       <div class="swiper-slide" style="background-image:url('<%=link_url_img%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
         <a href="/main/readability/<%=i["objectId"]%>_<%=j%>" style="text-decoration:none;">
-        <span style="font-size:1em; position:absolute; bottom:0; left:0;">
+        <span style="font-size:1em; position:absolute; bottom:0; left:0; color:black; background:rgba(234,234,234,0.4);">
           <%=LinkThumbnailer.generate(i["links"][j]).title%>
         </span>
         </a>

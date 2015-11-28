@@ -2,16 +2,16 @@
   <h3 style="font-family:Avenir Book;"># <%=@id%></h3>
 </center>
 
-<script>
+<!--<script>
   $(function() {
     var swiper = new Swiper('.post-slider', {
-      direction: 'horizontal',
+      direction: 'horizontal',Pars
       speed: 300,
       resistance: true,
-      resistanceRatio: 1
+      resistanceRatio: 1,
     });
   });
-</script>
+</script>-->
 
 <script>
   function matrixToArray(str) {
@@ -20,8 +20,8 @@
 </script>
 
 <% @list.get.reverse.take(10).each do |i| %>
-  <div class="post-slider swiper-container">
-    <input id="<%=i["objectId"]%>_hidden" value="<%=i["objectId"]%>">
+  <div id="swiper_<%=i["objectId"]%>" class="post-slider swiper-container">
+    <input id="<%=i["objectId"]%>_hidden" value="<%=i["objectId"]%>" type="hidden">
     <div id="<%=i["objectId"]%>_card" class="post_card swiper-wrapper">
       <div id="<%=i["objectId"]%>_left"class="slide-left slide-center swiper-slide"><%=i["left"]["content"]%></div>
       <div id="<%=i["objectId"]%>" class="slide-topic swiper-slide">
@@ -38,8 +38,23 @@
       </div>
       <div id="<%=i["objectId"]%>_right" class="slide-right slide-center swiper-slide"><%=i["right"]["content"]%></div>
     </div>
+    <div id="arrow_next_<%=i["objectId"]%>" class="arrow-next"></div>
+    <div id="arrow_prev_<%=i["objectId"]%>" class="arrow-prev"></div>
   </div>
-
+  
+  <script>
+    $(function() {
+      var swiper = new Swiper('#swiper_<%=i["objectId"]%>', {
+        direction: 'horizontal',
+        speed: 300,
+        resistance: true,
+        resistanceRatio: 1,
+        nextButton: '#arrow_next_<%=i["objectId"]%>',
+        prevButton: '#arrow_prev_<%=i["objectId"]%>',
+      });
+    });
+  </script>
+  
   <script>
     $(function() {
       $('#<%=i["objectId"]%>').click(function() {
@@ -64,8 +79,14 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-          		    document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
-          		    location.href = '/main/do_vote/<%=i["objectId"]%>_0';
+          		    <%if !session[:from_mobile].nil?%>
+          		      document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
+          		    <%elsif !session[:account].nil?%>
+          		      location.href = '/main/do_vote/<%=i["objectId"]%>_0';
+          		    <%else%>
+          		      alert("로그인부터 해주세요");
+          		      $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          		    <%end%>
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -82,10 +103,15 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-                  location.href = '/main/do_vote/<%=i["objectId"]%>_1';
-                  document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/right";
-                  
-          		  } else if (v === false) {
+          		    <%if !session[:from_mobile].nil?%>
+          		      document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/right";
+          		    <%elsif !session[:account].nil?%>
+          		      location.href = '/main/do_vote/<%=i["objectId"]%>_1';
+          		    <%else%>
+          		      alert("로그인부터 해주세요");
+          		      $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
+          		    <%end%>
+                } else if (v === false) {
           		    console.log("right - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
           		  }

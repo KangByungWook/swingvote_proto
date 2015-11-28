@@ -54,35 +54,9 @@
   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
 </head>
 
-<script>
-$(function() {
-    var realname;
-    var currentUser = Parse.User.current();
-    
-    if (currentUser) {
-        // do stuff with the user
-        var UserTable = Parse.Object.extend("User");
-        var query = new Parse.Query(UserTable);
-        query.get(currentUser.id, {
-          success: function(user) {
-            // The object was retrieved successfully.
-            realname = user.id;
-            $('#web_session').val(realname);
-            console.log(user.id);
-          },
-          error: function(object, error) {
-            // The object was not retrieved successfully.
-            // error is a Parse.Error with an error code and message.
-            alert(error);
-          }
-        });
-    } else {
-        
-    }
-  });
-</script>
 
-<body id="primary-content" style="background:rgba(232,231,231,0.7);">
+
+<body id="primary-content">
 
   <input type="hidden" name="session" id="app_session" value="<%=session[:account]%>">
   <input type="hidden" id="web_session">

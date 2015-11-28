@@ -231,7 +231,12 @@ class MainController < ApplicationController
           target_user["tags"][main_tag] = 1
         else
           target_user["main_tag"][main_tag] += 1
-          target_user["tags"][main_tag] +=1
+          if target_user["tags"][main_tag].nil?
+            target_user["tags"][main_tag] =1
+          else
+            target_user["tags"][main_tag] +=1
+          end
+          
         end
       end
       
@@ -296,7 +301,7 @@ class MainController < ApplicationController
     userdatacreate = Parse::Object.new("userdata")
     userdatacreate["username"] = userdata["username"]
     userdatacreate["userId"] = userdata.id
-    userdatacreate["tags"] = {"IT" => 1,"스포츠" => 1,"시사" => 1,"연예" => 1}
+    userdatacreate["main_tag"] = {"IT" => 1,"스포츠" => 1,"시사" => 1,"연예" => 1}
     #userdatacreate["posts"] = {"" => ""}
     userdatacreate.save
     redirect_to "/main/logintest"

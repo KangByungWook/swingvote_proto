@@ -71,3 +71,34 @@ div.jqi .jqimessage {
   margin-bottom: 10px;
   font-size: 2em;
 }
+
+.arrow-next {
+  background-image: url('/image/arrow_right.png');
+  right: 5px;
+  left: auto;
+  position: absolute;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  margin-top: -22px;
+  z-index: 10;
+  cursor: pointer;
+  background-size: 48px 48px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.arrow-prev {
+  background-image: url('/image/arrow_left.png');
+  left: 5px;
+  right: auto;
+  position: absolute;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  margin-top: -22px;
+  z-index: 10;
+  cursor: pointer;
+  background-size: 48px 48px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
