@@ -64,8 +64,13 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-                  location.href = '/main/do_vote/<%=i["objectId"]%>_0'
-                  document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
+          		    <%if !@session[:from_mobile].nil?%>
+          		      document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
+          		    <%else%>
+          		      location.href = '/main/do_vote/<%=i["objectId"]%>_0'
+          		    <%end%>
+                  
+                  
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");

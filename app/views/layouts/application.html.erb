@@ -82,13 +82,17 @@ $(function() {
   });
 </script>
 
-<body id="primary-content">
+<body id="primary-content" style="background:rgba(232,231,231,0.7);">
 
   <input type="hidden" name="session" id="app_session" value="<%=session[:account]%>">
   <input type="hidden" id="web_session">
-  <a id="log_in_btn" role="button">Login&nbsp;</a>
-  <a id="sign_up_btn" role="button">&nbsp;Signup</a>
-  <a id="log_out_btn" role="button">Logout</a>
+  <%if !session[:account].nil?%>
+    <a id="log_out_btn" role="button">Logout</a>  
+  <%else%>
+    <a id="log_in_btn" role="button">Login&nbsp;</a>
+    <a id="sign_up_btn" role="button">&nbsp;Signup</a>
+  <%end%>
+  
   <a style="float:right;" id="user_page" role="button">user_page</a>
   <script>
     <% if session[:account].nil? %>

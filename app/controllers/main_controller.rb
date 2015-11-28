@@ -3,6 +3,7 @@ class MainController < ApplicationController
   def index
     if !params[:current_userId_mobile].nil?
       session[:account] = params[:current_userId_mobile]
+      session[:from_mobile] = true
     elsif !params[:current_userId_web].nil?
       session[:account] = params[:current_userId_web]
     end
@@ -246,9 +247,6 @@ class MainController < ApplicationController
       target_user.save
       #글 정보 저장(투표수)
       target_post.save
-      
-      
-      
       #TODO스크립트 POST 리퀘스트 처리하기
       
       redirect_to "/main/post_content/#{@post_id}"
@@ -298,7 +296,7 @@ class MainController < ApplicationController
     userdatacreate = Parse::Object.new("userdata")
     userdatacreate["username"] = userdata["username"]
     userdatacreate["userId"] = userdata.id
-    #userdatacreate["tags"] = {"IT" => 1,"스포츠" => 2,"시사" => 3,"연예" => 4}
+    userdatacreate["tags"] = {"IT" => 1,"스포츠" => 1,"시사" => 1,"연예" => 1}
     #userdatacreate["posts"] = {"" => ""}
     userdatacreate.save
     redirect_to "/main/logintest"
