@@ -64,13 +64,8 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-          		    <%if !@session[:from_mobile].nil?%>
-          		      document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
-          		    <%else%>
-          		      location.href = '/main/do_vote/<%=i["objectId"]%>_0'
-          		    <%end%>
-                  
-                  
+          		    document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/left";
+          		    location.href = '/main/do_vote/<%=i["objectId"]%>_0';
           		  } else if (v === false) {
           		    console.log("left - false");
                   $('#<%=i["objectId"]%>_card').css("transform", "translate3d(-"+width+"px, 0px, 0px)");
@@ -87,7 +82,7 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-                  location.href = '/main/do_vote/<%=i["objectId"]%>_1'
+                  location.href = '/main/do_vote/<%=i["objectId"]%>_1';
                   document.location = "js:/"+$('#<%=i["objectId"]%>_hidden').val()+"/right";
                   
           		  } else if (v === false) {
