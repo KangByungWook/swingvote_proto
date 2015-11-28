@@ -1,8 +1,10 @@
-#tagcloud {
+#tagcloud {/*
     margin-top: -5px;
-    margin-bottom: -5px;
+    margin-bottom: -5px;*/
     span {
-        margin: -10px;
+        //margin: -10px;
+        z-index: 100;
+        cursor: pointer;
     }
     .w10, .w9 {
         color: #d91818;
@@ -33,11 +35,11 @@
 .grid-sizer, .grid-item {
     width: 48%; 
     margin-bottom: 0.5em;
+    background: white;
     
     .post_img {
         width: 100%;
         height: 60%;
-        border-bottom: 1px solid black;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
@@ -45,7 +47,7 @@
     .post_title {
         width: 100%;
         height: 25%;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid rgba(189,189,189,0.8);
     }
     .post_tag {
         width: 100%;

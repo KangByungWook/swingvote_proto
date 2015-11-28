@@ -35,14 +35,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.2.0/js/swiper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.2.0/js/swiper.jquery.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.2.0/js/swiper.jquery.min.js"></script>
-  <link rel="stylesheet" href="path/to/swiper.min.css">
+  <!--<link rel="stylesheet" href="path/to/swiper.min.css">
   <script src="path/to/jquery.js"></script>
-  <script src="path/to/swiper.jquery.min.js"></script>
+  <script src="path/to/swiper.jquery.min.js"></script>-->
   <!-- Masonry -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.js"></script>
   <!--<script src="/path/to/masonry.pkgd.min.js"></script>-->
   <!-- Chartist -->
-  <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
+  <!--<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">-->
   <!--<script src="bower_components/chartist/dist/chartist.min.js"></script>-->
   <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
@@ -84,23 +84,34 @@ $(function() {
 
 <body id="primary-content">
 
-  <input type="text" name="session" id="app_session" value="<%=@app_session%>">
-  <input type="text" id="web_session">
+  <input type="hidden" name="session" id="app_session" value="<%=session[:account]%>">
+  <input type="hidden" id="web_session">
+  <a id="log_in_btn" role="button">Login&nbsp;</a>
+  <a id="sign_up_btn" role="button">&nbsp;Signup</a>
   <a id="log_out_btn" role="button">Logout</a>
   <a style="float:right;" id="user_page" role="button">user_page</a>
   <script>
-  
+    <% if session[:account].nil? %>
+      $('#log_out_btn').hide();
+      $('#log_in_btn').show();
+      $('#sign_up_btn').show();
+    <% else %>
+      $('#log_out_btn').show();
+      $('#log_in_btn').hide();
+      $('#sign_up_btn').hide();
+    <% end %>
+  </script>
+  <script>
+    $('#log_in_btn').click(function() {
+      location.href = '/main/logintest';
+    });
     $('#log_out_btn').click(function() {
-        Parse.User.logOut();
-        alert("Log Out Complete!!");
-        location.href = "/";
+      location.href = "/main/logouttest";
     });
     
     $("#user_page").click(function(){
-        <%if !params[:current_userId_web].nil?%>
-          post('/main/user_page/<%=params[:current_userId_web]%>', {current_userId_web: Parse.User.current().id.toString()});
-        <%elsif !params[:current_userId_mobile].nil?%>
-          post('/main/user_page/<%=params[:current_userId_mobile]%>', {current_userId_mobile: '<%=params[:current_userId_mobile]%>'});
+        <%if !session[:account].nil?%>
+          post('/main/user_page/<%=session[:account]%>', {current_userId_web: '<%=session[:account]%>'});
         <%else%>
           alert("로그인 먼저 해주세요");
         <%end%> 

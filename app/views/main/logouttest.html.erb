@@ -1,11 +1,6 @@
-<br>
-<button id="logout">Log Out</button>
 
 <script>
-$(function() {
-  $('#logout').click(function() {
-    Parse.User.logOut();
-    location.href = '/'
-  });
-});
+  Parse.User.logOut();
+  alert("Logout Complete!!");
+  location.href = '/'
 </script>
