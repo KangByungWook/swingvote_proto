@@ -87,32 +87,32 @@ class MainController < ApplicationController
     end
     
     #투표 참여 검증
-    @approach = Userdatum.all.select{|x|x.user_id == current_user.id}
+    @approach = Userdatum.all.where("user_id" => current_user.id)
+    #@approach = Userdatum.all.select{|x|x.user_id == current_user.id}
     
     @is_participated = false
     
-    if !@approach.posts[@id].nil?
+    if !@approach.first.posts[@id].nil?
         @is_participated = true
     else
     end
-    @current_user_pos = @approach.posts[@id]
+    @current_user_pos = @approach.first.posts[@id]
     
-    @post = Post.select{|x|x.id == params[:id]}
+    @post = Post.select{|x|x.id == params[:id].to_i}
     #통계치 부분 처리
-    @left_num = @post.left["value"]
-    @left_content = @post.left["content"]
-    @right_num = @post.right["value"]
-    @right_content = @post.right["content"]
+    @left_num = @post.first.left["value"]
+    @left_content = @post.first.left["content"]
+    @right_num = @post.first.right["value"]
+    @right_content = @post.first.right["content"]
     @total = @left_num + @right_num
     if @total == 0
       @total = 1
     end
     
     #댓글부분 처리
-    repliesModel = Parse::Query.new("replies")
-    @repliesDisplay = repliesModel.eq("post_id",params[:id].to_s).get
-    @repliesLeft = @repliesDisplay.select{|x| x["pros_or_cons"] == true}
-    @repliesRight = @repliesDisplay.select{|x| x["pros_or_cons"] == false}
+    @repliesDisplay = Reply.all.select{|x|x.post_id == params[:id]}
+    @repliesLeft = @repliesDisplay.select{|x| x.pros_or_cons == true}
+    @repliesRight = @repliesDisplay.select{|x| x.pros_or_cons == false}
   end
   
   def readability

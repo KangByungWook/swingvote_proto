@@ -1,17 +1,17 @@
 
-<% @post.get.each do |i| %>
+<% @post.each do |i| %>
 <div class="post-slider swiper-container">
   <div id="<%=@id%>_card" class="post_card swiper-wrapper">
-    <div id="<%=@id%>_left"class="slide-left slide-center swiper-slide"><%=i["left"]["content"]%></div>
+    <div id="<%=@id%>_left"class="slide-left slide-center swiper-slide"><%=i.left["content"]%></div>
     <div id="<%=@id%>" class="slide-topic swiper-slide">
-      <div id="post_img" class="post_img picture" style="width:100%;height:100%;background-image:url('<%=i["image_url"]%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
+      <div id="post_img" class="post_img picture" style="width:100%;height:100%;background-image:url('<%=i.img_url%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
         <div class="blurry-box" style="background:url('http://cfs6.blog.daum.net/image/14/blog/2008/03/11/23/23/47d695f9411f3&filename=%EB%AC%B4%EB%8A%AC%EC%97%86%EB%8A%94%EA%B2%80%EC%A0%95%EC%83%89%EB%B0%B0%EA%B2%BD.jpg')"></div>
         <div class="text" style="text-align:center;width:100%">
-          <span id="post_title" style="font-size:15px;color:white"><%=i["subject"]%></span>
+          <span id="post_title" style="font-size:15px;color:white"><%=i.subject%></span>
         </div>
       </div>
     </div>
-    <div id="<%=@id%>_right" class="slide-right slide-center swiper-slide"><%=i["right"]["content"]%></div>
+    <div id="<%=@id%>_right" class="slide-right slide-center swiper-slide"><%=i.right["content"]%></div>
   </div>
   <div id="arrow_next_<%=@id%>" class="arrow-next"></div>
   <div id="arrow_prev_<%=@id%>" class="arrow-prev"></div>
@@ -40,7 +40,7 @@
           		  if (v === true) {
           		    console.log("left - true");
           		    <%if !session[:account].nil?%>
-          		      post('/main/do_vote/<%=i["objectId"]%>_0');
+          		      post('/main/do_vote/<%=i.id%>_0');
           		    <%else%>
           		      alert("로그인 먼저 해주세요");
           		    <%end%>
@@ -61,7 +61,7 @@
           		  if (v === true) {
           		    console.log("right - true");
           		    <%if !session[:account].nil?%>
-          		      post('/main/do_vote/<%=i["objectId"]%>_1');
+          		      post('/main/do_vote/<%=i.id%>_1');
           		    <%else%>
           		      alert("로그인 먼저 해주세요");
           		    <%end%>
@@ -97,26 +97,17 @@
   });
 </script>
 
-<% @post.get.each do |i| %>
+<% @post.each do |i| %>
 <h4 style="margin-left:1em;">관련 기사</h4>
 <div class="link-slider swiper-container">
   <div class="swiper-wrapper">
-  <% if (i["links"].nil?) %>
+  <% if (i.links.nil?) %>
     <div class="slide-center swiper-slide" style="">
       관련 링크가 없습니다...
     </div>
   <% else %>
     <input id="link_url_length" type="hidden">
-    <% for j in (0...i["links"].length) %>
-    <%link_url_img = LinkThumbnailer.generate(i["links"][j]).images.first.src.to_s%>
-      <div class="swiper-slide" style="background-image:url('<%=link_url_img%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
-        <a href="/main/readability/<%=i["objectId"]%>_<%=j%>" style="text-decoration:none;">
-        <span style="font-size:1em; position:absolute; bottom:0; left:0; color:black; background:rgba(234,234,234,0.4);">
-          <%=LinkThumbnailer.generate(i["links"][j]).title%>
-        </span>
-        </a>
-      </div>
-    <% end %>
+    
   <% end %>
   </div>
 </div>
@@ -306,11 +297,11 @@
     <div class="comment_left">
       <div class="orientation">
           <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-          <span> <%=@repliesLeft[i]["user_id"]%> </span>
-          <small> <%=@repliesLeft[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
+          <span> <%=@repliesLeft[i].user_id%> </span>
+          <small> <%=@repliesLeft[i].created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
       </div>
       <div class="comment-text">
-       <%=@repliesLeft[i]["content"]%>
+       <%=@repliesLeft[i].content%>
       </div>
     </div>
     <%end%>
@@ -319,11 +310,11 @@
     <div class="comment_right">
       <div class="orientation">
           <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-          <span> <%=@repliesRight[i]["user_id"]%> </span>
-          <small> <%=@repliesRight[i]["createdAt"].in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
+          <span> <%=@repliesRight[i].user_id%> </span>
+          <small> <%=@repliesRight[i].created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
       </div>
       <div class="comment-text">
-       <%=@repliesRight[i]["content"]%>
+       <%=@repliesRight[i].content%>
       </div>
     </div>
   <%end%>

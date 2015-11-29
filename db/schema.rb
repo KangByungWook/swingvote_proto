@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151129124122) do
+ActiveRecord::Schema.define(version: 20151129143731) do
 
   create_table "posts", force: :cascade do |t|
     t.string   "subject"
@@ -23,6 +23,15 @@ ActiveRecord::Schema.define(version: 20151129124122) do
     t.string   "links"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "replies", force: :cascade do |t|
+    t.string   "user_id"
+    t.string   "post_id"
+    t.boolean  "pro_or_cons"
+    t.string   "content"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "userdata", force: :cascade do |t|
