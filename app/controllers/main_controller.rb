@@ -5,6 +5,9 @@ class MainController < ApplicationController
       if Userdatum.all.where(user_id: current_user.id).length == 0
         a = Userdatum.new
         a.user_id = current_user.id
+        a.username = "이름 컬럼 만들기 전"
+        a.tags = {}
+        a.posts = {}
         main_tags = Hash.new
         main_tags["IT"] = 1 
         main_tags["스포츠"] = 1
@@ -74,61 +77,32 @@ class MainController < ApplicationController
   
   def post_content
     @id = params[:id]
-    # @current_userId_web = params[:current_userId_web]
-    # @current_userId_mobile = params[:current_userId_mobile]
     
     #로그인 검증
     @is_login = false
-    if session[:account].nil?
-      @is_login = false
-    else
+    if current_user
       @is_login = true
+    else
+      @is_login = false
     end
     
     #투표 참여 검증
-    @web_approach = Parse::Query.new("userdata").eq("userId",session[:account]).get.first
-    # @mobile_approach = Parse::Query.new("userdata").eq("userId",@current_userId_mobile).get.first
+    @approach = Userdatum.all.select{|x|x.user_id == current_user.id}
     
     @is_participated = false
     
-    if @web_approach.nil?
+    if !@approach.posts[@id].nil?
+        @is_participated = true
     else
-      if @web_approach["posts"].nil?
-      else
-        if !@web_approach["posts"][@id].nil?
-          @current_username = @web_approach["username"]
-          @current_user_pos = @web_approach["posts"][@id]
-          @is_participated = true
-        else
-        end
-      end
     end
-   
-    # if @mobile_approach.nil?
-    # else
-    #   @real_userId = params[:current_userId_mobile]
-    #   if @mobile_approach["posts"].nil?
-    #   else
-    #     if !@mobile_approach["posts"][@id].nil?
-    #       @current_username = @mobile_approach["username"]
-    #       @current_user_pos = @mobile_approach["posts"][@id]
-    #       @is_participated = true
-    #     else
-    #     end
-    #   end
-    # end
+    @current_user_pos = @approach.posts[@id]
     
-    @real_approach = Parse::Query.new("userdata").eq("userId",session[:account]).get.first
-    
-    @post = Parse::Query.new("posts").eq("objectId", params[:id].to_s)
-    
-    # @color_arr = ["#c2bfd9","#d0ecf2","#bad9bc","#edf2c9","#f2e2ce"]
-    
+    @post = Post.select{|x|x.id == params[:id]}
     #통계치 부분 처리
-    @left_num = @post.get.first["left"]["value"]
-    @left_content = @post.get.first["left"]["content"]
-    @right_num = @post.get.first["right"]["value"]
-    @right_content = @post.get.first["right"]["content"]
+    @left_num = @post.left["value"]
+    @left_content = @post.left["content"]
+    @right_num = @post.right["value"]
+    @right_content = @post.right["content"]
     @total = @left_num + @right_num
     if @total == 0
       @total = 1

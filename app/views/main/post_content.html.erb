@@ -295,7 +295,7 @@
       <p class="formtitle"> 댓글 달기 </p>
       <input type="hidden" value="<%=@id%>" name="post_id">
       <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
-      <input id="author" type="text" placeholder="현재 사용자" value = "<%=@current_username%>" name="user_id">
+      <input id="author" type="text" placeholder="현재 사용자" value = "<%=current_user.username%>" name="user_id">
       <textarea placeholder="Comment" name="content"></textarea>
       <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
   </form>
