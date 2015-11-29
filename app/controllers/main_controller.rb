@@ -1,18 +1,30 @@
 class MainController < ApplicationController
   
   def index
+    if current_user
+      if Userdatum.all.where(user_id: current_user.id).length == 0
+        a = Userdatum.new
+        a.user_id = current_user.id
+        main_tags = Hash.new
+        main_tags["IT"] = 1 
+        main_tags["스포츠"] = 1
+        main_tags["시사"] = 1
+        main_tags["연예"] = 1
+        a.main_tag = main_tags
+        a.save
+      end
+    end
     if !params[:current_userId_mobile].nil?
       session[:account] = params[:current_userId_mobile]
       session[:from_mobile] = true
     elsif !params[:current_userId_web].nil?
       session[:account] = params[:current_userId_web]
     end
-    # @app_session = params[:current_userId_mobile]
-    # @web_session = params[:current_userId_web]
-    @main = Parse::Query.new("posts").value_in("tags", ["핫이슈"])
-    @recent = Parse::Query.new("posts")
+    
+    @main = Post.all.select{|x| x.tags.include? "핫이슈"}
+    @recent = Post.all
     if !session[:account].nil?
-      @user = Parse::Query.new("userdata").eq("userId", session[:account]).get.first
+      @user = Userdatum.where(:user_id => current_user.id)
       if !@user["main_tag"].nil?
         @tags = @user["main_tag"].sort_by do |x, y| y end
         @tags.reverse!
@@ -24,40 +36,20 @@ class MainController < ApplicationController
         @tag_arr = ["연예","스포츠","IT","시사"]
         @tag = []
         for i in (0...@tag_arr.length)
-          @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
+          @tag[i] = Post.all.select{|x| x.main_tag == @tag_arr[i]}
         end
       end
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
+        @tag[i] = Post.all.select{|x| x.main_tag == @tag_arr[i]}
+       
       end
-    # elsif !session[:account].nil?
-    #   #web_session
-    #   @user = Parse::Query.new("userdata").eq("userId", @web_session).get.first
-    #   if !@user["main_tag"].nil?
-    #     @tags = @user["main_tag"].sort_by do |x, y| y end
-    #     @tags.reverse!
-    #     @tag_arr = []
-    #     @tags.each do |x, y|
-    #       @tag_arr.push("#{x}")
-    #     end
-    #   else
-    #     @tag_arr = ["연예","스포츠","IT","시사"]
-    #     @tag = []
-    #     for i in (0...@tag_arr.length)
-    #       @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
-    #     end
-    #   end
-    #   @tag = []
-    #   for i in (0...@tag_arr.length)
-    #     @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
-    #   end
     else
       #default
       @tag_arr = ["연예","스포츠","IT","시사"]
       @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Parse::Query.new("posts").eq("main_tag", @tag_arr[i])
+        @tag[i] = Post.all.select{|x| x.main_tag == @tag_arr[i]}
       end
     end
   end
@@ -76,7 +68,8 @@ class MainController < ApplicationController
     else
     end
     
-    @list = Parse::Query.new("posts").eq("main_tag", @id).or(Parse::Query.new("posts").value_in("tags", [@id]))
+    @list = Post.all.select{|x|x.main_tag == @id}
+    #@list = Parse::Query.new("posts").eq("main_tag", @id).or(Parse::Query.new("posts").value_in("tags", [@id]))
   end
   
   def post_content
@@ -330,5 +323,42 @@ class MainController < ApplicationController
   #  #new(SUPER_class = response)
   #  redirect_to '/'
   #end
-  
+  def do_uploading
+    a = Post.new
+    a.main_tag = params[:main_tag]
+    subTagArray = Array.new
+    subTagArray.push(params[:sub_tag1])
+    subTagArray.push(params[:sub_tag2])
+    subTagArray.push(params[:sub_tag3])
+    subTagArray.push(params[:sub_tag4])
+    subTagArray.delete_if{|x| x == ""}
+    a.tags = subTagArray
+    
+    a.subject = params[:subject]
+    leftObject = Hash.new
+    leftObject["content"] = params[:left]
+    leftObject["value"] = 0
+    a.left = leftObject
+    
+    rightObject = Hash.new
+    rightObject["content"] = params[:right]
+    rightObject["value"] = 0
+    a.right = rightObject
+    
+    linkArray = Array.new
+    linkArray.push(params[:link1])
+    linkArray.push(params[:link2])
+    linkArray.push(params[:link3])
+    linkArray.push(params[:link4])
+    linkArray.push(params[:link5])
+    linkArray.push(params[:link6])
+    
+    linkArray.delete_if{|x| x == ""}
+    a.links = linkArray
+    
+    a.img_url = params[:img_url]
+    a.save
+    
+    redirect_to :back
+  end
 end

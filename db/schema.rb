@@ -11,7 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151124083636) do
+ActiveRecord::Schema.define(version: 20151129124122) do
+
+  create_table "posts", force: :cascade do |t|
+    t.string   "subject"
+    t.string   "img_url"
+    t.string   "left"
+    t.string   "right"
+    t.string   "main_tag"
+    t.string   "tags"
+    t.string   "links"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "userdata", force: :cascade do |t|
+    t.string   "username"
+    t.string   "user_id"
+    t.string   "main_tag"
+    t.string   "tags"
+    t.string   "posts"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
