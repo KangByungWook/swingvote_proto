@@ -119,9 +119,10 @@ class MainController < ApplicationController
   end
   
   def readability
-    @post_id = /(.*)_(.*)/.match(params[:id])[1].to_s
+    @post_id = /(.*)_(.*)/.match(params[:id])[1].to_i
     @link_index = /(.*)_(.*)/.match(params[:id])[2].to_i
-    @read = Parse::Query.new("posts").eq("objectId",@post_id)
+    @read = Post.select{|x|x.id == @post_id}
+    #@read = Parse::Query.new("posts").eq("objectId",@post_id)
     #@news = ReadabilityParser.parse(@a)
     
     #개선된 버전
@@ -312,9 +313,16 @@ class MainController < ApplicationController
     linkArray.push(params[:link4])
     linkArray.push(params[:link5])
     linkArray.push(params[:link6])
-    
     linkArray.delete_if{|x| x == ""}
-    a.links = linkArray
+    linkObjectArray = []
+    for x in 0...linkArray.length do
+      object = {}
+      object["link_url"] = linkArray[x]
+      object["link_img_url"] = LinkThumbnailer.generate(linkArray[x]).images.first.src.to_s
+      object["link_title"] = LinkThumbnailer.generate(linkArray[x]).title
+      linkObjectArray.push(object)
+    end
+    a.links = linkObjectArray
     
     a.img_url = params[:img_url]
     a.save

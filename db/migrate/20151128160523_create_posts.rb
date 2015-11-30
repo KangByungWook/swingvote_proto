@@ -11,6 +11,8 @@ class CreatePosts < ActiveRecord::Migration
       
       #array
       t.string :tags
+      
+      #objectarray
       t.string :links
       
       t.timestamps null: false

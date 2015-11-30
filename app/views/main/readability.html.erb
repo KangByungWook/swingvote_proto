@@ -1,16 +1,15 @@
-<% @read.get.each do |x| %>
-<%uri = URI(x["links"][@link_index])%>
+<% @read.each do |x| %>
+<%uri = URI(x.links[@link_index]["link_url"])%>
 <%html_doc = Nokogiri::HTML(Net::HTTP.get(uri)).to_s%>
-  <%thumbnail = LinkThumbnailer.generate(x["links"][@link_index])%>
   <p style="font-size:1.8em; margin-top:0.8em; margin-left:0.5em; margin-right: 0.5em; font-weight:bold;">
-    <%=thumbnail.title%>
+    <%=x.links[@link_index]["link_title"]%>
   </p>
-  <img src="<%=thumbnail.images.first.src.to_s%>" style="width:100%">
+  <img src="<%=x.links[@link_index]["link_img_url"]%>" style="width:100%">
   <div style="line-height:2.2em; margin-left:1em; margin-right:1em;">
     <span style="font-size:1.3em">
-      <%sentence = Pismo::Document.new(x["links"][@link_index]).body.to_s%>
+      <%sentence = Pismo::Document.new(x.links[@link_index]["link_url"]).body.to_s%>
       <%if sentence.to_s.split("*").sort_by{|x| x.length}.last.nil? or sentence.to_s.split("*").sort_by{|x| x.length}.last.length < 300%>
-      <%=simple_format(ReadabilityParser.parse(x["links"][@link_index]).content.match(/<p>(.|\n)*p>/).to_s.gsub(/<a(.|\n)*?a>/,"").to_s.gsub(/width=.*?".*?"/,"width='100%'"))%>
+      <%=simple_format(ReadabilityParser.parse(x.links[@link_index]["link_url"]).content.match(/<p>(.|\n)*p>/).to_s.gsub(/<a(.|\n)*?a>/,"").to_s.gsub(/width=.*?".*?"/,"width='100%'"))%>
       <%else%>
       <%=simple_format(sentence.split("*").sort_by{|x| x.length}.last.gsub(/\\n/,"<br>"))%>
       <%end%>
