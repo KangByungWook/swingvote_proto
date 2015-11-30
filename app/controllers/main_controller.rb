@@ -62,17 +62,7 @@ class MainController < ApplicationController
   
   def post_list
     @id = params[:id]
-    # @app_session = params[:current_userId_mobile]
-    # @web_session = params[:current_userId_web]
-    if !session[:account].nil?
-      @user = Parse::Query.new("_User").eq("objectId", session[:account]).get.first
-    # elsif !@web_session.nil?
-    #   @user = Parse::Query.new("_User").eq("objectId", @web_session).get.first
-    else
-    end
-    
     @list = Post.all.select{|x|x.main_tag == @id}
-    #@list = Parse::Query.new("posts").eq("main_tag", @id).or(Parse::Query.new("posts").value_in("tags", [@id]))
   end
   
   def post_content
@@ -86,17 +76,20 @@ class MainController < ApplicationController
       @is_login = false
     end
     
-    #투표 참여 검증
-    @approach = Userdatum.all.where("user_id" => current_user.id.to_s)
-    #@approach = Userdatum.all.select{|x|x.user_id == current_user.id}
-    
-    @is_participated = false
-    
-    if !@approach.first.posts[@id].nil?
-        @is_participated = true
-    else
+    if current_user
+      #투표 참여 검증
+      @approach = Userdatum.all.where("user_id" => current_user.id.to_s)
+      #@approach = Userdatum.all.select{|x|x.user_id == current_user.id}
+      
+      @is_participated = false
+      
+      if !@approach.first.posts[@id].nil?
+          @is_participated = true
+      else
+      end
+      @current_user_pos = @approach.first.posts[@id]
     end
-    @current_user_pos = @approach.first.posts[@id]
+    
     
     @post = Post.select{|x|x.id == params[:id].to_i}
     #통계치 부분 처리
@@ -213,25 +206,25 @@ class MainController < ApplicationController
   end
   
   def user_page
-    @user = Parse::Query.new("_User").eq("objectId", session[:account]).get.first
-    @userdata = Parse::Query.new("userdata").eq("userId", session[:account]).get.first
+    @user = current_user
+    @userdata = Userdatum.all.where(user_id: current_user.id)[0]
     
-    if @userdata["tags"].nil?
+    if @userdata.tags.nil?
       @tagindex = 0
     else
       @tagindex = 1
-      @tags = @userdata["tags"].sort_by do |x, y| y end
+      @tags = @userdata.tags.sort_by do |x, y| y end
       @tag_arr = []
       @tags.each do |x, y|
         @tag_arr.push("#{x}")
       end
     end
     
-    if @userdata["posts"].nil?
+    if @userdata.posts.nil?
       @postindex = 0
     else
       @postindex = 1
-      @posts = @userdata["posts"]
+      @posts = @userdata.posts
       @post_arr = []
       @posts.each do |x, y|
         @post_arr.push("#{x}")

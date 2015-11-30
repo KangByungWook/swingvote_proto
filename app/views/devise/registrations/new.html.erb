@@ -20,6 +20,27 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
+  
+  <!--닉네임-->
+  <div class="field">
+    <%= f.label :nickname %><br />
+    <%= f.text_field :nickname, autocomplete: "off" %>
+  </div>
+  
+  <!--성별-->
+  <div class="field">
+    <%= f.label "성별" %><br />
+    <%= f.radio_button :gender, "Male"%>
+    <%= f.label :gender, value:"남자"%>
+    <%= f.radio_button :gender, "Female"%>
+    <%= f.label :gender, value:"여자"%>
+  </div>
+  
+  <!--출생년도-->
+  <div class="field">
+    <%= f.label :date_of_birth %><br />
+    <%= f.date_field :date_of_birth%>
+  </div>
 
   <div class="actions">
     <%= f.submit "Sign up" %>

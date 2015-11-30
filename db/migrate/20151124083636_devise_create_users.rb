@@ -1,6 +1,12 @@
 class DeviseCreateUsers < ActiveRecord::Migration
   def change
     create_table(:users) do |t|
+      
+      #커스터마이징
+      t.string :nickname
+      t.string :gender
+      t.date :date_of_birth
+      
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
