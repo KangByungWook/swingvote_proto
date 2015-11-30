@@ -104,8 +104,18 @@ class MainController < ApplicationController
     
     #댓글부분 처리
     @repliesDisplay = Reply.all.select{|x|x.post_id == params[:id]}
-    @repliesLeft = @repliesDisplay.select{|x| x.pros_or_cons == true}
-    @repliesRight = @repliesDisplay.select{|x| x.pros_or_cons == false}
+    @repliesLeft = @repliesDisplay.select{|x| x.pro_or_cons == true}
+    @repliesRight = @repliesDisplay.select{|x| x.pro_or_cons == false}
+    @total_equal_replies = []
+    for x in (0...@repliesDisplay.length) do
+      if !@repliesLeft[x].nil?
+        @total_equal_replies.push(@repliesLeft[x])
+      end
+      if !@repliesRight[x].nil?
+        @total_equal_replies.push(@repliesRight[x])
+      end
+    end
+    @total_equal_replies = @total_equal_replies.paginate(:page => params[:page], :per_page => 3)
   end
   
   def readability
@@ -131,16 +141,11 @@ class MainController < ApplicationController
         return false
       end
     end
-     replyModel = Parse::Object.new("replies")
-     user_id = session[:account]
-     content = params[:content]
-     post_id = params[:post_id]
-     pros_and_cons = params[:pros_and_cons]
-     
-     replyModel["user_id"] = user_id
-     replyModel["content"] = content
-     replyModel["post_id"] = post_id
-     replyModel["pros_or_cons"] = to_boolean(pros_and_cons)
+     replyModel = Reply.new
+     replyModel.user_id = current_user.id.to_s
+     replyModel.content = params[:content]
+     replyModel.post_id = params[:id]
+     replyModel.pro_or_cons = to_boolean(params[:pros_and_cons])
      replyModel.save
      
   end

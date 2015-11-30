@@ -1,0 +1,31 @@
+<div class="postreply">
+    <%if postreply.pro_or_cons == true%>
+    <div class="comment_left">
+    <%else%>
+    <div class="comment_right">
+    <%end%>
+      <div class="orientation">
+          <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
+          <span> <%=User.select{|x|x.id == postreply.user_id.to_i}[0].nickname%> </span>
+          <small> <%=postreply.created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
+      </div>
+      <div class="comment-text">
+       <%=simple_format(postreply.content)%>
+      </div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+  if ($('.pagination').length) {
+    $(window).scroll(function() {
+      var url = $('.pagination .next_page').attr('href');
+      if (url && $(window).scrollTop() > $(document).height() - $(window).height() - 50) {
+        $('.pagination').text("로딩중입니다. 잠시만 기다려주세요");
+        return $.getScript(url);
+      }
+    });
+    return $(window).scroll();
+  }
+});
+</script>

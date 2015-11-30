@@ -219,41 +219,16 @@
   </div>
   <form action="/main/do_reply/<%=@id%>" method="POST">
       <p class="formtitle"> 댓글 달기 </p>
-      <input type="hidden" value="<%=@id%>" name="post_id">
       <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
-      <input id="author" type="text" placeholder="현재 사용자" value = "" name="user_id">
+      <input id="author" type="text" placeholder="현재 사용자" value = "<%=current_user.nickname%>" name="user_id">
       <textarea placeholder="Comment" name="content"></textarea>
       <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
   </form>
   <div class="panel-collapse">
-  <%for i in (0...@repliesDisplay.length)%>
-    <!--왼쪽부분-->
-    <%if !@repliesLeft[i].nil?%>
-    <div class="comment_left">
-      <div class="orientation">
-          <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-          <span> <%=@repliesLeft[i].user_id%> </span>
-          <small> <%=@repliesLeft[i].created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
-      </div>
-      <div class="comment-text">
-       <%=@repliesLeft[i].content%>
-      </div>
+    <div id="postreply">
+      <%= render(partial: 'postreply', collection: @total_equal_replies) %>
     </div>
-    <%end%>
-    <!--오른쪽부분-->
-    <%if !@repliesRight[i].nil? %>
-    <div class="comment_right">
-      <div class="orientation">
-          <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-          <span> <%=@repliesRight[i].user_id%> </span>
-          <small> <%=@repliesRight[i].created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
-      </div>
-      <div class="comment-text">
-       <%=@repliesRight[i].content%>
-      </div>
-    </div>
-  <%end%>
-<%end%>
+    <%= will_paginate @total_equal_replies %>
   <!--condition_statement(aaa)-->  
   <%else%>
     <p>로그인 상태, 참여 하지 않았습니다 해주세요</p>

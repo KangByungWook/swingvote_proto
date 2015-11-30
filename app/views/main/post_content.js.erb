@@ -1,0 +1,3 @@
+$('#postreply').append('<%= escape_javascript render(partial: 'postreply', collection: @total_equal_replies) %>');
+$('.pagination').replaceWith('<%= escape_javascript will_paginate(@total_equal_replies) %>');
+
