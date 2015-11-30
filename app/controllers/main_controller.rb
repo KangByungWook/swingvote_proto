@@ -122,11 +122,6 @@ class MainController < ApplicationController
     @post_id = /(.*)_(.*)/.match(params[:id])[1].to_i
     @link_index = /(.*)_(.*)/.match(params[:id])[2].to_i
     @read = Post.select{|x|x.id == @post_id}
-    #@read = Parse::Query.new("posts").eq("objectId",@post_id)
-    #@news = ReadabilityParser.parse(@a)
-    
-    #개선된 버전
-    
   end
   
   def do_write
@@ -318,7 +313,12 @@ class MainController < ApplicationController
     for x in 0...linkArray.length do
       object = {}
       object["link_url"] = linkArray[x]
-      object["link_img_url"] = LinkThumbnailer.generate(linkArray[x]).images.first.src.to_s
+      if LinkThumbnailer.generate(linkArray[x]).images.length == 0
+        object["link_img_url"] = ""
+      else
+        object["link_img_url"] = LinkThumbnailer.generate(linkArray[x]).images.first.src.to_s
+      end
+      
       object["link_title"] = LinkThumbnailer.generate(linkArray[x]).title
       linkObjectArray.push(object)
     end
