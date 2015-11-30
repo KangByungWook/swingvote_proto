@@ -54,6 +54,7 @@ class MainController < ApplicationController
         @tag[i] = Post.all.select{|x| x.main_tag == @tag_arr[i]}
       end
     end
+    @tag_arr = @tag_arr.paginate(:page => params[:page], :per_page => 5)
   end
   
   def testslider

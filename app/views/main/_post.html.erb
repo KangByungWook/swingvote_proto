@@ -1,0 +1,95 @@
+<div class="post">
+
+<div style="width:100%; height:15px;"></div>
+  <div class="tag-slider swiper-container">
+    <a id="send_post_<%=post%>" href="/main/post_list/<%=post%>" style="color:black;">
+    <p style="margin:0px; font-size:1.1em;">
+      <span style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor; margin-right:-0.5em;">#</span>
+      <span id="tag_maintag" style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor;"><%=post%></span>
+      <span style="float:right; margin-right:10px;">
+        <span id="tag_more_<%=post%>" style="color:#6a6a6a;">더보기</span>
+        <span class="glyphicon glyphicon-chevron-right" style="color:#6a6a6a;"></span>
+      </span>
+    </p>
+    </a>
+    <script>
+    $(function() {
+      $('#tag_more_'+'<%=post%>').click(function() {
+        location.href = '/main/post_list/<%=post%>';
+      });
+    });
+    </script>
+    
+    <div style="width:100%; height:1em;"></div>
+    <div class="swiper-wrapper">
+      <% Post.all.select{|x|x.tags.include? post}.take(6).each do |i| %>
+        <div id="post_tag_<%=i.id%>" onclick="location.href = '/main/post_content/<%=i.id%>'" class="slide-topic swiper-slide">
+          <input type="hidden" value="<%=i.id%>" id="<%=i.id%>">
+          <div class="post_img" style="background-image:url('<%=i.img_url%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
+          </div>
+          <div class="slide-center post_title">
+            <span id="post_tagsub_<%=i.id%>" onclick="location.href = '/main/post_content/<%=i.id%>'" style="font-size:15px"><%=i.subject%></span>
+          </div>
+          
+          <script>
+            $(function() {
+              $('#post_tag_<%=i.id%>').click(function() {
+                <%if !session[:from_mobile].nil?%>
+                  document.location = "js:/"+$('#<%=i.id%>').val();
+                <%end%>
+                
+              });
+              $('#post_tagsub_<%=i.id%>').click(function() {
+                <%if !session[:from_mobile].nil?%>
+                document.location = "js:/"+$('#<%=i.id%>').val();
+                <%end%>
+              });
+            });
+          </script>
+          
+          <div class="slide-center post_tag">
+            <div class="tag slide-center">
+              <span>#</span>
+              <span id="<%=i.id%>_<%=i.main_tag%>"><%=i.main_tag%></span>
+            </div>
+            <script>
+              $(function() {
+                $('#<%=i.id%>_<%=i.main_tag%>').click(function() {
+                  location.href = '/main/post_list/'+$(this).html();
+                });
+              });
+            </script>
+            <% i.tags.take(2).each do |j| %>
+              <div class="tag slide-center">
+                <span>#</span>
+                <span id="<%=i.id%>_<%=j%>"><%=j%></span>
+              </div>
+              <script>
+                $(function() {
+                  $('#<%=i.id%>_<%=j%>').click(function() {
+                    location.href = '/main/post_list/'+$(this).html();
+                  });
+                });
+              </script>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+  if ($('.pagination').length) {
+    $(window).scroll(function() {
+      var url = $('.pagination .next_page').attr('href');
+      if (url && $(window).scrollTop() > $(document).height() - $(window).height() - 50) {
+        $('.pagination').text("로딩중입니다. 잠시만 기다려주세요");
+        return $.getScript(url);
+      }
+    });
+    return $(window).scroll();
+  }
+});
+</script>
