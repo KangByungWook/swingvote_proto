@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+#페이지네이션
+gem 'will_paginate'
+
 gem 'devise'
 gem 'pismo'
 gem "ruby-readability"

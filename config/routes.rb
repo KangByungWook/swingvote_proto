@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'tests/scroll'
+
   devise_for :users, controllers: {
         registrations: 'users/registrations'
       }

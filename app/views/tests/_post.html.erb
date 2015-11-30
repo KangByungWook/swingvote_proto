@@ -1,0 +1,19 @@
+<div class="post">
+  <h2><%= post.subject %></h2>
+  <p><%= post.tags %></p>
+</div>
+
+<script>
+  $(document).ready(function() {
+  if ($('.pagination').length) {
+    $(window).scroll(function() {
+      var url = $('.pagination .next_page').attr('href');
+      if (url && $(window).scrollTop() > $(document).height() - $(window).height() - 50) {
+        $('.pagination').text("Please Wait...");
+        return $.getScript(url);
+      }
+    });
+    return $(window).scroll();
+  }
+});
+</script>

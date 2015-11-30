@@ -71,7 +71,7 @@
           		    console.log("left - true");
           		    <%if !session[:from_mobile].nil?%>
           		      document.location = "js:/"+$('#<%=i.id%>_hidden').val()+"/left";
-          		    <%elsif !session[:account].nil?%>
+          		    <%elsif current_user%>
           		      location.href = '/main/do_vote/<%=i.id%>_0';
           		    <%else%>
           		      alert("로그인부터 해주세요");
@@ -95,7 +95,7 @@
           		    console.log("right - true");
           		    <%if !session[:from_mobile].nil?%>
           		      document.location = "js:/"+$('#<%=i.id%>_hidden').val()+"/right";
-          		    <%elsif !session[:account].nil?%>
+          		    <%elsif current_user%>
           		      location.href = '/main/do_vote/<%=i.id%>_1';
           		    <%else%>
           		      alert("로그인부터 해주세요");

@@ -9,11 +9,17 @@ class MainController < ApplicationController
         a.tags = {}
         a.posts = {}
         main_tags = Hash.new
-        main_tags["IT"] = 1 
-        main_tags["스포츠"] = 1
-        main_tags["시사"] = 1
-        main_tags["연예"] = 1
+        main_tags["IT"] = 10 
+        main_tags["스포츠"] = 10
+        main_tags["시사"] = 10
+        main_tags["연예"] = 10
         a.main_tag = main_tags
+        tag = Hash.new
+        tag["IT"] = 10 
+        tag["스포츠"] = 10
+        tag["시사"] = 10
+        tag["연예"] = 10
+        a.tags = tag
         a.save
       end
     end
@@ -26,26 +32,19 @@ class MainController < ApplicationController
     
     @main = Post.all.select{|x| x.tags.include? "핫이슈"}
     @recent = Post.all
-    if !session[:account].nil?
-      @user = Userdatum.where(:user_id => current_user.id)
-      if !@user["main_tag"].nil?
-        @tags = @user["main_tag"].sort_by do |x, y| y end
-        @tags.reverse!
-        @tag_arr = []
+    if current_user
+      @user = Userdatum.where(:user_id => current_user.id)[0]
+      
+      @tags = @user.tags.sort_by do |x, y| y end
+      @tags.reverse!
+      @tag_arr = []
         @tags.each do |x, y|
-          @tag_arr.push("#{x}")
+        @tag_arr.push("#{x}")
         end
-      else
-        @tag_arr = ["연예","스포츠","IT","시사"]
-        @tag = []
-        for i in (0...@tag_arr.length)
-          @tag[i] = Post.all.select{|x| x.main_tag == @tag_arr[i]}
-        end
-      end
-      @tag = []
+      
+     @tag = []
       for i in (0...@tag_arr.length)
-        @tag[i] = Post.all.select{|x| x.main_tag == @tag_arr[i]}
-       
+        @tag[i] = Post.all.select{|x| x.tags.include? @tag_arr[i]}
       end
     else
       #default
@@ -62,7 +61,7 @@ class MainController < ApplicationController
   
   def post_list
     @id = params[:id]
-    @list = Post.all.select{|x|x.main_tag == @id}
+    @list = Post.all.select{|x|x.tags.include? @id}
   end
   
   def post_content
@@ -281,6 +280,7 @@ class MainController < ApplicationController
     a = Post.new
     a.main_tag = params[:main_tag]
     subTagArray = Array.new
+    subTagArray.push(params[:main_tag])
     subTagArray.push(params[:sub_tag1])
     subTagArray.push(params[:sub_tag2])
     subTagArray.push(params[:sub_tag3])
