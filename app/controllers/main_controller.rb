@@ -87,7 +87,7 @@ class MainController < ApplicationController
     end
     
     #투표 참여 검증
-    @approach = Userdatum.all.where("user_id" => current_user.id)
+    @approach = Userdatum.all.where("user_id" => current_user.id.to_s)
     #@approach = Userdatum.all.select{|x|x.user_id == current_user.id}
     
     @is_participated = false
@@ -157,63 +157,50 @@ class MainController < ApplicationController
       # @current_userId_web = params[:current_userId_web]
       # @current_userId_mobile = params[:current_userId_mobile]
       
-      @post_id = /(.*)_(.*)/.match(params[:id])[1].to_s
+      @post_id = /(.*)_(.*)/.match(params[:id])[1].to_i
       select_index = /(.*)_(.*)/.match(params[:id])[2].to_i
       
-      target_post = Parse::Query.new("posts").eq("objectId", @post_id).get.first
-      target_user = Parse::Query.new("userdata").eq("userId", session[:account]).get.first
+      target_post = Post.all.select{|x|x.id == @post_id}[0]
+      #target_post = Parse::Query.new("posts").eq("objectId", @post_id).get.first
+      target_user = Userdatum.all.select{|x|x.user_id == current_user.id.to_s}[0]
+      #target_user = Parse::Query.new("userdata").eq("userId", session[:account]).get.first
+      a= target_user.posts
       if select_index == 0
-        target_post["left"]["value"] += 1
+        a[@post_id.to_s] = "left"
+        target_user["posts"] = a
+        target_post.left["value"] += 1
       elsif select_index == 1
-        target_post["right"]["value"] += 1
+        a[@post_id.to_s] = "right"
+        target_user["posts"] = a
+        target_post.right["value"] += 1
       end
-      #투표 반영
-      if target_user["posts"].nil?
-        a= Hash.new
-      else
-        a= target_user["posts"]
-      end
-      a[@post_id] = "left"
-      target_user["posts"] = a
       
       #사용자의 태그정보 반영
-      target_post["tags"].each do |x|
-        if target_user["tags"].nil?
+      target_post.tags.each do |x|
+        if target_user.tags.nil?
           target_user["tags"] = {"#{x}" => 1}
         else
-          if target_user["tags"][x].nil?
-            target_user["tags"][x] = 1
+          if target_user.tags[x].nil?
+            target_user.tags[x] = 1
           else
-            target_user["tags"][x] +=1
+            target_user.tags[x] +=1
           end
         end
       end
       
-      main_tag = target_post["main_tag"]
-      if target_user["main_tag"].nil?
-        target_user["main_tag"] = {main_tag => 1}
+      main_tag = target_post.main_tag
+      if target_user.main_tag[main_tag].nil?
+          target_user.main_tag[main_tag] = 1
+          target_user.tags[main_tag] = 1
       else
-        if target_user["main_tag"][main_tag].nil?
-          target_user["main_tag"][main_tag] = 1
-          target_user["tags"][main_tag] = 1
-        else
-          target_user["main_tag"][main_tag] += 1
-          if target_user["tags"][main_tag].nil?
-            target_user["tags"][main_tag] =1
+          target_user.main_tag[main_tag] += 1
+          if target_user.tags[main_tag].nil?
+            target_user.tags[main_tag] =1
           else
-            target_user["tags"][main_tag] +=1
+            target_user.tags[main_tag] +=1
           end
-          
-        end
       end
       
-      if target_user["posts"].nil?
-        a= Hash.new
-      else
-        a= target_user["posts"]
-      end
-      a[@post_id] = "left"
-      target_user["posts"] = a
       
       #사용자 정보 저장(태그, 참여기록)
       target_user.save

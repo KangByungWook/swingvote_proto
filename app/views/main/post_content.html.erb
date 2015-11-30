@@ -39,7 +39,7 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("left - true");
-          		    <%if !session[:account].nil?%>
+          		    <%if current_user%>
           		      post('/main/do_vote/<%=i.id%>_0');
           		    <%else%>
           		      alert("로그인 먼저 해주세요");
@@ -60,7 +60,7 @@
               submit:function(e,v,m,f){ 
           		  if (v === true) {
           		    console.log("right - true");
-          		    <%if !session[:account].nil?%>
+          		    <%if current_user%>
           		      post('/main/do_vote/<%=i.id%>_1');
           		    <%else%>
           		      alert("로그인 먼저 해주세요");
@@ -107,7 +107,16 @@
     </div>
   <% else %>
     <input id="link_url_length" type="hidden">
+    <% for j in (0...i.links.length) %>
     
+      <div class="swiper-slide" style="background-image:url('<%=%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
+        <a href="/main/readability/<%=i.id%>_<%=j%>" style="text-decoration:none;">
+        <span style="font-size:1em; position:absolute; bottom:0; left:0; color:black; background:rgba(234,234,234,0.4);">
+          <%=%>
+        </span>
+        </a>
+      </div>
+    <% end %>
   <% end %>
   </div>
 </div>
@@ -286,7 +295,7 @@
       <p class="formtitle"> 댓글 달기 </p>
       <input type="hidden" value="<%=@id%>" name="post_id">
       <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
-      <input id="author" type="text" placeholder="현재 사용자" value = "<%=current_user.username%>" name="user_id">
+      <input id="author" type="text" placeholder="현재 사용자" value = "" name="user_id">
       <textarea placeholder="Comment" name="content"></textarea>
       <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
   </form>
