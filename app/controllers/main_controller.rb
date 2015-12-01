@@ -104,8 +104,8 @@ class MainController < ApplicationController
     
     #댓글부분 처리
     @repliesDisplay = Reply.all.select{|x|x.post_id == params[:id]}
-    @repliesLeft = @repliesDisplay.select{|x| x.pro_or_cons == true}
-    @repliesRight = @repliesDisplay.select{|x| x.pro_or_cons == false}
+    @repliesLeft = @repliesDisplay.select{|x| x.pro_or_cons == true}.sort_by{|x|x.get_likes.size}.reverse
+    @repliesRight = @repliesDisplay.select{|x| x.pro_or_cons == false}.sort_by{|x|x.get_likes.size}.reverse
     @total_equal_replies = []
     for x in (0...@repliesDisplay.length) do
       if !@repliesLeft[x].nil?
@@ -144,6 +144,19 @@ class MainController < ApplicationController
      replyModel.pro_or_cons = to_boolean(params[:pros_and_cons])
      replyModel.save
      
+     redirect_to "/main/post_content/#{@post_id}" 
+  end
+  
+  def do_reply_like
+      @reply = Reply.find(params[:id])
+      @reply.liked_by current_user
+      redirect_to :back
+  end
+  
+  def do_reply_dislike
+      @reply = Reply.find(params[:id])
+      @reply.disliked_by current_user
+      redirect_to :back
   end
   
   def do_vote

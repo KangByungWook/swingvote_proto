@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+#댓글 좋아요/싫어요
+gem 'acts_as_votable', '~> 0.10.0'
 #페이지네이션
 gem 'will_paginate'
 
