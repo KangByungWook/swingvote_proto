@@ -1,6 +1,7 @@
 <h2>Log in</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
@@ -18,9 +19,15 @@
     </div>
   <% end -%>
 
-  <div class="actions">
+  <div id="login" class="actions">
     <%= f.submit "Log in" %>
   </div>
 <% end %>
 
+<script>
+$(function() {
+  $('#login').click(function() {
+  });
+});
+</script>
 <%= render "devise/shared/links" %>

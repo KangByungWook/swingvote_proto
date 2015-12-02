@@ -1,3 +1,6 @@
+<%if !params[:current_userId_mobile].nil?%>
+    <p>모바일에서 접속했습니다</p>
+<%end%>
 <div class="main_slider swiper-container">
   <div class="swiper-wrapper">
   
@@ -7,10 +10,10 @@
       <div id="post_main_<%=i.id%>" class="main-background picture" style="background-image:url('<%=i.img_url%>');">
         <table class="tag_box">
           <tr>
-            <td class="tag">
+            <!--<td class="tag">
               <div class="slide-center">#<%=i.main_tag%></div>
-            </td>
-            <% for j in (0...2) %>
+            </td>-->
+            <% for j in (0...3) %>
             <td class="tag">
               <div class="slide-center">#<%=i.tags[j]%></div>
             </td>
@@ -27,7 +30,7 @@
     <script>
       $(function() {
         $('#post_main_<%=i.id%>').click(function() {
-          <%if !session[:from_mobile].nil?%>
+          <%if session[:from_mobile] == true%>
           document.location = "js:/"+$('#<%=i.id%>').val();
           <%else%>
           console.log("click <%=i.id%>");
@@ -101,7 +104,7 @@
       <script>
         $(function() {
           $('#post_recent_<%=i.id%>').click(function() {
-            <%if !session[:from_mobile].nil?%>
+            <%if !params[:fromMobile].nil?%>
             document.location = 'js:/'+$('#<%=i.id%>').val();
             <%else%>
             location.href = '/main/post_content/'+$('#<%=i.id%>').val();

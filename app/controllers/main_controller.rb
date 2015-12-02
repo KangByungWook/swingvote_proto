@@ -1,10 +1,18 @@
 class MainController < ApplicationController
   
   def index
-    if current_user
-      if Userdatum.all.where(user_id: current_user.id).length == 0
+    
+    if !params[:current_userId_mobile].nil?
+      session[:account] = params[:current_userId_mobile]
+      session[:from_mobile] = true
+    elsif current_user
+      session[:account] = current_user.id
+    end
+    
+    if !session[:account].nil?
+      if Userdatum.all.where(user_id: session[:account]).length == 0
         a = Userdatum.new
-        a.user_id = current_user.id
+        a.user_id = session[:account].to_s
         a.username = "이름 컬럼 만들기 전"
         a.tags = {}
         a.posts = {}
@@ -23,17 +31,12 @@ class MainController < ApplicationController
         a.save
       end
     end
-    if !params[:current_userId_mobile].nil?
-      session[:account] = params[:current_userId_mobile]
-      session[:from_mobile] = true
-    elsif !params[:current_userId_web].nil?
-      session[:account] = params[:current_userId_web]
-    end
+    
     
     @main = Post.all.select{|x| x.tags.include? "핫이슈"}
     @recent = Post.all
-    if current_user
-      @user = Userdatum.where(:user_id => current_user.id)[0]
+    if !session[:account].nil?
+      @user = Userdatum.where(:user_id => session[:account].to_s)[0]
       
       @tags = @user.tags.sort_by do |x, y| y end
       @tags.reverse!
@@ -63,6 +66,9 @@ class MainController < ApplicationController
   def post_list
     @id = params[:id]
     @list = Post.all.select{|x|x.tags.include? @id}
+    if !session[:account].nil?
+      @approach = Userdatum.all.where(user_id: session[:account].to_s)
+    end
   end
   
   def post_content
@@ -70,21 +76,21 @@ class MainController < ApplicationController
     
     #로그인 검증
     @is_login = false
-    if current_user
+    if !session[:account].nil?
       @is_login = true
     else
       @is_login = false
     end
     
-    if current_user
+    if !session[:account].nil?
       #투표 참여 검증
-      @approach = Userdatum.all.where("user_id" => current_user.id.to_s)
+      @approach = Userdatum.all.where(user_id: session[:account].to_s)
       #@approach = Userdatum.all.select{|x|x.user_id == current_user.id}
       
       @is_participated = false
       
       if !@approach.first.posts[@id].nil?
-          @is_participated = true
+        @is_participated = true
       else
       end
       @current_user_pos = @approach.first.posts[@id]
@@ -138,7 +144,7 @@ class MainController < ApplicationController
       end
     end
      replyModel = Reply.new
-     replyModel.user_id = current_user.id.to_s
+     replyModel.user_id = session[:account].to_s
      replyModel.content = params[:content]
      replyModel.post_id = params[:id]
      replyModel.pro_or_cons = to_boolean(params[:pros_and_cons])
@@ -149,13 +155,13 @@ class MainController < ApplicationController
   
   def do_reply_like
       @reply = Reply.find(params[:id])
-      @reply.liked_by current_user
+      @reply.liked_by Userdatum.where(user_id: session[:account])[0]
       redirect_to :back
   end
   
   def do_reply_dislike
       @reply = Reply.find(params[:id])
-      @reply.disliked_by current_user
+      @reply.disliked_by Userdatum.where(user_id: session[:account])[0]
       redirect_to :back
   end
   
@@ -169,7 +175,7 @@ class MainController < ApplicationController
       
       target_post = Post.all.select{|x|x.id == @post_id}[0]
       #target_post = Parse::Query.new("posts").eq("objectId", @post_id).get.first
-      target_user = Userdatum.all.select{|x|x.user_id == current_user.id.to_s}[0]
+      target_user = Userdatum.all.select{|x|x.user_id == session[:account].to_s}[0]
       #target_user = Parse::Query.new("userdata").eq("userId", session[:account]).get.first
       a= target_user.posts
       if select_index == 0
@@ -342,4 +348,6 @@ class MainController < ApplicationController
     
     redirect_to :back
   end
+  
+  
 end
