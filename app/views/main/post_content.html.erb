@@ -201,14 +201,14 @@ $('#test').show();
       <div class="slide-center swiper-slide">
         <div style="text-align:center">
           <%if @left_num > @right_num%>
-            <span style="font-family: 'Hanna', serif;"><%=@left_content%></span><br>
-            <span style="font-family: 'Hanna', serif;"><%=@left_num %> 명</span><br>
-            <span style="font-family: 'Hanna', serif;"><%=@right_content%></span><br>
+            <span style="font-family: 'Hanna', serif;white-space: nowrap; overflow:hidden !important; text-overflow: ellipsis; font-family:'Jeju Gothic', sans-serif;font-size:1.5em"><%=@left_content%></span><br>
+            <span style="font-family: 'Hanna', serif;font-size:1.5em"><%=@left_num %> 명</span><br>
+            <span style="font-family: 'Hanna', serif;white-space: nowrap; overflow:hidden !important; text-overflow: ellipsis; font-family:'Jeju Gothic', sans-serif;"><%=@right_content%></span><br>
             <span style="font-family: 'Hanna', serif;"><%=@right_num %> 명</span>
           <%else%>
-            <span style="font-family: 'Hanna', serif;"><%=@right_content%></span><br>
-            <span style="font-family: 'Hanna', serif;"><%=@right_num %> 명</span><br>
-            <span style="font-family: 'Hanna', serif;"><%=@left_content%></span><br>
+            <span style="font-family: 'Hanna', serif;white-space: nowrap; overflow:hidden !important; text-overflow: ellipsis; font-family:'Jeju Gothic', sans-serif;font-size:1.5em"><%=@right_content%></span><br>
+            <span style="font-family: 'Hanna', serif;font-size:1.5em"><%=@right_num %> 명</span><br>
+            <span style="font-family: 'Hanna', serif;white-space: nowrap; overflow:hidden !important; text-overflow: ellipsis; font-family:'Jeju Gothic', sans-serif;"><%=@left_content%></span><br>
             <span style="font-family: 'Hanna', serif;"><%=@left_num %> 명</span>
           <%end%>
         </div>
