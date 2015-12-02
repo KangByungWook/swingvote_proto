@@ -5,9 +5,9 @@
     <a id="send_list_<%=post%>" style="color:black;">
     <p style="margin:0px; font-size:1.1em;">
       <span style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor; margin-right:-0.5em;">#</span>
-      <span id="tag_maintag" style="margin-left:10px; font-size:1.3em; font-weight:bold; pointer:cursor;"><%=post%></span>
+      <span id="tag_maintag" style="margin-left:10px; font-size:1.3em; pointer:cursor;font-family: 'Hanna', serif;"><%=post%></span>
       <span style="float:right; margin-right:10px;">
-        <span id="tag_more_<%=post%>" style="color:#6a6a6a;">더보기</span>
+        <span id="tag_more_<%=post%>" style="color:#6a6a6a;font-family: 'Hanna', serif;">더보기</span>
         <span class="glyphicon glyphicon-chevron-right" style="color:#6a6a6a;"></span>
       </span>
     </p>
@@ -30,7 +30,7 @@
           <div class="post_img" style="background-image:url('<%=i.img_url%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
           </div>
           <div class="slide-center post_title">
-            <span id="post_tagsub_<%=i.id%>" style="font-size:15px"><%=i.subject%></span>
+            <span id="post_tagsub_<%=i.id%>" style="font-size:15px;font-family: 'Jeju Gothic', sans-serif;"><%=i.subject%></span>
           </div>
           
           <script>
@@ -67,8 +67,8 @@
             </script>-->
             <% i.tags.take(3).each do |j| %>
               <div class="tag slide-center">
-                <span>#</span>
-                <span id="<%=i.id%>_<%=j%>"><%=j%></span>
+                <span style="font-family: 'Hanna', serif;">#</span>
+                <span id="<%=i.id%>_<%=j%>" style="font-family: 'Hanna', serif;"><%=j%></span>
               </div>
               <script>
                 $(function() {

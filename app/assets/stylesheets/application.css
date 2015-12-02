@@ -17,3 +17,8 @@
  
  *= require_tree .
  */
+ 
+ @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+ @import url(http://fonts.googleapis.com/earlyaccess/jejuhallasan.css);
+ @import url(http://fonts.googleapis.com/earlyaccess/jejugothic.css);
+ hr { margin-top:-0.5em;margin-left:1em; margin-right:1em; height:1px; background-color:#ccc; color:#ccc; border:none; }

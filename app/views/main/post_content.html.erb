@@ -128,9 +128,9 @@
     });
   });
 </script>
-
+<hr/>
 <% @post.each do |i| %>
-<h4 style="margin-left:1em;">관련 기사</h4>
+<h4 style="margin-left:1em;font-family: 'Hanna', serif;">#관련 기사</h4>
 <div class="link-slider swiper-container">
   <div class="swiper-wrapper">
   <% if (i.links.nil?) %>
@@ -142,7 +142,7 @@
     <% for j in (0...i.links.length) %>
       <div class="swiper-slide" style="background-image:url('<%=i.links[j]["link_img_url"]%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
         <a href="/main/readability/<%=i.id%>_<%=j%>" style="text-decoration:none;">
-        <span style="font-size:1em; position:absolute; bottom:0; left:0; color:black; background:rgba(234,234,234,0.4);">
+        <span style="font-size:1em; font-family: 'Jeju Gothic', sans-serif; position:absolute; bottom:0; left:0; color:white; background:rgba(0,0,0,0.4);">
           <%=i.links[j]["link_title"]%>
         </span>
         </a>
@@ -165,19 +165,19 @@
   });
 </script>
 </div>
-
+<hr/>
 <!--상태표시부분-->
 <!--condition_statement(aaa)-->
 <%if @is_login%>
   <!--condition_statement(aaa)-->
   <%if @is_participated%>
-    <p>로그인 상태, 참여 하셨습니다</p>
-    <script>
-    $('.post-slider').hide();
-    $('#test').show();
-    </script>
+    <!--<p>로그인 상태, 참여 하셨습니다</p>-->
+<script>
+$('.post-slider').hide();
+$('#test').show();
+</script>
     <!-- 통계 슬라이더 Stats Slider -->
-  <h4 style="margin-left:1em;"><p>통계</p></h4>
+  <h4 style="margin-left:1em;font-family: 'Hanna', serif;"><p>#통계</p></h4>
   <div class="stats-slider swiper-container">
     <div class="swiper-wrapper">
       <div class="slide-center swiper-slide">
@@ -248,12 +248,11 @@
   <!--기존 댓글 체계-->
   <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
   
-  <div class="panel-header">
-    <span id="panel-title"> Comments </span>
+  <div class="panel-header" style="margin-left:1em;margin-right:1em;">
+    <span id="panel-title" style="font-family: 'Hanna', serif;"> 댓글 참여 </span>
     <span class="counter"> 3 </span>
   </div>
-  <form action="/main/do_reply/<%=@id%>" method="POST">
-      <p class="formtitle"> 댓글 달기 </p>
+  <form action="/main/do_reply/<%=@id%>" method="POST" style="margin-left:1em;margin-right:1em;">
       <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
       <input id="author" type="text" placeholder="현재 사용자" value = "<%="닉네임"%>" name="user_id">
       <textarea placeholder="Comment" name="content"></textarea>
