@@ -23,7 +23,7 @@
     
     <div style="width:100%; height:1em;"></div>
     <div class="swiper-wrapper">
-      <% Post.all.select{|x|x.tags.include? post}.take(6).each do |i| %>
+      <% Post.all.select{|x|x.tags.include? post}.reverse.take(6).each do |i| %>
         <div id="post_tag_<%=i.id%>" class="slide-topic swiper-slide">
           <input type="hidden" value="<%=i.id%>" id="<%=i.id%>">
           <div class="post_img" style="background-image:url('<%=i.img_url%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">

@@ -234,10 +234,13 @@ class MainController < ApplicationController
     else
       @tagindex = 1
       @tags = @userdata.tags.sort_by do |x, y| y end
+      @tags.reverse!
+      
       @tag_arr = []
-      @tags.each do |x, y|
+      @tags.take(18).each do |x, y|
         @tag_arr.push("#{x}")
       end
+      @tag_arr.reverse!
     end
     
     if @userdata.posts.nil?
