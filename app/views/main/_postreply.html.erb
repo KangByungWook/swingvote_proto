@@ -6,17 +6,18 @@
     <%end%>
       <div class="orientation">
           <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-          <span> <%=User.select{|x|x.id == postreply.user_id.to_i}[0].nickname%> </span>
+          <span style="font-family: 'Hanna', serif;"> <%=User.select{|x|x.id == postreply.user_id.to_i}[0].nickname%> </span>
           <small> <%=postreply.created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
       </div>
-      <div class="comment-text">
+      <div class="comment-text" style="font-family: 'Jeju Gothic', sans-serif;">
        <%=simple_format(postreply.content)%>
       </div>
       <div style="text-align:right">
-        <a href="/main/do_reply_like/<%=postreply.id%>">추천(<%=postreply.get_likes.size%>)</a>
-        <a href="/main/do_reply_dislike/<%=postreply.id%>">비추천(<%=postreply.get_dislikes.size%>)</a>
+        <a id="like_<%=postreply.id%>" href="/main/do_reply_like/<%=postreply.id%>">추천(<%=postreply.get_likes.size%>)</a>
+        <a id="dislike_<%=postreply.id%>" href="/main/do_reply_dislike/<%=postreply.id%>">비추천(<%=postreply.get_dislikes.size%>)</a>
       </div>
     </div>
+    <hr/>
 </div>
 
 <script>

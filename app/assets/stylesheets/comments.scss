@@ -3,8 +3,14 @@
   font-size: 1.3em;
 }
 
-.panel-header {
+.panel-header-left {
   background-color: #3f51b5;
+  color: white;
+  padding: 1%;
+}
+
+.panel-header-right {
+  background-color: #d91818;
   color: white;
   padding: 1%;
 }
@@ -33,7 +39,7 @@
 }
 
 .comment_right {
-  border-right: 4px solid #3f51b5; 
+  border-right: 4px solid #d91818; 
   padding: 0 1% 1% 3%;
   margin-bottom: 5%;
   
@@ -86,9 +92,18 @@ form {
   text-align:center;
 }
 
-.commentButton{
+.commentButton-left{
   border: 0px solid;
   background-color: #3f51b5;
+  color: white;
+  padding: 1%;
+  box-shadow: 0 2px 5px black;
+  width: 25%;
+}
+
+.commentButton-right{
+  border: 0px solid;
+  background-color: #d91818;
   color: white;
   padding: 1%;
   box-shadow: 0 2px 5px black;

@@ -1,7 +1,6 @@
 class MainController < ApplicationController
   
   def index
-    
     if !params[:current_userId_mobile].nil?
       session[:account] = params[:current_userId_mobile]
       session[:from_mobile] = true
@@ -69,6 +68,7 @@ class MainController < ApplicationController
     if !session[:account].nil?
       @approach = Userdatum.all.where(user_id: session[:account].to_s)
     end
+    @list = @list.paginate(:page => params[:page], :per_page => 10)
   end
   
   def post_content
@@ -222,12 +222,12 @@ class MainController < ApplicationController
       #TODO스크립트 POST 리퀘스트 처리하기
       
       redirect_to "/main/post_content/#{@post_id}"
+      #redirect_to :back
     
   end
   
   def user_page
-    @user = current_user
-    @userdata = Userdatum.all.where(user_id: current_user.id)[0]
+    @userdata = Userdatum.all.where(user_id: session[:account])[0]
     
     if @userdata.tags.nil?
       @tagindex = 0

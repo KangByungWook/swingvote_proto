@@ -128,8 +128,12 @@
     });
   });
 </script>
-<hr/>
 <% @post.each do |i| %>
+<div style="width:94%; margin:auto;font-family:'Hanna',serif;padding-bottom:15px;">
+  <% for x in (0...i.tags.length) %>
+    <span style="float:right; margin-top:5px; margin-bottom:5px;">#<%=i.tags[x]%>&nbsp;</span>
+  <% end %>
+</div>
 <h4 style="margin-left:1em;font-family: 'Hanna', serif;">#관련 기사</h4>
 <div class="link-slider swiper-container">
   <div class="swiper-wrapper">
@@ -140,20 +144,30 @@
   <% else %>
     <input id="link_url_length" type="hidden">
     <% for j in (0...i.links.length) %>
-      <div class="swiper-slide" style="background-image:url('<%=i.links[j]["link_img_url"]%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
-        <a href="/main/readability/<%=i.id%>_<%=j%>" style="text-decoration:none;">
+      <div id="read_<%=i.id%>_<%=j%>" class="swiper-slide" style="background-image:url('<%=i.links[j]["link_img_url"]%>');width:100%;height:100%;background-size:cover;background-repeat:no-repeat;background-position: center center;">
         <span style="font-size:1em; font-family: 'Jeju Gothic', sans-serif; position:absolute; bottom:0; left:0; color:white; background:rgba(0,0,0,0.4);">
           <%=i.links[j]["link_title"]%>
         </span>
-        </a>
       </div>
+      <script>
+        $(function(){
+          $("#read_<%=i.id%>_<%=j%>").click(function(){
+            console.log("click");
+            <%if session[:from_mobile] == true%>
+            document.location = "js:/<%=i.id%>_<%=j%>"; 
+            <%else%>
+            location.href = '/main/readability/<%=i.id%>_<%=j%>';
+            <%end%>
+          });
+        });
+      </script>
     <% end %>
   <% end %>
   </div>
 </div>
 <% end %>
 
-<br>
+<hr class="post_content_hr"/>
 <script>
   $(function() {
     var swiper = new Swiper('.link-slider', {
@@ -177,7 +191,7 @@ $('.post-slider').hide();
 $('#test').show();
 </script>
     <!-- 통계 슬라이더 Stats Slider -->
-  <h4 style="margin-left:1em;font-family: 'Hanna', serif;"><p>#통계</p></h4>
+  <h4 style="margin-left:1em;font-family: 'Hanna', serif;margin-top:-0.5em"><p>#통계</p></h4>
   <div class="stats-slider swiper-container">
     <div class="swiper-wrapper">
       <div class="slide-center swiper-slide">
@@ -187,13 +201,17 @@ $('#test').show();
       </div>
       <div class="slide-center swiper-slide">
         <div style="text-align:center">
-          <p style="font-size:30px"><%=@left_content%> : <%=@left_num %> 명</p>
-          <p><%=@right_content%> : <%=@right_num %> 명</p>
+          <%if @left_num > @right_num%>
+            <p style="font-size:30px"><span style="font-family: 'Hanna', serif;"><%=@left_content%> : </span><span style="font-family: 'Hanna', serif;"><%=@left_num %> 명</span></p>
+            <p><span style="font-family: 'Hanna', serif;"><%=@right_content%> : </span><span style="font-family: 'Hanna', serif;"><%=@right_num %> 명</span></p>
+          <%else%>
+            <p style="font-size:30px"><span style="font-family: 'Hanna', serif;"><%=@right_content%> : </span><span style="font-family: 'Hanna', serif;"><%=@right_num %> 명</span></p>
+            <p><span style="font-family: 'Hanna', serif;"><%=@left_content%> : </span><span style="font-family: 'Hanna', serif;"><%=@left_num %> 명</span></p>
+          <%end%>
         </div>
       </div>
     </div>
   </div>
-  
   <!-- Stats slider Swiper Script -->
   <script>
     $(function() {
@@ -244,19 +262,18 @@ $('#test').show();
   new Chartist.Pie('.ct-chart', data, responsiveOptions);
   </script>
   <% end %>
-
+<hr/>
   <!--기존 댓글 체계-->
   <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
   
-  <div class="panel-header" style="margin-left:1em;margin-right:1em;">
-    <span id="panel-title" style="font-family: 'Hanna', serif;"> 댓글 참여 </span>
-    <span class="counter"> 3 </span>
+  <div class="<%if @current_user_pos == "left"%>panel-header-left<%else%>panel-header-right<%end%>" style="margin-left:1em;margin-right:1em;">
+    <span id="panel-title" style="font-family: 'Hanna', serif;"> 댓글 참여<span style="font-size:0.8em">(총 <%=@total_equal_replies.length%>개의 댓글)</span></span>
   </div>
-  <form action="/main/do_reply/<%=@id%>" method="POST" style="margin-left:1em;margin-right:1em;">
+  <form action="/main/do_reply/<%=@id%>" method="POST" style="margin-left:1em;margin-right:1em">
       <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
       <input id="author" type="text" placeholder="현재 사용자" value = "<%="닉네임"%>" name="user_id">
       <textarea placeholder="Comment" name="content"></textarea>
-      <input class="commentButton" type='submit' value='댓글 등록' style="text-align:right"/>  
+      <input class="<%if @current_user_pos == "left"%>commentButton-left<%else%>commentButton-right<%end%>" type='submit' value='댓글 등록' style="text-align:center;font-family: 'Hanna', serif;"/>  
   </form>
   <div class="panel-collapse">
     <div id="postreply">

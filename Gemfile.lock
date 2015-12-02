@@ -61,7 +61,9 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    connect (0.0.0)
     crass (1.0.2)
+    daemons (1.2.3)
     debug_inspector (0.0.2)
     devise (3.5.2)
       bcrypt (~> 3.0)
@@ -73,6 +75,7 @@ GEM
     erubis (2.7.0)
     ethon (0.8.0)
       ffi (>= 1.3.0)
+    eventmachine (1.0.8)
     execjs (2.6.0)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
@@ -220,6 +223,10 @@ GEM
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
+    thin (1.6.4)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.1)
@@ -257,6 +264,7 @@ DEPENDENCIES
   carrierwave
   chartist-rails
   coffee-rails (~> 4.1.0)
+  connect
   devise
   figaro
   jbuilder (~> 2.0)
@@ -279,6 +287,7 @@ DEPENDENCIES
   sqlite3
   swiper-rails
   therubyracer
+  thin
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)

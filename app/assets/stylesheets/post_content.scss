@@ -5,14 +5,15 @@
   height: 120px;
 }
 .ct-label {
-  fill: rgba(255,255,255,.4);
-  color: rgba(255,255,255,.4);
-  font-size: .75rem;
+  fill: rgba(255,255,255,1);
+  color: rgba(255,255,255,1);
+  font-size: 1rem;
+  font-weight: bold;
   line-height: 1;
 }
 .ct-series-a .ct-slice-pie {
   /* fill of the pie slieces */
-  fill: hsl(120, 40%, 60%);
+  fill: #F15F5F;
   /* give your pie slices some outline or separate them visually by using the background color here */
   stroke: white;
   /* outline width */
@@ -21,13 +22,12 @@
 }
 .ct-series-b .ct-slice-pie {
   /* fill of the pie slieces */
-  /*fill: hsl(120, 40%, 60%);*/
+  fill: #B5B2FF;
   /* give your pie slices some outline or separate them visually by using the background color here */
   stroke: white;
   /* outline width */
   stroke-width: 2px;
 }
-
 //차트부분 끝
 
 //link

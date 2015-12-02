@@ -43,8 +43,9 @@
   <!--<script src="/path/to/masonry.pkgd.min.js"></script>-->
   <!-- Chartist -->
   <!--<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">-->
-  <!--<script src="bower_components/chartist/dist/chartist.min.js"></script>-->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+  <script src="/bower_components/chartist/dist/chartist.min.js"></script>
+  <!--<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">-->
+  <link rel="stylesheet" href="/bower_components/chartist/dist/scss/settings/_chartist-settings.scss">
   <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
 
   <!-- Parse -->
@@ -63,18 +64,23 @@
 
 
 
-<body id="primary-content" style="margin:auto;">
+<body id="primary-content" style="margin:auto;background:rgba(250,236,197,0.3);">
 
   <input type="hidden" name="session" id="app_session" value="<%=session[:account]%>">
   <input type="hidden" id="web_session">
-  <%if current_user%>
-    <a id="log_out_btn" href="/users/sign_out"role="button">Logout</a>  
+  <%if session[:from_mobile] == true %>
   <%else%>
-    <a id="log_in_btn" href="/users/sign_in" role="button">Login&nbsp;</a>
-    <a id="sign_up_btn" href="/users/sign_up" role="button">&nbsp;Signup</a>
+    <%if current_user%>
+      <a id="log_out_btn" href="/users/sign_out"role="button">Logout</a>  
+      <a style="float:right;" href="/main/user_page" id="user_page" role="button">user_page</a>
+    <%else%>
+      <a id="log_in_btn" href="/users/sign_in" role="button">Login&nbsp;</a>
+      <a id="sign_up_btn" href="/users/sign_up" role="button">&nbsp;Signup</a>
+    <%end%>
   <%end%>
   
-  <a style="float:right;" href="/main/user_page" id="user_page" role="button">user_page</a>
+  
+  
   
   <div id="loading"></div>
   <div class="for_drawer"></div>
