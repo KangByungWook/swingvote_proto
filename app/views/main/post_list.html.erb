@@ -11,8 +11,3 @@
       <%= render(partial: 'postlist', collection: @list) %>
 </div>
 <%= will_paginate @list %>
-
-
-<% @list.reverse.take(10).each do |i| %>
-
-<% end %>

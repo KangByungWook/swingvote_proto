@@ -12,7 +12,7 @@ class MainController < ApplicationController
       if Userdatum.all.where(user_id: session[:account]).length == 0
         a = Userdatum.new
         a.user_id = session[:account].to_s
-        a.username = "이름 컬럼 만들기 전"
+        a.username = params[:nickname]
         a.tags = {}
         a.posts = {}
         main_tags = Hash.new
@@ -68,7 +68,7 @@ class MainController < ApplicationController
     if !session[:account].nil?
       @approach = Userdatum.all.where(user_id: session[:account].to_s)
     end
-    @list = @list.paginate(:page => params[:page], :per_page => 10)
+    @list = @list.reverse.paginate(:page => params[:page], :per_page => 10)
   end
   
   def post_content

@@ -270,7 +270,7 @@ $('#test').show();
   </div>
   <form action="/main/do_reply/<%=@id%>" method="POST" style="margin-left:1em;margin-right:1em">
       <input type="hidden" value="<%if @current_user_pos == "left"%>true<%else%>false<%end%>" name="pros_and_cons">
-      <input id="author" type="text" placeholder="현재 사용자" value = "<%="닉네임"%>" name="user_id">
+      <input id="author" type="text" placeholder="현재 사용자" value = "<%=%>" name="user_id">
       <textarea placeholder="Comment" name="content"></textarea>
       <input class="<%if @current_user_pos == "left"%>commentButton-left<%else%>commentButton-right<%end%>" type='submit' value='댓글 등록' style="text-align:center;font-family: 'Hanna', serif;"/>  
   </form>
