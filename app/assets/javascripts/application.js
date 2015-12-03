@@ -12,9 +12,9 @@
 //
 
 //= require jquery
-
+//= require jquery-ui
 //= require jquery_ujs
-
+//= require jquery-ui/effect-slide
 
 //= require turbolinks
 //= require jqcloud

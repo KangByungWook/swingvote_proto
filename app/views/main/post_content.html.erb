@@ -10,6 +10,22 @@
 </div>
 <!-- end -->
 
+<!-- 투표 후 포인트 적립 alert -->
+<div id="voteAlert" class="slide-center" style="width:200px; height:80px; background:rgba(0,0,0,0.8); color:white;
+                                 position:fixed; right:10px; bottom:10px; display:none;">
+  point += 10;
+</div>
+<% if !@voteIndex.nil? %>
+  <script>
+    console.log('<%=@voteIndex%>');
+    $('#voteAlert').show();
+  </script>
+<% end %>
+<!-- end -->
+
+<script>
+  console.log('<%=@voteIndex%>');
+</script>
 <div class="post-slider swiper-container" style="width:94%;">
   <div id="<%=@id%>_card" class="post_card swiper-wrapper">
     <div id="<%=@id%>_left"class="slide-left slide-center swiper-slide" style="font-family: 'Hanna', serif; font-size:1.5em;"><%=i.left["content"]%></div>

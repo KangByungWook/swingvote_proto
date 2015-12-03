@@ -43,6 +43,7 @@ before_filter :configure_account_update_params, only: [:update]
     devise_parameter_sanitizer.for(:sign_up) << :nickname
     devise_parameter_sanitizer.for(:sign_up) << :gender
     devise_parameter_sanitizer.for(:sign_up) << :date_of_birth
+    
   end
 
   # If you have extra params to permit, append them to the sanitizer.
@@ -50,6 +51,7 @@ before_filter :configure_account_update_params, only: [:update]
     devise_parameter_sanitizer.for(:account_update) << :nickname
     devise_parameter_sanitizer.for(:account_update) << :gender
     devise_parameter_sanitizer.for(:account_update) << :date_of_birth
+    
   end
 
   # The path used after sign up.

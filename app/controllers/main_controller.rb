@@ -1,5 +1,18 @@
 class MainController < ApplicationController
   
+  def calculate_level(point)
+    @index = 1
+    copy_point = point
+    for x in 1...100 do
+       copy_point -= @index*200
+       @index += 1
+       if copy_point < @index*200
+         break
+       end
+    end
+    return @index-1
+  end
+  
   def index
     if !params[:current_userId_mobile].nil?
       session[:account] = params[:current_userId_mobile]
@@ -25,6 +38,7 @@ class MainController < ApplicationController
         main_tags["시사"] = 10
         main_tags["연예"] = 10
         a.main_tag = main_tags
+        a.user_point = 0
         tag = Hash.new
         tag["IT"] = 10 
         tag["스포츠"] = 10
@@ -77,7 +91,8 @@ class MainController < ApplicationController
   
   def post_content
     @id = params[:id]
-    
+    #알림용 투표검증
+    @voteIndex = params[:voteIndex]
     #로그인 검증
     @is_login = false
     if !session[:account].nil?
@@ -147,6 +162,11 @@ class MainController < ApplicationController
         return false
       end
     end
+    
+    # 댓글 썼을 때 포인트 30점
+    a = Userdatum.all.select{|x|x.user_id == session[:account].to_s}[0]
+    a.user_point += 30
+    a.save
      replyModel = Reply.new
      replyModel.user_id = session[:account].to_s
      replyModel.content = params[:content]
@@ -217,7 +237,7 @@ class MainController < ApplicationController
             target_user.tags[main_tag] +=1
           end
       end
-      
+      target_user.user_point += 10
       
       #사용자 정보 저장(태그, 참여기록)
       target_user.save
@@ -225,13 +245,22 @@ class MainController < ApplicationController
       target_post.save
       #TODO스크립트 POST 리퀘스트 처리하기
       
-      redirect_to "/main/post_content/#{@post_id}"
-      #redirect_to :back
+      #redirect_to "/main/post_content/#{@post_id}"
+      redirect_to :back
     
   end
   
   def user_page
     @userdata = Userdatum.all.where(user_id: session[:account])[0]
+    @user_level = calculate_level(@userdata.user_point)
+    @level_sum = 0
+    for x in 1..100 do
+      if x == @user_level
+        break
+      end
+      @level_sum+=x
+    end
+    @point_remain = @userdata.user_point - @level_sum*200
     
     if @userdata.tags.nil?
       @tagindex = 0
