@@ -12,7 +12,11 @@ class MainController < ApplicationController
       if Userdatum.all.where(user_id: session[:account]).length == 0
         a = Userdatum.new
         a.user_id = session[:account].to_s
-        a.username = params[:nickname]
+        if current_user
+          a.username=current_user.nickname
+        else
+          a.username = params[:nickname]
+        end
         a.tags = {}
         a.posts = {}
         main_tags = Hash.new

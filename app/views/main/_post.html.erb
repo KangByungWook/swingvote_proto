@@ -24,29 +24,30 @@
     <div style="width:100%; height:1em;"></div>
     <div class="swiper-wrapper">
       <% Post.all.select{|x|x.tags.include? post}.reverse.take(6).each do |i| %>
-        <div id="post_tag_<%=i.id%>" class="slide-topic swiper-slide">
+        <%index = 0%>
+        <div id="post_tag_<%=post%>_<%=i.id%>" class="slide-topic swiper-slide">
           <input type="hidden" value="<%=i.id%>" id="<%=i.id%>">
           <div class="post_img" style="background-image:url('<%=i.img_url%>');background-size:cover;background-repeat:no-repeat;background-position: center center;">
           </div>
           <div class="slide-center post_title">
-            <span id="post_tagsub_<%=i.id%>" style="font-size:15px;font-family: 'Jeju Gothic', sans-serif;"><%=i.subject%></span>
+            <span id="post_tagsub_<%=post%>_<%=i.id%>" style="font-size:15px;font-family: 'Jeju Gothic', sans-serif;"><%=i.subject%></span>
           </div>
           
           <script>
             $(function() {
-              $('#post_tag_<%=i.id%>').click(function() {
+              $('#post_tag_<%=post%>_<%=i.id%>').click(function() {
                 <%if session[:from_mobile] == true%>
                   document.location = "js:/"+$('#<%=i.id%>').val();
                 <%else%>
-                  location.href = '/main/post_content/<%=i.id%>'
+                  location.href = '/main/post_content/<%=i.id%>';
                 <%end%>
                 
               });
-              $('#post_tagsub_<%=i.id%>').click(function() {
+              $('#post_tagsub_<%=post%>_<%=i.id%>').click(function() {
                 <%if session[:from_mobile] == true%>
                   document.location = "js:/"+$('#<%=i.id%>').val();
                 <%else%>
-                  location.href = '/main/post_content/<%=i.id%>'
+                  location.href = '/main/post_content/<%=i.id%>';
                 <%end%>
               });
             });

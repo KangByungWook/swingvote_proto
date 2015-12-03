@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20151201110404) do
   create_table "userdata", force: :cascade do |t|
     t.string   "username"
     t.string   "user_id"
+    t.integer  "user_point"
     t.string   "main_tag"
     t.string   "tags"
     t.string   "posts"
