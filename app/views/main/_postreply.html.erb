@@ -6,7 +6,7 @@
     <%end%>
       <div class="orientation">
           <img class="icon" src="http://i.imgur.com/JIt0euT.png"/>
-          <span style="font-family: 'Hanna', serif;"> <%=User.select{|x|x.id == postreply.user_id.to_i}[0].nickname%> </span>
+          <span style="font-family: 'Hanna', serif;"> <%=Userdatum.select{|x|x.user_id == postreply.user_id}[0].username%> </span>
           <small> <%=postreply.created_at.in_time_zone("Seoul").strftime("%Y/%m/%d %I:%M%p")%> </small>
       </div>
       <div class="comment-text" style="font-family: 'Jeju Gothic', sans-serif;">
