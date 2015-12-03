@@ -5,6 +5,7 @@ class CreateUserdata < ActiveRecord::Migration
       t.string :user_id
       t.integer :user_point
       
+      
       #object
       t.string :main_tag
       t.string :tags
