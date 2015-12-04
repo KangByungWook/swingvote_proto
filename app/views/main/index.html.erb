@@ -101,9 +101,10 @@
       <script>
         $(function() {
           $('#post_recent_<%=i.id%>').click(function() {
-            <%if !params[:from_mobile].nil?%>
+            <%if session[:from_mobile] == true%>
             document.location = 'js:/'+$('#<%=i.id%>').val();
             <%else%>
+            console.log("click <%=i.id%>");
             location.href = '/main/post_content/'+$('#<%=i.id%>').val();
             <%end%>
           });
