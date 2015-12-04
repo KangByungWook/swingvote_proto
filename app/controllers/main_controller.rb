@@ -1,18 +1,5 @@
 class MainController < ApplicationController
   
-  def calculate_level(point)
-    @index = 1
-    copy_point = point
-    for x in 1...100 do
-       copy_point -= @index*200
-       @index += 1
-       if copy_point < @index*200
-         break
-       end
-    end
-    return @index-1
-  end
-  
   def index
     if !params[:current_userId_mobile].nil?
       session[:account] = params[:current_userId_mobile]
@@ -248,6 +235,19 @@ class MainController < ApplicationController
       redirect_to "/main/post_content/#{@post_id}"
       #redirect_to :back
     
+  end
+  
+  def calculate_level(point)
+    @index = 1
+    copy_point = point
+    for x in 1...100 do
+       if copy_point < @index*200
+         break
+       end
+       copy_point -= @index*200
+       @index += 1
+    end
+    return @index
   end
   
   def user_page

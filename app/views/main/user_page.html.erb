@@ -14,11 +14,11 @@ console.log("<%=@sort%>");
           <span id="username" style="font-size:1.5em;font-family: 'Jeju Gothic', sans-serif;"><%=@userdata.username%></span>
           <div style="font-size:1.2em;">
             Lv.<span id="level" style="font-size:1em;font-family: 'Jeju Gothic', sans-serif;"><%=@user_level%></span>&nbsp;&nbsp;&nbsp;
-            <span id="point" style="font-size:1em;font-family: 'Jeju Gothic', sans-serif;"><%=@userdata.user_point%></span>&nbsp;point
+            <span id="point" style="font-size:1em;font-family: 'Jeju Gothic', sans-serif;"><%=@userdata.user_point%></span>&nbsp;포인트
           </div>
           <div style="text-align:center">
-            <span style="font-family: 'Jeju Gothic', sans-serif;">다음 레벨업까지 </span><br>
-            <span style="font-family: 'Jeju Gothic', sans-serif;"><%=@user_level*200 - @point_remain%>포인트 남았습니다.</span>
+            <span style="font-family: 'Jeju Gothic', sans-serif;color: blue;font-size:0.8em;">다음 레벨업까지 </span><br>
+            <span style="font-family: 'Jeju Gothic', sans-serif;color: blue;font-size:0.8em;"><u><%=@user_level*200 - @point_remain%>포인트</u> 남았습니다.</span>
           </div>
         </td>
       </tr>
