@@ -245,8 +245,8 @@ class MainController < ApplicationController
       target_post.save
       #TODO스크립트 POST 리퀘스트 처리하기
       
-      #redirect_to "/main/post_content/#{@post_id}"
-      redirect_to :back
+      redirect_to "/main/post_content/#{@post_id}"
+      #redirect_to :back
     
   end
   
